@@ -471,3 +471,172 @@ function logic_nagoya_register_gallery_post_type() {
 	register_post_type( 'gallery', $args );
 }
 add_action( 'init', 'logic_nagoya_register_gallery_post_type' );
+
+/**
+ * Add meta boxes for custom page content
+ */
+function logic_nagoya_add_meta_boxes() {
+	// Floor Plan Image Meta Box (for floor-map page)
+	add_meta_box(
+		'logic_nagoya_floor_plan',
+		__( 'Floor Plan Image', 'logic-nagoya' ),
+		'logic_nagoya_floor_plan_callback',
+		'page',
+		'normal',
+		'high'
+	);
+	
+	// Concept Image Meta Box (for about page)
+	add_meta_box(
+		'logic_nagoya_concept_image',
+		__( 'Concept Image', 'logic-nagoya' ),
+		'logic_nagoya_concept_image_callback',
+		'page',
+		'normal',
+		'high'
+	);
+	
+	// Equipment PDF Meta Box (for equipment pages)
+	add_meta_box(
+		'logic_nagoya_equipment_pdf',
+		__( 'Equipment PDF', 'logic-nagoya' ),
+		'logic_nagoya_equipment_pdf_callback',
+		'page',
+		'normal',
+		'high'
+	);
+}
+add_action( 'add_meta_boxes', 'logic_nagoya_add_meta_boxes' );
+
+/**
+ * Floor Plan Image Meta Box Callback
+ */
+function logic_nagoya_floor_plan_callback( $post ) {
+	wp_nonce_field( basename( __FILE__ ), 'logic_nagoya_floor_plan_nonce' );
+	$floor_plan_id = get_post_meta( $post->ID, '_logic_nagoya_floor_plan_image', true );
+	?>
+	<p>
+		<label for="logic_nagoya_floor_plan_image"><?php _e( 'Floor Plan Image:', 'logic-nagoya' ); ?></label>
+		<br>
+		<input type="hidden" id="logic_nagoya_floor_plan_image" name="logic_nagoya_floor_plan_image" value="<?php echo esc_attr( $floor_plan_id ); ?>" />
+		<input type="button" class="button logic-nagoya-upload-button" id="upload_floor_plan_button" value="<?php _e( 'Choose Image', 'logic-nagoya' ); ?>" />
+		<input type="button" class="button logic-nagoya-remove-button" id="remove_floor_plan_button" value="<?php _e( 'Remove Image', 'logic-nagoya' ); ?>" <?php if ( ! $floor_plan_id ) echo 'style="display:none;"'; ?> />
+	</p>
+	<div id="floor_plan_preview">
+		<?php if ( $floor_plan_id ) : ?>
+			<?php echo wp_get_attachment_image( $floor_plan_id, array( 300, 200 ) ); ?>
+		<?php endif; ?>
+	</div>
+	<?php
+}
+
+/**
+ * Concept Image Meta Box Callback
+ */
+function logic_nagoya_concept_image_callback( $post ) {
+	wp_nonce_field( basename( __FILE__ ), 'logic_nagoya_concept_image_nonce' );
+	$concept_image_id = get_post_meta( $post->ID, '_logic_nagoya_concept_image', true );
+	?>
+	<p>
+		<label for="logic_nagoya_concept_image"><?php _e( 'Concept Image:', 'logic-nagoya' ); ?></label>
+		<br>
+		<input type="hidden" id="logic_nagoya_concept_image" name="logic_nagoya_concept_image" value="<?php echo esc_attr( $concept_image_id ); ?>" />
+		<input type="button" class="button logic-nagoya-upload-button" id="upload_concept_button" value="<?php _e( 'Choose Image', 'logic-nagoya' ); ?>" />
+		<input type="button" class="button logic-nagoya-remove-button" id="remove_concept_button" value="<?php _e( 'Remove Image', 'logic-nagoya' ); ?>" <?php if ( ! $concept_image_id ) echo 'style="display:none;"'; ?> />
+	</p>
+	<div id="concept_image_preview">
+		<?php if ( $concept_image_id ) : ?>
+			<?php echo wp_get_attachment_image( $concept_image_id, array( 300, 200 ) ); ?>
+		<?php endif; ?>
+	</div>
+	<?php
+}
+
+/**
+ * Equipment PDF Meta Box Callback
+ */
+function logic_nagoya_equipment_pdf_callback( $post ) {
+	wp_nonce_field( basename( __FILE__ ), 'logic_nagoya_equipment_pdf_nonce' );
+	$equipment_pdf_id = get_post_meta( $post->ID, '_logic_nagoya_equipment_pdf', true );
+	$pdf_url = $equipment_pdf_id ? wp_get_attachment_url( $equipment_pdf_id ) : '';
+	?>
+	<p>
+		<label for="logic_nagoya_equipment_pdf"><?php _e( 'Equipment PDF:', 'logic-nagoya' ); ?></label>
+		<br>
+		<input type="hidden" id="logic_nagoya_equipment_pdf" name="logic_nagoya_equipment_pdf" value="<?php echo esc_attr( $equipment_pdf_id ); ?>" />
+		<input type="button" class="button logic-nagoya-upload-button" id="upload_pdf_button" value="<?php _e( 'Choose PDF', 'logic-nagoya' ); ?>" />
+		<input type="button" class="button logic-nagoya-remove-button" id="remove_pdf_button" value="<?php _e( 'Remove PDF', 'logic-nagoya' ); ?>" <?php if ( ! $equipment_pdf_id ) echo 'style="display:none;"'; ?> />
+	</p>
+	<div id="equipment_pdf_preview">
+		<?php if ( $pdf_url ) : ?>
+			<p><strong><?php _e( 'Current PDF:', 'logic-nagoya' ); ?></strong> <a href="<?php echo esc_url( $pdf_url ); ?>" target="_blank"><?php echo basename( $pdf_url ); ?></a></p>
+		<?php endif; ?>
+	</div>
+	<?php
+}
+
+/**
+ * Save Meta Box Data
+ */
+function logic_nagoya_save_meta_boxes( $post_id ) {
+	// Check if our nonces are set and verify them
+	if ( ! isset( $_POST['logic_nagoya_floor_plan_nonce'] ) && 
+		 ! isset( $_POST['logic_nagoya_concept_image_nonce'] ) && 
+		 ! isset( $_POST['logic_nagoya_equipment_pdf_nonce'] ) ) {
+		return;
+	}
+	
+	// Verify that the nonces are valid
+	$floor_plan_nonce_valid = isset( $_POST['logic_nagoya_floor_plan_nonce'] ) && 
+							  wp_verify_nonce( $_POST['logic_nagoya_floor_plan_nonce'], basename( __FILE__ ) );
+	$concept_image_nonce_valid = isset( $_POST['logic_nagoya_concept_image_nonce'] ) && 
+								 wp_verify_nonce( $_POST['logic_nagoya_concept_image_nonce'], basename( __FILE__ ) );
+	$equipment_pdf_nonce_valid = isset( $_POST['logic_nagoya_equipment_pdf_nonce'] ) && 
+								 wp_verify_nonce( $_POST['logic_nagoya_equipment_pdf_nonce'], basename( __FILE__ ) );
+	
+	// Check the user's permissions
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+	
+	// Check if this is an autosave
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+	
+	// Save Floor Plan Image
+	if ( $floor_plan_nonce_valid && isset( $_POST['logic_nagoya_floor_plan_image'] ) ) {
+		$floor_plan_id = sanitize_text_field( $_POST['logic_nagoya_floor_plan_image'] );
+		update_post_meta( $post_id, '_logic_nagoya_floor_plan_image', $floor_plan_id );
+	}
+	
+	// Save Concept Image
+	if ( $concept_image_nonce_valid && isset( $_POST['logic_nagoya_concept_image'] ) ) {
+		$concept_image_id = sanitize_text_field( $_POST['logic_nagoya_concept_image'] );
+		update_post_meta( $post_id, '_logic_nagoya_concept_image', $concept_image_id );
+	}
+	
+	// Save Equipment PDF
+	if ( $equipment_pdf_nonce_valid && isset( $_POST['logic_nagoya_equipment_pdf'] ) ) {
+		$equipment_pdf_id = sanitize_text_field( $_POST['logic_nagoya_equipment_pdf'] );
+		update_post_meta( $post_id, '_logic_nagoya_equipment_pdf', $equipment_pdf_id );
+	}
+}
+add_action( 'save_post', 'logic_nagoya_save_meta_boxes' );
+
+/**
+ * Enqueue admin scripts for meta boxes
+ */
+function logic_nagoya_admin_scripts( $hook ) {
+	if ( 'post.php' === $hook || 'post-new.php' === $hook ) {
+		wp_enqueue_media();
+		wp_enqueue_script(
+			'logic-nagoya-admin',
+			get_template_directory_uri() . '/js/admin.js',
+			array( 'jquery' ),
+			LOGIC_NAGOYA_VERSION,
+			true
+		);
+	}
+}
+add_action( 'admin_enqueue_scripts', 'logic_nagoya_admin_scripts' );
