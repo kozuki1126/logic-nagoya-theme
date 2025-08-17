@@ -1,0 +1,390 @@
+/**
+ * Event Styles for Logic Nagoya Theme
+ *
+ * @package Logic_Nagoya
+ */
+
+/* Event Archive Page Styles */
+.post-type-archive-event .site-main {
+	padding: 2rem 0;
+}
+
+.events-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: 2rem;
+	margin-top: 2rem;
+}
+
+.event-card {
+	background: #ffffff;
+	border-radius: 12px;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	transition: all 0.3s ease;
+	position: relative;
+}
+
+.event-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.event-thumbnail {
+	position: relative;
+	overflow: hidden;
+	height: 200px;
+}
+
+.event-thumbnail img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.3s ease;
+}
+
+.event-card:hover .event-thumbnail img {
+	transform: scale(1.05);
+}
+
+.event-content {
+	padding: 1.5rem;
+}
+
+.event-title {
+	margin: 0 0 1rem 0;
+	font-size: 1.25rem;
+	font-weight: 600;
+	line-height: 1.4;
+}
+
+.event-title a {
+	color: #2c3e50;
+	text-decoration: none;
+	transition: color 0.3s ease;
+}
+
+.event-title a:hover {
+	color: #3498db;
+}
+
+.event-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	margin-bottom: 1rem;
+	font-size: 0.9rem;
+	color: #666;
+}
+
+.event-date {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.event-date::before {
+	content: '📅';
+	font-size: 1rem;
+}
+
+.event-categories {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.event-category {
+	background: #e74c3c;
+	color: #ffffff;
+	padding: 0.25rem 0.75rem;
+	border-radius: 15px;
+	font-size: 0.8rem;
+	font-weight: 500;
+}
+
+.event-excerpt {
+	margin: 1rem 0;
+	color: #555;
+	line-height: 1.6;
+}
+
+.event-link {
+	display: inline-block;
+	background: #3498db;
+	color: #ffffff;
+	padding: 0.75rem 1.5rem;
+	text-decoration: none;
+	border-radius: 6px;
+	font-weight: 500;
+	transition: all 0.3s ease;
+}
+
+.event-link:hover {
+	background: #2980b9;
+	transform: translateY(-2px);
+}
+
+/* Single Event Page Styles */
+.single-event .site-main {
+	padding: 2rem 0;
+}
+
+.single-event .entry-header {
+	text-align: center;
+	margin-bottom: 3rem;
+}
+
+.single-event .entry-title {
+	font-size: 2.5rem;
+	color: #2c3e50;
+	margin-bottom: 1rem;
+}
+
+.single-event .entry-meta {
+	display: flex;
+	justify-content: center;
+	gap: 2rem;
+	flex-wrap: wrap;
+	margin: 2rem 0;
+	font-size: 1.1rem;
+}
+
+.single-event .event-featured-image {
+	margin: 2rem 0;
+	text-align: center;
+}
+
+.single-event .event-featured-image img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 12px;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.single-event .entry-content {
+	max-width: 800px;
+	margin: 0 auto;
+	font-size: 1.1rem;
+	line-height: 1.8;
+}
+
+/* Event Information Box */
+.event-info-box {
+	background: #f8f9fa;
+	border-left: 4px solid #3498db;
+	padding: 1.5rem;
+	margin: 2rem 0;
+	border-radius: 8px;
+}
+
+.event-info-box h3 {
+	margin-top: 0;
+	color: #2c3e50;
+}
+
+.event-details {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 1rem;
+	margin: 1rem 0;
+}
+
+.event-detail-item {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.event-detail-item strong {
+	color: #2c3e50;
+}
+
+/* Event Navigation */
+.event-navigation {
+	margin: 3rem 0;
+	padding: 2rem;
+	background: #f8f9fa;
+	border-radius: 12px;
+	text-align: center;
+}
+
+.event-nav-links {
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+
+.event-nav-link {
+	display: inline-block;
+	background: #34495e;
+	color: #ffffff;
+	padding: 1rem 2rem;
+	text-decoration: none;
+	border-radius: 8px;
+	font-weight: 500;
+	transition: all 0.3s ease;
+	min-width: 150px;
+}
+
+.event-nav-link:hover {
+	background: #2c3e50;
+	transform: translateY(-2px);
+}
+
+.event-nav-link.prev::before {
+	content: '← ';
+}
+
+.event-nav-link.next::after {
+	content: ' →';
+}
+
+/* Events Pagination */
+.events-pagination {
+	margin: 3rem 0;
+	text-align: center;
+}
+
+.events-pagination .page-numbers {
+	display: inline-block;
+	padding: 0.75rem 1rem;
+	margin: 0 0.25rem;
+	background: #ffffff;
+	border: 2px solid #3498db;
+	color: #3498db;
+	text-decoration: none;
+	border-radius: 6px;
+	transition: all 0.3s ease;
+}
+
+.events-pagination .page-numbers:hover,
+.events-pagination .page-numbers.current {
+	background: #3498db;
+	color: #ffffff;
+}
+
+.events-pagination .page-numbers.prev,
+.events-pagination .page-numbers.next {
+	font-weight: 600;
+}
+
+/* No Events Message */
+.no-events {
+	text-align: center;
+	padding: 4rem 2rem;
+	background: #f8f9fa;
+	border-radius: 12px;
+	margin: 2rem 0;
+}
+
+.no-events p {
+	font-size: 1.2rem;
+	color: #666;
+	margin: 0;
+}
+
+/* Event Categories Widget */
+.widget_event_categories ul {
+	list-style: none;
+	padding: 0;
+}
+
+.widget_event_categories li {
+	margin-bottom: 0.5rem;
+}
+
+.widget_event_categories a {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.5rem 1rem;
+	background: #f8f9fa;
+	color: #2c3e50;
+	text-decoration: none;
+	border-radius: 6px;
+	transition: all 0.3s ease;
+}
+
+.widget_event_categories a:hover {
+	background: #3498db;
+	color: #ffffff;
+}
+
+.widget_event_categories .count {
+	background: #e74c3c;
+	color: #ffffff;
+	padding: 0.25rem 0.5rem;
+	border-radius: 12px;
+	font-size: 0.8rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+	.events-grid {
+		grid-template-columns: 1fr;
+		gap: 1.5rem;
+	}
+	
+	.single-event .entry-title {
+		font-size: 2rem;
+	}
+	
+	.single-event .entry-meta {
+		flex-direction: column;
+		gap: 1rem;
+	}
+	
+	.event-nav-links {
+		flex-direction: column;
+	}
+	
+	.event-details {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 480px) {
+	.event-card {
+		margin: 0 1rem;
+	}
+	
+	.event-content {
+		padding: 1rem;
+	}
+	
+	.single-event .entry-title {
+		font-size: 1.5rem;
+	}
+	
+	.event-navigation {
+		padding: 1rem;
+	}
+	
+	.event-nav-link {
+		padding: 0.75rem 1rem;
+		min-width: auto;
+		width: 100%;
+	}
+}
+
+/* Print Styles */
+@media print {
+	.event-navigation,
+	.events-pagination,
+	.event-link {
+		display: none !important;
+	}
+	
+	.event-card {
+		box-shadow: none !important;
+		border: 1px solid #ccc;
+		break-inside: avoid;
+	}
+	
+	.single-event .entry-content {
+		font-size: 12pt;
+		line-height: 1.5;
+	}
+}
