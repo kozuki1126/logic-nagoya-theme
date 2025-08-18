@@ -160,6 +160,215 @@ function logic_nagoya_setup() {
 	
 	// Create assets directory structure for local libraries
 	logic_nagoya_create_assets_structure();
+	
+	// Initialize image optimization features
+	logic_nagoya_init_image_optimization();
+}
+
+/**
+ * Initialize image optimization features
+ * Task 017: Image optimization and lazy loading
+ */
+function logic_nagoya_init_image_optimization() {
+	// Add WebP support
+	logic_nagoya_add_webp_support();
+	
+	// Add custom image sizes for optimized loading
+	logic_nagoya_add_custom_image_sizes();
+	
+	// Enable responsive image improvements
+	logic_nagoya_enhance_responsive_images();
+}
+
+/**
+ * Add WebP image format support
+ * Task 017: WebP optimization
+ */
+function logic_nagoya_add_webp_support() {
+	// Enable WebP upload
+	function logic_nagoya_webp_upload_mimes( $existing_mimes ) {
+		$existing_mimes['webp'] = 'image/webp';
+		return $existing_mimes;
+	}
+	add_filter( 'mime_types', 'logic_nagoya_webp_upload_mimes' );
+	add_filter( 'upload_mimes', 'logic_nagoya_webp_upload_mimes' );
+	
+	// Fix WebP display issues in WordPress admin
+	function logic_nagoya_webp_display_media_states( $states, $post ) {
+		$mime_type = get_post_mime_type( $post->ID );
+		if ( $mime_type === 'image/webp' ) {
+			$states[] = __( 'WebP', 'logic-nagoya' );
+		}
+		return $states;
+	}
+	add_filter( 'display_media_states', 'logic_nagoya_webp_display_media_states', 10, 2 );
+}
+
+/**
+ * Add custom image sizes for different devices and use cases
+ * Task 017: Retina and responsive image optimization
+ */
+function logic_nagoya_add_custom_image_sizes() {
+	// Standard sizes
+	add_image_size( 'hero-desktop', 1200, 600, true );
+	add_image_size( 'hero-tablet', 800, 400, true );
+	add_image_size( 'hero-mobile', 600, 300, true );
+	
+	add_image_size( 'event-thumb', 300, 200, true );
+	add_image_size( 'event-featured', 600, 400, true );
+	
+	add_image_size( 'gallery-thumb', 250, 250, true );
+	add_image_size( 'gallery-medium', 500, 500, true );
+	
+	// Retina versions (2x resolution)
+	add_image_size( 'hero-desktop-2x', 2400, 1200, true );
+	add_image_size( 'hero-tablet-2x', 1600, 800, true );
+	add_image_size( 'hero-mobile-2x', 1200, 600, true );
+	
+	add_image_size( 'event-thumb-2x', 600, 400, true );
+	add_image_size( 'event-featured-2x', 1200, 800, true );
+	
+	add_image_size( 'gallery-thumb-2x', 500, 500, true );
+	add_image_size( 'gallery-medium-2x', 1000, 1000, true );
+}
+
+/**
+ * Enhance responsive images with better srcset generation
+ * Task 017: Responsive image optimization
+ */
+function logic_nagoya_enhance_responsive_images() {
+	// Improve srcset generation for custom image sizes
+	function logic_nagoya_custom_srcset( $sources, $size_array, $image_src, $image_meta, $attachment_id ) {
+		if ( ! $image_meta || ! $attachment_id ) {
+			return $sources;
+		}
+		
+		// Add retina versions to srcset
+		$custom_sizes = array(
+			'hero-desktop' => 'hero-desktop-2x',
+			'hero-tablet' => 'hero-tablet-2x',
+			'hero-mobile' => 'hero-mobile-2x',
+			'event-thumb' => 'event-thumb-2x',
+			'event-featured' => 'event-featured-2x',
+			'gallery-thumb' => 'gallery-thumb-2x',
+			'gallery-medium' => 'gallery-medium-2x',
+		);
+		
+		foreach ( $custom_sizes as $standard => $retina ) {
+			$standard_info = wp_get_attachment_image_src( $attachment_id, $standard );
+			$retina_info = wp_get_attachment_image_src( $attachment_id, $retina );
+			
+			if ( $standard_info && $retina_info ) {
+				$standard_width = $standard_info[1];
+				$retina_width = $retina_info[1];
+				
+				// Add standard size if not present
+				if ( ! isset( $sources[ $standard_width ] ) ) {
+					$sources[ $standard_width ] = array(
+						'url' => $standard_info[0],
+						'descriptor' => $standard_width . 'w',
+						'value' => $standard_width,
+					);
+				}
+				
+				// Add retina size
+				if ( ! isset( $sources[ $retina_width ] ) ) {
+					$sources[ $retina_width ] = array(
+						'url' => $retina_info[0],
+						'descriptor' => $retina_width . 'w',
+						'value' => $retina_width,
+					);
+				}
+			}
+		}
+		
+		return $sources;
+	}
+	add_filter( 'wp_calculate_image_srcset', 'logic_nagoya_custom_srcset', 10, 5 );
+	
+	// Add loading="lazy" to images by default
+	function logic_nagoya_add_lazy_loading( $attr, $attachment, $size ) {
+		// Don't add lazy loading to hero images (above the fold)
+		if ( in_array( $size, array( 'hero-desktop', 'hero-tablet', 'hero-mobile' ) ) ) {
+			return $attr;
+		}
+		
+		if ( ! isset( $attr['loading'] ) ) {
+			$attr['loading'] = 'lazy';
+		}
+		
+		return $attr;
+	}
+	add_filter( 'wp_get_attachment_image_attributes', 'logic_nagoya_add_lazy_loading', 10, 3 );
+}
+
+/**
+ * Get optimized image HTML with WebP fallback
+ * Task 017: WebP optimization helper function
+ */
+function logic_nagoya_get_optimized_image( $attachment_id, $size = 'full', $attr = array() ) {
+	if ( ! $attachment_id ) {
+		return '';
+	}
+	
+	// Get standard image
+	$image_src = wp_get_attachment_image_src( $attachment_id, $size );
+	if ( ! $image_src ) {
+		return '';
+	}
+	
+	// Check if WebP version exists
+	$webp_url = logic_nagoya_get_webp_url( $image_src[0] );
+	
+	// Prepare attributes
+	$default_attr = array(
+		'class' => 'optimized-image',
+		'alt' => get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ),
+		'width' => $image_src[1],
+		'height' => $image_src[2],
+	);
+	
+	$attr = wp_parse_args( $attr, $default_attr );
+	
+	// Generate picture element with WebP support
+	$html = '<picture>';
+	
+	if ( $webp_url && $webp_url !== $image_src[0] ) {
+		$html .= '<source srcset="' . esc_url( $webp_url ) . '" type="image/webp">';
+	}
+	
+	$html .= '<img src="' . esc_url( $image_src[0] ) . '"';
+	
+	foreach ( $attr as $name => $value ) {
+		$html .= ' ' . $name . '="' . esc_attr( $value ) . '"';
+	}
+	
+	$html .= '>';
+	$html .= '</picture>';
+	
+	return $html;
+}
+
+/**
+ * Get WebP URL if available
+ * Task 017: WebP URL conversion helper
+ */
+function logic_nagoya_get_webp_url( $image_url ) {
+	if ( ! $image_url ) {
+		return $image_url;
+	}
+	
+	// Replace extension with .webp
+	$webp_url = preg_replace( '/\.(jpg|jpeg|png)$/i', '.webp', $image_url );
+	
+	// Check if WebP file exists
+	$webp_path = str_replace( home_url(), ABSPATH, $webp_url );
+	
+	if ( file_exists( $webp_path ) ) {
+		return $webp_url;
+	}
+	
+	return $image_url;
 }
 
 /**
@@ -190,6 +399,42 @@ function logic_nagoya_needs_faq() {
 		global $post;
 		if ( $post && ( strpos( $post->post_content, 'faq' ) !== false || strpos( $post->post_content, 'FAQ' ) !== false ) ) {
 			return true;
+		}
+	}
+	
+	return false;
+}
+
+/**
+ * Check if current page needs image optimization scripts/styles
+ * Task 017: Conditional loading for image optimization
+ */
+function logic_nagoya_needs_image_optimization() {
+	// Always load on pages with images
+	if ( has_post_thumbnail() ) {
+		return true;
+	}
+	
+	// Load on gallery and event pages
+	if ( is_post_type_archive( array( 'gallery', 'event' ) ) || 
+		 is_singular( array( 'gallery', 'event' ) ) ) {
+		return true;
+	}
+	
+	// Load on front page (hero images, gallery)
+	if ( is_front_page() ) {
+		return true;
+	}
+	
+	// Load on pages with custom images (floor plan, concept, etc.)
+	if ( is_page() ) {
+		global $post;
+		if ( $post ) {
+			$has_custom_images = get_post_meta( $post->ID, '_logic_nagoya_floor_plan_image', true ) ||
+								get_post_meta( $post->ID, '_logic_nagoya_concept_image', true );
+			if ( $has_custom_images ) {
+				return true;
+			}
 		}
 	}
 	
@@ -329,6 +574,27 @@ function logic_nagoya_scripts() {
 		}
 		if ( file_exists( $faq_js ) && filesize( $faq_js ) > 0 ) {
 			wp_enqueue_script( 'logic-nagoya-faq', get_template_directory_uri() . '/js/faq.js', array('jquery'), LOGIC_NAGOYA_VERSION, true );
+		}
+	}
+	
+	// Image optimization scripts and styles - Task 017
+	if ( logic_nagoya_needs_image_optimization() ) {
+		$image_opt_css = get_template_directory() . '/css/image-optimization.css';
+		$image_opt_js = get_template_directory() . '/js/image-optimization.js';
+		
+		if ( file_exists( $image_opt_css ) && filesize( $image_opt_css ) > 0 ) {
+			wp_enqueue_style( 'logic-nagoya-image-optimization', get_template_directory_uri() . '/css/image-optimization.css', array(), LOGIC_NAGOYA_VERSION );
+		}
+		if ( file_exists( $image_opt_js ) && filesize( $image_opt_js ) > 0 ) {
+			wp_enqueue_script( 'logic-nagoya-image-optimization', get_template_directory_uri() . '/js/image-optimization.js', array(), LOGIC_NAGOYA_VERSION, true );
+			
+			// Localize script for AJAX and settings
+			wp_localize_script( 'logic-nagoya-image-optimization', 'logic_nagoya_image_opt', array(
+				'ajax_url' => admin_url( 'admin-ajax.php' ),
+				'nonce' => wp_create_nonce( 'logic_nagoya_image_opt_nonce' ),
+				'lazy_loading_offset' => '50px',
+				'fade_duration' => 300,
+			) );
 		}
 	}
 
