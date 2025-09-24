@@ -5,6 +5,9 @@
  * @package Logic_Nagoya
  */
 
+// Direct access protection
+defined('ABSPATH') || exit;
+
 /**
  * Adds custom classes to the array of body classes.
  *
@@ -76,20 +79,6 @@ function logic_nagoya_template_include( $template ) {
 	return $template;
 }
 add_filter( 'template_include', 'logic_nagoya_template_include' );
-
-/**
- * Default menu fallback when no menu is assigned
- */
-function logic_nagoya_default_menu() {
-	echo '<ul class="default-menu">';
-	echo '<li><a href="' . esc_url( home_url( '/' ) ) . '">' . esc_html__( 'HOME', 'logic-nagoya' ) . '</a></li>';
-	echo '<li><a href="' . esc_url( home_url( '/about/' ) ) . '">' . esc_html__( 'ABOUT', 'logic-nagoya' ) . '</a></li>';
-	echo '<li><a href="' . esc_url( home_url( '/events/' ) ) . '">' . esc_html__( 'EVENTS', 'logic-nagoya' ) . '</a></li>';
-	echo '<li><a href="' . esc_url( home_url( '/system-pricing/' ) ) . '">' . esc_html__( 'システム・料金', 'logic-nagoya' ) . '</a></li>';
-	echo '<li><a href="' . esc_url( home_url( '/equipment/' ) ) . '">' . esc_html__( '設備', 'logic-nagoya' ) . '</a></li>';
-	echo '<li><a href="' . esc_url( home_url( '/access/' ) ) . '">' . esc_html__( 'アクセス', 'logic-nagoya' ) . '</a></li>';
-	echo '</ul>';
-}
 
 /**
  * Add page-specific body classes based on template
