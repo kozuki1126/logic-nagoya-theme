@@ -5,6 +5,9 @@
  * @package Logic_Nagoya
  */
 
+// Direct access protection
+defined('ABSPATH') || exit;
+
 /**
  * Add postMessage support for site title and description for the Theme Customizer.
  *
@@ -56,6 +59,13 @@ function logic_nagoya_customize_partial_blogdescription() {
  * Binds JS handlers to make Theme Customizer preview reload changes asynchronously.
  */
 function logic_nagoya_customize_preview_js() {
-	wp_enqueue_script( 'logic-nagoya-customizer', get_template_directory_uri() . '/js/customizer.js', array( 'customize-preview' ), LOGIC_NAGOYA_VERSION, true );
+	$customizer_js = get_template_directory() . '/js/customizer.js';
+	wp_enqueue_script( 
+		'logic-nagoya-customizer', 
+		get_template_directory_uri() . '/js/customizer.js', 
+		array( 'customize-preview' ), 
+		file_exists( $customizer_js ) ? filemtime( $customizer_js ) : LOGIC_NAGOYA_VERSION, 
+		true 
+	);
 }
 add_action( 'customize_preview_init', 'logic_nagoya_customize_preview_js' );
