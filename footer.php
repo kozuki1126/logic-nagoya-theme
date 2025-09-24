@@ -9,6 +9,9 @@
  * @package Logic_Nagoya
  */
 
+// Direct access protection
+defined('ABSPATH') || exit;
+
 ?>
 
 	</div><!-- #content -->
@@ -24,7 +27,11 @@
 			<span class="sep"> | </span>
 				<?php
 				/* translators: 1: Theme name, 2: Theme author. */
-				printf( esc_html__( 'Theme: %1$s by %2$s.', 'logic-nagoya' ), 'Logic Nagoya', '<a href="#">Logic Nagoya Team</a>' );
+				printf( 
+					esc_html__( 'Theme: %1$s by %2$s.', 'logic-nagoya' ), 
+					'Logic Nagoya', 
+					'<a href="#">' . esc_html__( 'Logic Nagoya Team', 'logic-nagoya' ) . '</a>'
+				);
 				?>
 
 		</div><!-- .site-info -->
