@@ -1,0 +1,47 @@
+parameters:
+    level: 1
+    paths:
+        - .
+    excludePaths:
+        - vendor/
+        - node_modules/
+    ignoreErrors:
+        # WordPress core functions are not available during static analysis
+        - '#Function wp_.* not found#'
+        - '#Function get_.* not found#'
+        - '#Function is_.* not found#'
+        - '#Function add_.* not found#'
+        - '#Function apply_.* not found#'
+        - '#Function esc_.* not found#'
+        - '#Function sanitize_.* not found#'
+        - '#Function current_.* not found#'
+        - '#Function home_.* not found#'
+        - '#Function admin_.* not found#'
+        - '#Function bloginfo not found#'
+        - '#Function the_.* not found#'
+        - '#Function has_.* not found#'
+        - '#Function comments_.* not found#'
+        - '#Function edit_.* not found#'
+        - '#Function register_.* not found#'
+        - '#Function locate_.* not found#'
+        - '#Function printf not found#'
+        - '#Function wp_kses.* not found#'
+        - '#Function load_.* not found#'
+        - '#Function do_action not found#'
+        - '#Function wp_enqueue_.* not found#'
+        - '#Function wp_localize_.* not found#'
+        - '#Function wp_create_nonce not found#'
+        - '#Function wp_verify_nonce not found#'
+        - '#Function wp_get_attachment_.* not found#'
+        - '#Function wp_parse_args not found#'
+        - '#Function wp_mkdir_p not found#'
+        - '#Function set_transient not found#'
+        - '#Function get_transient not found#'
+        - '#Function delete_transient not found#'
+        - '#Constant ABSPATH not found#'
+        - '#Constant HOUR_IN_SECONDS not found#'
+        - '#Constant DATE_W3C not found#'
+        - '#Class WP_Query not found#'
+        - '#Class WP_Customize_Manager not found#'
+        - '#Variable \$post might not be defined#'
+        - '#Variable \$wpdb might not be defined#'
