@@ -7,6 +7,9 @@
  * @package Logic_Nagoya
  */
 
+// Direct access protection
+defined('ABSPATH') || exit;
+
 if ( ! function_exists( 'logic_nagoya_posted_on' ) ) :
 	/**
 	 * Prints HTML with meta information for the current post-date/time.
@@ -31,7 +34,7 @@ if ( ! function_exists( 'logic_nagoya_posted_on' ) ) :
 			'<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">' . $time_string . '</a>'
 		);
 
-		echo '<span class="posted-on">' . $posted_on . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<span class="posted-on">' . wp_kses_post( $posted_on ) . '</span>';
 
 	}
 endif;
@@ -47,7 +50,7 @@ if ( ! function_exists( 'logic_nagoya_posted_by' ) ) :
 			'<span class="author vcard"><a class="url fn n" href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '">' . esc_html( get_the_author() ) . '</a></span>'
 		);
 
-		echo '<span class="byline"> ' . $byline . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<span class="byline"> ' . wp_kses_post( $byline ) . '</span>';
 
 	}
 endif;
@@ -63,14 +66,14 @@ if ( ! function_exists( 'logic_nagoya_entry_footer' ) ) :
 			$categories_list = get_the_category_list( esc_html__( ', ', 'logic-nagoya' ) );
 			if ( $categories_list ) {
 				/* translators: 1: list of categories. */
-				printf( '<span class="cat-links">' . esc_html__( 'Posted in %1$s', 'logic-nagoya' ) . '</span>', $categories_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				printf( '<span class="cat-links">' . esc_html__( 'Posted in %1$s', 'logic-nagoya' ) . '</span>', wp_kses_post( $categories_list ) );
 			}
 
 			/* translators: used between list items, there is a space after the comma */
 			$tags_list = get_the_tag_list( '', esc_html_x( ', ', 'list item separator', 'logic-nagoya' ) );
 			if ( $tags_list ) {
 				/* translators: 1: list of tags. */
-				printf( '<span class="tags-links">' . esc_html__( 'Tagged %1$s', 'logic-nagoya' ) . '</span>', $tags_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				printf( '<span class="tags-links">' . esc_html__( 'Tagged %1$s', 'logic-nagoya' ) . '</span>', wp_kses_post( $tags_list ) );
 			}
 		}
 
@@ -163,5 +166,24 @@ if ( ! function_exists( 'wp_body_open' ) ) :
 	 */
 	function wp_body_open() {
 		do_action( 'wp_body_open' );
+	}
+endif;
+
+if ( ! function_exists( 'logic_nagoya_default_menu' ) ) :
+	/**
+	 * Default menu fallback when no menu is assigned
+	 */
+	function logic_nagoya_default_menu() {
+		?>
+		<ul id="primary-menu" class="menu">
+			<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'logic-nagoya' ); ?></a></li>
+			<?php
+			wp_list_pages( array(
+				'title_li' => '',
+				'depth'    => 1,
+			) );
+			?>
+		</ul>
+		<?php
 	}
 endif;
