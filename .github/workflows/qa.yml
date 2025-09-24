@@ -1,0 +1,190 @@
+name: WordPress Theme Quality Assurance
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  php-qa:
+    name: PHP Quality Assurance
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        php-version: ['7.4', '8.0', '8.1', '8.2', '8.3']
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: dom, curl, libxml, mbstring, zip
+          tools: composer:v2
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-${{ matrix.php-version }}-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Check PHP syntax
+        run: composer run lint
+
+      - name: Check WordPress coding standards
+        run: composer run cs
+
+      - name: Run static analysis
+        run: composer run stan
+        continue-on-error: true  # Allow PHPStan to warn but not fail initially
+
+  theme-validation:
+    name: WordPress Theme Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install theme-check
+        run: |
+          npm install -g @wordpress/env
+          npm install -g @wordpress/scripts
+
+      - name: Validate theme structure
+        run: |
+          echo "Checking required theme files..."
+          required_files=(
+            "style.css"
+            "index.php"  
+            "functions.php"
+          )
+          
+          missing_files=()
+          for file in "${required_files[@]}"; do
+            if [ ! -f "$file" ]; then
+              missing_files+=("$file")
+            fi
+          done
+          
+          if [ ${#missing_files[@]} -ne 0 ]; then
+            echo "❌ Missing required files: ${missing_files[*]}"
+            exit 1
+          else
+            echo "✅ All required theme files present"
+          fi
+
+      - name: Check theme headers
+        run: |
+          echo "Validating style.css theme headers..."
+          if ! grep -q "Theme Name:" style.css; then
+            echo "❌ Missing Theme Name in style.css"
+            exit 1
+          fi
+          if ! grep -q "Version:" style.css; then
+            echo "❌ Missing Version in style.css" 
+            exit 1
+          fi
+          echo "✅ Theme headers validated"
+
+  security-check:
+    name: Security Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for ABSPATH guards
+        run: |
+          echo "Checking for ABSPATH protection guards..."
+          php_files=$(find . -name "*.php" -not -path "./vendor/*")
+          missing_guards=()
+          
+          for file in $php_files; do
+            if ! grep -q "defined.*ABSPATH.*exit" "$file" && ! grep -q "defined.*ABSPATH.*die" "$file"; then
+              missing_guards+=("$file")
+            fi
+          done
+          
+          if [ ${#missing_guards[@]} -ne 0 ]; then
+            echo "⚠️ Files missing ABSPATH guards:"
+            printf '%s\n' "${missing_guards[@]}"
+            echo "Consider adding: defined('ABSPATH') || exit;"
+          else
+            echo "✅ All PHP files have ABSPATH protection"
+          fi
+
+      - name: Check for output escaping
+        run: |
+          echo "Checking for potential XSS vulnerabilities..."
+          echo "Files with direct echo/print statements:"
+          grep -rn "echo\s.*\$\|print\s.*\$" --include="*.php" . || echo "✅ No obvious direct variable outputs found"
+          
+          echo "Files potentially missing escaping:"
+          grep -rn "echo.*get_.*(" --include="*.php" . | head -10 || echo "✅ No obvious unescaped outputs found"
+
+      - name: Check for SQL injection risks
+        run: |
+          echo "Checking for potential SQL injection vulnerabilities..."
+          echo "Direct database queries found:"
+          grep -rn "\\$wpdb\|mysql_\|mysqli_" --include="*.php" . | head -5 || echo "✅ No direct database queries found"
+
+  deployment-ready:
+    name: Deployment Readiness Check
+    runs-on: ubuntu-latest
+    needs: [php-qa, theme-validation, security-check]
+    
+    steps:
+      - name: Checkout code  
+        uses: actions/checkout@v4
+
+      - name: Check critical files
+        run: |
+          echo "Performing final deployment readiness checks..."
+          
+          # Check for development files that shouldn't be in production
+          dev_files=(
+            "node_modules"
+            ".env"
+            ".DS_Store"
+            "Thumbs.db"
+            "*.log"
+          )
+          
+          found_dev_files=()
+          for pattern in "${dev_files[@]}"; do
+            if ls $pattern 1> /dev/null 2>&1; then
+              found_dev_files+=("$pattern")
+            fi
+          done
+          
+          if [ ${#found_dev_files[@]} -ne 0 ]; then
+            echo "⚠️ Development files found: ${found_dev_files[*]}"
+            echo "Consider adding these to .gitignore"
+          else
+            echo "✅ No development files found"
+          fi
+
+      - name: Success notification
+        run: |
+          echo "🎉 All quality checks passed!"
+          echo "Theme is ready for deployment"
