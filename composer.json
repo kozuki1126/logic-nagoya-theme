@@ -1,0 +1,65 @@
+{
+  "name": "logic-nagoya-theme",
+  "description": "Logic Nagoya Live House WordPress Theme - Custom theme for Logic Nagoya venue with Full Site Editing support",
+  "version": "1.0.0",
+  "type": "wordpress-theme",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Logic Nagoya Team",
+      "homepage": "https://github.com/kozuki1126/logic-nagoya-theme"
+    }
+  ],
+  "keywords": [
+    "wordpress",
+    "theme",
+    "live-house",
+    "event-venue",
+    "full-site-editing",
+    "block-theme"
+  ],
+  "homepage": "https://github.com/kozuki1126/logic-nagoya-theme",
+  "support": {
+    "issues": "https://github.com/kozuki1126/logic-nagoya-theme/issues",
+    "source": "https://github.com/kozuki1126/logic-nagoya-theme"
+  },
+  "require": {
+    "php": ">=7.4"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.10",
+    "wp-coding-standards/wpcs": "^3.0",
+    "phpstan/phpstan": "^1.10",
+    "phpunit/phpunit": "^9.6"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    },
+    "sort-packages": true
+  },
+  "scripts": {
+    "lint": "php -l $(git ls-files '*.php' || find . -name '*.php' -not -path './vendor/*')",
+    "cs": "phpcs --standard=WordPress --extensions=php --ignore=vendor/ .",
+    "cs:fix": "phpcbf --standard=WordPress --extensions=php --ignore=vendor/ .",
+    "stan": "phpstan analyse --memory-limit=512M",
+    "test": [
+      "@lint",
+      "@cs",
+      "@stan"
+    ],
+    "install-hooks": [
+      "echo 'Setting up Git hooks...'",
+      "cp .githooks/pre-commit .git/hooks/pre-commit",
+      "chmod +x .git/hooks/pre-commit"
+    ]
+  },
+  "scripts-descriptions": {
+    "lint": "Check PHP syntax for errors",
+    "cs": "Check coding standards compliance using WordPress standards",
+    "cs:fix": "Fix coding standards violations automatically",
+    "stan": "Run static analysis using PHPStan",
+    "test": "Run all quality checks (lint, coding standards, static analysis)",
+    "install-hooks": "Install Git pre-commit hooks for automatic quality checks"
+  }
+}
