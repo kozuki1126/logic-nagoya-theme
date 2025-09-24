@@ -9,6 +9,9 @@
  * @package Logic_Nagoya
  */
 
+// Direct access protection
+defined('ABSPATH') || exit;
+
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
@@ -42,7 +45,7 @@
 			$logic_nagoya_description = get_bloginfo( 'description', 'display' );
 			if ( $logic_nagoya_description || is_customize_preview() ) :
 				?>
-				<p class="site-description"><?php echo $logic_nagoya_description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+				<p class="site-description"><?php echo esc_html( $logic_nagoya_description ); ?></p>
 			<?php endif; ?>
 		</div><!-- .site-branding -->
 
