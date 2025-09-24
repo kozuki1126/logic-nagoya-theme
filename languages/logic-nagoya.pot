@@ -1,0 +1,419 @@
+# Copyright (C) 2024 Logic Nagoya Team
+# This file is distributed under the same license as the Logic Nagoya Theme package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Logic Nagoya Theme 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/kozuki1126/logic-nagoya-theme/issues\n"
+"POT-Creation-Date: 2024-09-24 15:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Logic Nagoya Theme\n"
+
+#: functions.php:45
+msgid "Logic Nagoya"
+msgstr ""
+
+#: functions.php:50
+msgid "Featured"
+msgstr ""
+
+#: functions.php:55
+msgid "Columns"
+msgstr ""
+
+#: functions.php:60
+msgid "Contact"
+msgstr ""
+
+#: functions.php:72
+msgid "Dark Gradient"
+msgstr ""
+
+#: functions.php:83
+msgid "Accent Outline"
+msgstr ""
+
+#: functions.php:94
+msgid "Card Grid"
+msgstr ""
+
+#: functions.php:120
+msgid "Primary"
+msgstr ""
+
+#: functions.php:121
+msgid "Footer Menu"
+msgstr ""
+
+#: functions.php:203
+msgid "WebP"
+msgstr ""
+
+#: functions.php:545
+msgid "Sidebar"
+msgstr ""
+
+#: functions.php:547
+msgid "Add widgets here."
+msgstr ""
+
+#: functions.php:556
+msgid "Footer 1"
+msgstr ""
+
+#: functions.php:558
+msgid "First footer widget area"
+msgstr ""
+
+#: functions.php:567
+msgid "Footer 2"
+msgstr ""
+
+#: functions.php:569
+msgid "Second footer widget area"
+msgstr ""
+
+#: functions.php:578
+msgid "Footer 3"
+msgstr ""
+
+#: functions.php:580
+msgid "Third footer widget area"
+msgstr ""
+
+#: functions.php:756
+msgid "Events"
+msgstr ""
+
+#: functions.php:757
+msgid "Event"
+msgstr ""
+
+#: functions.php:758 functions.php:790
+msgid "Events"
+msgstr ""
+
+#: functions.php:759
+msgid "Event"
+msgstr ""
+
+#: functions.php:760
+msgid "Add New"
+msgstr ""
+
+#: functions.php:761
+msgid "Add New Event"
+msgstr ""
+
+#: functions.php:762
+msgid "New Event"
+msgstr ""
+
+#: functions.php:763
+msgid "Edit Event"
+msgstr ""
+
+#: functions.php:764
+msgid "View Event"
+msgstr ""
+
+#: functions.php:765
+msgid "All Events"
+msgstr ""
+
+#: functions.php:766
+msgid "Search Events"
+msgstr ""
+
+#: functions.php:767
+msgid "Parent Events:"
+msgstr ""
+
+#: functions.php:768
+msgid "No events found."
+msgstr ""
+
+#: functions.php:769
+msgid "No events found in Trash."
+msgstr ""
+
+#: functions.php:770
+msgid "Event Cover Image"
+msgstr ""
+
+#: functions.php:771
+msgid "Set cover image"
+msgstr ""
+
+#: functions.php:772
+msgid "Remove cover image"
+msgstr ""
+
+#: functions.php:773
+msgid "Use as cover image"
+msgstr ""
+
+#: functions.php:774
+msgid "Event archives"
+msgstr ""
+
+#: functions.php:790
+msgid "Event Categories"
+msgstr ""
+
+#: functions.php:791
+msgid "Event Category"
+msgstr ""
+
+#: functions.php:792
+msgid "Search Event Categories"
+msgstr ""
+
+#: functions.php:793
+msgid "All Event Categories"
+msgstr ""
+
+#: functions.php:794
+msgid "Parent Event Category"
+msgstr ""
+
+#: functions.php:795
+msgid "Parent Event Category:"
+msgstr ""
+
+#: functions.php:796
+msgid "Edit Event Category"
+msgstr ""
+
+#: functions.php:797
+msgid "Update Event Category"
+msgstr ""
+
+#: functions.php:798
+msgid "Add New Event Category"
+msgstr ""
+
+#: functions.php:799
+msgid "New Event Category Name"
+msgstr ""
+
+#: functions.php:800
+msgid "Event Categories"
+msgstr ""
+
+#: functions.php:825
+msgid "Gallery Items"
+msgstr ""
+
+#: functions.php:826
+msgid "Gallery Item"
+msgstr ""
+
+#: functions.php:827
+msgid "Gallery"
+msgstr ""
+
+#: functions.php:828
+msgid "Gallery Item"
+msgstr ""
+
+#: functions.php:829
+msgid "Add New"
+msgstr ""
+
+#: functions.php:830
+msgid "Add New Gallery Item"
+msgstr ""
+
+#: functions.php:831
+msgid "New Gallery Item"
+msgstr ""
+
+#: functions.php:832
+msgid "Edit Gallery Item"
+msgstr ""
+
+#: functions.php:833
+msgid "View Gallery Item"
+msgstr ""
+
+#: functions.php:834
+msgid "All Gallery Items"
+msgstr ""
+
+#: functions.php:835
+msgid "Search Gallery Items"
+msgstr ""
+
+#: functions.php:836
+msgid "Parent Gallery Items:"
+msgstr ""
+
+#: functions.php:837
+msgid "No gallery items found."
+msgstr ""
+
+#: functions.php:838
+msgid "No gallery items found in Trash."
+msgstr ""
+
+#: functions.php:839
+msgid "Gallery Image"
+msgstr ""
+
+#: functions.php:840
+msgid "Set gallery image"
+msgstr ""
+
+#: functions.php:841
+msgid "Remove gallery image"
+msgstr ""
+
+#: functions.php:842
+msgid "Use as gallery image"
+msgstr ""
+
+#: functions.php:843
+msgid "Gallery archives"
+msgstr ""
+
+#: functions.php:863
+msgid "Floor Plan Image"
+msgstr ""
+
+#: functions.php:871
+msgid "Concept Image"
+msgstr ""
+
+#: functions.php:879
+msgid "Equipment PDF"
+msgstr ""
+
+#: functions.php:897
+msgid "Floor Plan Image:"
+msgstr ""
+
+#: functions.php:900
+msgid "Choose Image"
+msgstr ""
+
+#: functions.php:901
+msgid "Remove Image"
+msgstr ""
+
+#: functions.php:917
+msgid "Concept Image:"
+msgstr ""
+
+#: functions.php:920
+msgid "Choose Image"
+msgstr ""
+
+#: functions.php:921
+msgid "Remove Image"
+msgstr ""
+
+#: functions.php:937
+msgid "Equipment PDF:"
+msgstr ""
+
+#: functions.php:940
+msgid "Choose PDF"
+msgstr ""
+
+#: functions.php:941
+msgid "Remove PDF"
+msgstr ""
+
+#: functions.php:948
+msgid "Current PDF:"
+msgstr ""
+
+#: header.php:28
+msgid "Skip to content"
+msgstr ""
+
+#: footer.php:18
+msgid "https://wordpress.org/"
+msgstr ""
+
+#: footer.php:21
+msgid "Proudly powered by %s"
+msgstr ""
+
+#: footer.php:26
+msgid "Theme: %1$s by %2$s."
+msgstr ""
+
+#: footer.php:29
+msgid "Logic Nagoya Team"
+msgstr ""
+
+#: inc/template-tags.php:36
+msgctxt "post date"
+msgid "Posted on %s"
+msgstr ""
+
+#: inc/template-tags.php:51
+msgctxt "post author"
+msgid "by %s"
+msgstr ""
+
+#: inc/template-tags.php:67
+msgid ", "
+msgstr ""
+
+#: inc/template-tags.php:71
+msgid "Posted in %1$s"
+msgstr ""
+
+#: inc/template-tags.php:76
+msgctxt "list item separator"
+msgid ", "
+msgstr ""
+
+#: inc/template-tags.php:80
+msgid "Tagged %1$s"
+msgstr ""
+
+#: inc/template-tags.php:88
+msgid "Leave a Comment<span class=\"screen-reader-text\"> on %s</span>"
+msgstr ""
+
+#: inc/template-tags.php:103
+msgid "Edit <span class=\"screen-reader-text\">%s</span>"
+msgstr ""
+
+#: inc/template-tags.php:143
+msgid "Home"
+msgstr ""
+
+#: inc/template-functions.php:85
+msgid "HOME"
+msgstr ""
+
+#: inc/template-functions.php:86
+msgid "ABOUT"
+msgstr ""
+
+#: inc/template-functions.php:87
+msgid "EVENTS"
+msgstr ""
+
+#: inc/template-functions.php:88
+msgid "システム・料金"
+msgstr ""
+
+#: inc/template-functions.php:89
+msgid "設備"
+msgstr ""
+
+#: inc/template-functions.php:90
+msgid "アクセス"
+msgstr ""
