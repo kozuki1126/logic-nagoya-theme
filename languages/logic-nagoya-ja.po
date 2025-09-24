@@ -1,0 +1,420 @@
+# Logic Nagoya Theme Japanese Translation
+# Copyright (C) 2024 Logic Nagoya Team
+# This file is distributed under the same license as the Logic Nagoya Theme package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Logic Nagoya Theme 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/kozuki1126/logic-nagoya-theme/issues\n"
+"POT-Creation-Date: 2024-09-24 15:00+0000\n"
+"PO-Revision-Date: 2024-09-24 15:03+0000\n"
+"Last-Translator: Logic Nagoya Team\n"
+"Language-Team: Japanese\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Logic Nagoya Theme\n"
+
+#: functions.php:45
+msgid "Logic Nagoya"
+msgstr "Logic Nagoya"
+
+#: functions.php:50
+msgid "Featured"
+msgstr "注目"
+
+#: functions.php:55
+msgid "Columns"
+msgstr "カラム"
+
+#: functions.php:60
+msgid "Contact"
+msgstr "お問い合わせ"
+
+#: functions.php:72
+msgid "Dark Gradient"
+msgstr "ダークグラデーション"
+
+#: functions.php:83
+msgid "Accent Outline"
+msgstr "アクセント枠線"
+
+#: functions.php:94
+msgid "Card Grid"
+msgstr "カードグリッド"
+
+#: functions.php:120
+msgid "Primary"
+msgstr "プライマリ"
+
+#: functions.php:121
+msgid "Footer Menu"
+msgstr "フッターメニュー"
+
+#: functions.php:203
+msgid "WebP"
+msgstr "WebP"
+
+#: functions.php:545
+msgid "Sidebar"
+msgstr "サイドバー"
+
+#: functions.php:547
+msgid "Add widgets here."
+msgstr "ここにウィジェットを追加してください。"
+
+#: functions.php:556
+msgid "Footer 1"
+msgstr "フッター1"
+
+#: functions.php:558
+msgid "First footer widget area"
+msgstr "最初のフッターウィジェットエリア"
+
+#: functions.php:567
+msgid "Footer 2"
+msgstr "フッター2"
+
+#: functions.php:569
+msgid "Second footer widget area"
+msgstr "2番目のフッターウィジェットエリア"
+
+#: functions.php:578
+msgid "Footer 3"
+msgstr "フッター3"
+
+#: functions.php:580
+msgid "Third footer widget area"
+msgstr "3番目のフッターウィジェットエリア"
+
+#: functions.php:756
+msgid "Events"
+msgstr "イベント"
+
+#: functions.php:757
+msgid "Event"
+msgstr "イベント"
+
+#: functions.php:758 functions.php:790
+msgid "Events"
+msgstr "イベント"
+
+#: functions.php:759
+msgid "Event"
+msgstr "イベント"
+
+#: functions.php:760
+msgid "Add New"
+msgstr "新規追加"
+
+#: functions.php:761
+msgid "Add New Event"
+msgstr "新しいイベントを追加"
+
+#: functions.php:762
+msgid "New Event"
+msgstr "新しいイベント"
+
+#: functions.php:763
+msgid "Edit Event"
+msgstr "イベントを編集"
+
+#: functions.php:764
+msgid "View Event"
+msgstr "イベントを表示"
+
+#: functions.php:765
+msgid "All Events"
+msgstr "すべてのイベント"
+
+#: functions.php:766
+msgid "Search Events"
+msgstr "イベントを検索"
+
+#: functions.php:767
+msgid "Parent Events:"
+msgstr "親イベント:"
+
+#: functions.php:768
+msgid "No events found."
+msgstr "イベントが見つかりませんでした。"
+
+#: functions.php:769
+msgid "No events found in Trash."
+msgstr "ゴミ箱にイベントは見つかりませんでした。"
+
+#: functions.php:770
+msgid "Event Cover Image"
+msgstr "イベントカバー画像"
+
+#: functions.php:771
+msgid "Set cover image"
+msgstr "カバー画像を設定"
+
+#: functions.php:772
+msgid "Remove cover image"
+msgstr "カバー画像を削除"
+
+#: functions.php:773
+msgid "Use as cover image"
+msgstr "カバー画像として使用"
+
+#: functions.php:774
+msgid "Event archives"
+msgstr "イベントアーカイブ"
+
+#: functions.php:790
+msgid "Event Categories"
+msgstr "イベントカテゴリ"
+
+#: functions.php:791
+msgid "Event Category"
+msgstr "イベントカテゴリ"
+
+#: functions.php:792
+msgid "Search Event Categories"
+msgstr "イベントカテゴリを検索"
+
+#: functions.php:793
+msgid "All Event Categories"
+msgstr "すべてのイベントカテゴリ"
+
+#: functions.php:794
+msgid "Parent Event Category"
+msgstr "親イベントカテゴリ"
+
+#: functions.php:795
+msgid "Parent Event Category:"
+msgstr "親イベントカテゴリ:"
+
+#: functions.php:796
+msgid "Edit Event Category"
+msgstr "イベントカテゴリを編集"
+
+#: functions.php:797
+msgid "Update Event Category"
+msgstr "イベントカテゴリを更新"
+
+#: functions.php:798
+msgid "Add New Event Category"
+msgstr "新しいイベントカテゴリを追加"
+
+#: functions.php:799
+msgid "New Event Category Name"
+msgstr "新しいイベントカテゴリ名"
+
+#: functions.php:800
+msgid "Event Categories"
+msgstr "イベントカテゴリ"
+
+#: functions.php:825
+msgid "Gallery Items"
+msgstr "ギャラリーアイテム"
+
+#: functions.php:826
+msgid "Gallery Item"
+msgstr "ギャラリーアイテム"
+
+#: functions.php:827
+msgid "Gallery"
+msgstr "ギャラリー"
+
+#: functions.php:828
+msgid "Gallery Item"
+msgstr "ギャラリーアイテム"
+
+#: functions.php:829
+msgid "Add New"
+msgstr "新規追加"
+
+#: functions.php:830
+msgid "Add New Gallery Item"
+msgstr "新しいギャラリーアイテムを追加"
+
+#: functions.php:831
+msgid "New Gallery Item"
+msgstr "新しいギャラリーアイテム"
+
+#: functions.php:832
+msgid "Edit Gallery Item"
+msgstr "ギャラリーアイテムを編集"
+
+#: functions.php:833
+msgid "View Gallery Item"
+msgstr "ギャラリーアイテムを表示"
+
+#: functions.php:834
+msgid "All Gallery Items"
+msgstr "すべてのギャラリーアイテム"
+
+#: functions.php:835
+msgid "Search Gallery Items"
+msgstr "ギャラリーアイテムを検索"
+
+#: functions.php:836
+msgid "Parent Gallery Items:"
+msgstr "親ギャラリーアイテム:"
+
+#: functions.php:837
+msgid "No gallery items found."
+msgstr "ギャラリーアイテムが見つかりませんでした。"
+
+#: functions.php:838
+msgid "No gallery items found in Trash."
+msgstr "ゴミ箱にギャラリーアイテムは見つかりませんでした。"
+
+#: functions.php:839
+msgid "Gallery Image"
+msgstr "ギャラリー画像"
+
+#: functions.php:840
+msgid "Set gallery image"
+msgstr "ギャラリー画像を設定"
+
+#: functions.php:841
+msgid "Remove gallery image"
+msgstr "ギャラリー画像を削除"
+
+#: functions.php:842
+msgid "Use as gallery image"
+msgstr "ギャラリー画像として使用"
+
+#: functions.php:843
+msgid "Gallery archives"
+msgstr "ギャラリーアーカイブ"
+
+#: functions.php:863
+msgid "Floor Plan Image"
+msgstr "フロア図面画像"
+
+#: functions.php:871
+msgid "Concept Image"
+msgstr "コンセプト画像"
+
+#: functions.php:879
+msgid "Equipment PDF"
+msgstr "設備PDF"
+
+#: functions.php:897
+msgid "Floor Plan Image:"
+msgstr "フロア図面画像:"
+
+#: functions.php:900
+msgid "Choose Image"
+msgstr "画像を選択"
+
+#: functions.php:901
+msgid "Remove Image"
+msgstr "画像を削除"
+
+#: functions.php:917
+msgid "Concept Image:"
+msgstr "コンセプト画像:"
+
+#: functions.php:920
+msgid "Choose Image"
+msgstr "画像を選択"
+
+#: functions.php:921
+msgid "Remove Image"
+msgstr "画像を削除"
+
+#: functions.php:937
+msgid "Equipment PDF:"
+msgstr "設備PDF:"
+
+#: functions.php:940
+msgid "Choose PDF"
+msgstr "PDFを選択"
+
+#: functions.php:941
+msgid "Remove PDF"
+msgstr "PDFを削除"
+
+#: functions.php:948
+msgid "Current PDF:"
+msgstr "現在のPDF:"
+
+#: header.php:28
+msgid "Skip to content"
+msgstr "コンテンツへスキップ"
+
+#: footer.php:18
+msgid "https://wordpress.org/"
+msgstr "https://wordpress.org/"
+
+#: footer.php:21
+msgid "Proudly powered by %s"
+msgstr "%s で誇らしく動作"
+
+#: footer.php:26
+msgid "Theme: %1$s by %2$s."
+msgstr "テーマ: %2$s による %1$s。"
+
+#: footer.php:29
+msgid "Logic Nagoya Team"
+msgstr "Logic Nagoyaチーム"
+
+#: inc/template-tags.php:36
+msgctxt "post date"
+msgid "Posted on %s"
+msgstr "%s に投稿"
+
+#: inc/template-tags.php:51
+msgctxt "post author"
+msgid "by %s"
+msgstr "投稿者: %s"
+
+#: inc/template-tags.php:67
+msgid ", "
+msgstr "、"
+
+#: inc/template-tags.php:71
+msgid "Posted in %1$s"
+msgstr "%1$s に投稿"
+
+#: inc/template-tags.php:76
+msgctxt "list item separator"
+msgid ", "
+msgstr "、"
+
+#: inc/template-tags.php:80
+msgid "Tagged %1$s"
+msgstr "%1$s でタグ付け"
+
+#: inc/template-tags.php:88
+msgid "Leave a Comment<span class=\"screen-reader-text\"> on %s</span>"
+msgstr "コメントを残す<span class=\"screen-reader-text\"> %s について</span>"
+
+#: inc/template-tags.php:103
+msgid "Edit <span class=\"screen-reader-text\">%s</span>"
+msgstr "編集 <span class=\"screen-reader-text\">%s</span>"
+
+#: inc/template-tags.php:143
+msgid "Home"
+msgstr "ホーム"
+
+#: inc/template-functions.php:85
+msgid "HOME"
+msgstr "ホーム"
+
+#: inc/template-functions.php:86
+msgid "ABOUT"
+msgstr "概要"
+
+#: inc/template-functions.php:87
+msgid "EVENTS"
+msgstr "イベント"
+
+#: inc/template-functions.php:88
+msgid "システム・料金"
+msgstr "システム・料金"
+
+#: inc/template-functions.php:89
+msgid "設備"
+msgstr "設備"
+
+#: inc/template-functions.php:90
+msgid "アクセス"
+msgstr "アクセス"
