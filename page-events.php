@@ -66,7 +66,7 @@ get_header();
                                 <div class="event-card">
                                     <?php if ( has_post_thumbnail() ) : ?>
                                         <div class="event-thumbnail">
-                                            <a href="<?php the_permalink(); ?>">
+                                            <a href="<?php echo esc_url( get_permalink() ); ?>">
                                                 <?php the_post_thumbnail( 'medium' ); ?>
                                             </a>
                                         </div>
@@ -74,11 +74,11 @@ get_header();
                                     
                                     <div class="event-content">
                                         <h3 class="event-title">
-                                            <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                                            <a href="<?php echo esc_url( get_permalink() ); ?>"><?php echo esc_html( get_the_title() ); ?></a>
                                         </h3>
                                         
                                         <div class="event-meta">
-                                            <time class="event-date"><?php echo get_the_date(); ?></time>
+                                            <time class="event-date"><?php echo esc_html( get_the_date() ); ?></time>
                                             <?php
                                             $event_categories = get_the_terms( get_the_ID(), 'event_category' );
                                             if ( $event_categories && ! is_wp_error( $event_categories ) ) :
@@ -97,7 +97,7 @@ get_header();
                                             </div>
                                         <?php endif; ?>
                                         
-                                        <a href="<?php the_permalink(); ?>" class="event-link">
+                                        <a href="<?php echo esc_url( get_permalink() ); ?>" class="event-link">
                                             <?php esc_html_e( '詳細を見る', 'logic-nagoya' ); ?>
                                         </a>
                                     </div>
