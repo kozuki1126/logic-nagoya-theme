@@ -1,0 +1,1900 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Logic Nagoyaの設備情報。ライブ、トークイベント、配信など様々な用途に対応した音響・照明・映像機材をご紹介します。">
+  <title>Logic Nagoya - 設備</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;700&family=Raleway:wght@300;400;500;700&display=swap');
+    
+    :root {
+      --primary: #ca6666;
+      --secondary: #b09065;
+      --dark: #0a0a0a;
+      --darker: #050505;
+      --light: #f5f5f5;
+      --gray: #333333;
+      --accent: #e74c3c;
+      --transition: 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+      --transition-slow: 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-snap-type: y proximity;
+    }
+
+    body {
+      font-family: 'Noto Serif JP', serif;
+      color: var(--light);
+      background-color: var(--dark);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Raleway', 'Noto Serif JP', sans-serif;
+      font-weight: 400;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 30px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 30px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 0;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: var(--transition);
+      z-index: -1;
+    }
+
+    .btn:hover::before {
+      left: 0;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--light);
+      border: 1px solid var(--light);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--light);
+      color: var(--dark);
+    }
+
+    .btn-accent {
+      background-color: var(--accent);
+    }
+
+    .btn-accent:hover {
+      background-color: #c0392b;
+    }
+
+    .btn-sm {
+      padding: 8px 20px;
+      font-size: 0.9rem;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(5, 5, 5, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 1000;
+      transition: var(--transition);
+      padding: 15px 0;
+    }
+
+    header.scrolled {
+      padding: 10px 0;
+      background-color: rgba(5, 5, 5, 0.95);
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      height: 45px;
+      transition: var(--transition);
+    }
+
+    header.scrolled .logo {
+      height: 35px;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      position: relative;
+    }
+
+    .nav-links li {
+      margin-left: 35px;
+      position: relative;
+    }
+
+    .nav-links a {
+      font-weight: 300;
+      position: relative;
+      padding-bottom: 5px;
+      transition: var(--transition);
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background-color: var(--accent);
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .menu-toggle {
+      display: none;
+      cursor: pointer;
+      font-size: 24px;
+    }
+
+    /* Page Header */
+    .page-header {
+      height: 50vh;
+      background-color: var(--darker);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      z-index: 1;
+      background-image: url('https://logicnagoya.com/wp-content/uploads/2020/12/IMG_3744-scaled.jpg');
+      background-size: cover;
+      background-position: center;
+      margin-top: 72px;
+    }
+
+    .page-header::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 0;
+    }
+
+    .page-header-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    .page-title {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      font-weight: 300;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s forwards 0.5s;
+    }
+
+    .page-subtitle {
+      font-size: 1.2rem;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s forwards 0.7s;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    /* Main Content Section */
+    .main-content {
+      padding: 80px 0;
+      background-color: var(--dark);
+      position: relative;
+      min-height: 100vh;
+    }
+
+    .main-content::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background-color: var(--dark);
+      transform: skewY(-2deg);
+      z-index: 1;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 50px;
+      position: relative;
+      font-weight: 300;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 1px;
+      background-color: var(--accent);
+    }
+
+    .content-container {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Equipment Intro */
+    .equipment-intro {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 60px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1.1rem;
+      line-height: 1.8;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s forwards;
+    }
+
+    /* Equipment Tabs */
+    .equipment-tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 50px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+    }
+
+    .equipment-tab {
+      padding: 12px 25px;
+      background-color: rgba(20, 20, 20, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--light);
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.95rem;
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .equipment-tab:first-child {
+      border-radius: 4px 0 0 4px;
+    }
+
+    .equipment-tab:last-child {
+      border-radius: 0 4px 4px 0;
+    }
+
+    .equipment-tab.active {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    /* Equipment Content */
+    .equipment-content {
+      display: none;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .equipment-content.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    /* Equipment Grid */
+    .equipment-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+
+    .equipment-card {
+      background-color: rgba(20, 20, 20, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+      transition: var(--transition);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .equipment-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .equipment-header {
+      padding: 20px;
+      background-color: rgba(10, 10, 10, 0.5);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .equipment-title {
+      font-size: 1.2rem;
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .equipment-icon {
+      margin-right: 15px;
+      width: 40px;
+      height: 40px;
+      background-color: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .equipment-body {
+      padding: 20px;
+      flex-grow: 1;
+    }
+
+    .equipment-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .equipment-item {
+      margin-bottom: 12px;
+      position: relative;
+      padding-left: 20px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .equipment-item::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    .equipment-note {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-style: italic;
+      margin-top: 15px;
+    }
+
+    /* Floor Plan Section */
+    .floor-plan {
+      margin-bottom: 80px;
+    }
+
+    .floor-plan-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .floor-plan-image {
+      width: 100%;
+      height: auto;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+
+    .floor-plan-image.animate {
+      animation: fadeInLeft 1s forwards;
+    }
+
+    .floor-plan-content {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+
+    .floor-plan-content.animate {
+      animation: fadeInRight 1s forwards;
+    }
+
+    .floor-plan-title {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 15px;
+    }
+
+    .floor-plan-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 1px;
+      background-color: var(--accent);
+    }
+
+    .floor-plan-text {
+      margin-bottom: 25px;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.7;
+    }
+
+    .floor-plan-details {
+      margin-bottom: 25px;
+    }
+
+    .floor-plan-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 15px;
+    }
+
+    .floor-plan-icon {
+      margin-right: 15px;
+      width: 30px;
+      height: 30px;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .floor-plan-info h4 {
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+    }
+
+    .floor-plan-info p {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Tech Specs */
+    .tech-specs {
+      margin-bottom: 80px;
+    }
+
+    .specs-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+      background-color: rgba(20, 20, 20, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .specs-table th,
+    .specs-table td {
+      padding: 15px 20px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .specs-table th {
+      background-color: rgba(10, 10, 10, 0.5);
+      color: var(--light);
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.9rem;
+    }
+
+    .specs-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .specs-table td {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* Download Button */
+    .download-section {
+      text-align: center;
+      margin-bottom: 60px;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .download-section.animate {
+      animation: fadeInUp 1s forwards;
+    }
+
+    .download-title {
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+    }
+
+    .download-text {
+      max-width: 600px;
+      margin: 0 auto 30px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .download-button {
+      display: inline-flex;
+      align-items: center;
+      padding: 15px 30px;
+      background-color: rgba(20, 20, 20, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--light);
+      font-size: 1.1rem;
+      transition: var(--transition);
+    }
+
+    .download-button:hover {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .download-icon {
+      margin-right: 15px;
+      font-size: 1.5rem;
+    }
+
+    /* Contact CTA Section */
+    .contact-cta {
+      padding: 80px 0;
+      background-color: var(--darker);
+      position: relative;
+      text-align: center;
+    }
+
+    .contact-cta::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://logicnagoya.com/wp-content/uploads/2022/10/HP-TOP-IMAGE-2.jpg') no-repeat center/cover;
+      opacity: 0.1;
+      z-index: 0;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .cta-title {
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      font-weight: 300;
+      letter-spacing: 2px;
+    }
+
+    .cta-text {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.7;
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--darker);
+      color: rgba(255, 255, 255, 0.7);
+      padding: 80px 0 20px;
+      position: relative;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+    }
+
+    .footer-container {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+
+    .footer-logo {
+      grid-column: span 3;
+    }
+
+    .footer-logo img {
+      height: 35px;
+      margin-bottom: 20px;
+    }
+
+    .footer-about {
+      margin-bottom: 20px;
+      line-height: 1.7;
+      font-size: 0.9rem;
+    }
+
+    .footer-nav {
+      grid-column: span 2;
+    }
+
+    .footer-contact {
+      grid-column: span 3;
+    }
+
+    .footer-social {
+      grid-column: span 4;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .footer-heading {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      color: var(--light);
+      position: relative;
+      padding-bottom: 10px;
+      font-weight: 400;
+    }
+
+    .footer-heading::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 30px;
+      height: 1px;
+      background-color: var(--accent);
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      transition: var(--transition);
+      font-size: 0.9rem;
+      position: relative;
+      padding-left: 15px;
+    }
+
+    .footer-links a::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--light);
+      padding-left: 20px;
+    }
+
+    .footer-links a:hover::before {
+      left: 5px;
+    }
+
+    .footer-contact-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 15px;
+      font-size: 0.9rem;
+    }
+
+    .footer-contact-icon {
+      margin-right: 10px;
+      color: var(--accent);
+    }
+
+    .footer-social-links {
+      display: flex;
+      margin-top: 10px;
+    }
+
+    .footer-social-link {
+      width: 35px;
+      height: 35px;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--light);
+      margin-left: 10px;
+      transition: var(--transition);
+    }
+
+    .footer-social-link:hover {
+      background-color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.9rem;
+    }
+
+    /* Back to top button */
+    .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 45px;
+      height: 45px;
+      background-color: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      z-index: 100;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      background-color: #c0392b;
+      transform: translateY(-5px);
+    }
+
+    /* Loader */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--darker);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .loader.loaded {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-content {
+      text-align: center;
+    }
+
+    .loader-logo {
+      width: 200px;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeIn 1s forwards 0.3s;
+    }
+
+    .loader-spinner {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      border-top-color: var(--accent);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes zoomIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Mobile Responsive */
+    @media screen and (max-width: 1024px) {
+      .floor-plan-container {
+        grid-template-columns: 1fr;
+      }
+
+      .floor-plan-image {
+        order: 1;
+      }
+
+      .floor-plan-content {
+        order: 0;
+        margin-bottom: 30px;
+      }
+
+      .footer-container {
+        grid-template-columns: repeat(6, 1fr);
+      }
+
+      .footer-logo, .footer-nav {
+        grid-column: span 3;
+      }
+
+      .footer-contact, .footer-social {
+        grid-column: span 3;
+      }
+
+      .footer-social {
+        align-items: flex-start;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .cta-buttons .btn {
+        width: 100%;
+        max-width: 300px;
+        text-align: center;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      .header-inner {
+        padding: 10px 0;
+      }
+
+      .logo {
+        height: 35px;
+        z-index: 10;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background-color: rgba(10, 10, 10, 0.95);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+        z-index: 5;
+      }
+
+      .nav-links.active {
+        right: 0;
+      }
+
+      .nav-links li {
+        margin: 15px 0;
+      }
+
+      .menu-toggle {
+        display: block;
+        z-index: 10;
+      }
+
+      .page-title {
+        font-size: 2.2rem;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .equipment-tabs {
+        flex-wrap: wrap;
+      }
+
+      .equipment-tab {
+        margin-bottom: 10px;
+        border-radius: 4px;
+        flex-grow: 1;
+        text-align: center;
+      }
+
+      .specs-table {
+        display: block;
+        overflow-x: auto;
+      }
+
+      .footer-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .footer-logo, .footer-nav, .footer-contact, .footer-social {
+        grid-column: span 1;
+      }
+
+      .footer-heading::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .footer-links a {
+        padding-left: 0;
+      }
+
+      .footer-links a::before {
+        display: none;
+      }
+
+      .footer-contact-item {
+        justify-content: center;
+      }
+
+      .footer-social {
+        align-items: center;
+      }
+
+      .footer-social-link {
+        margin: 0 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Loader -->
+  <div class="loader">
+    <div class="loader-content">
+      <img src="https://logicnagoya.com/wp-content/uploads/2022/05/WP_hedder_Logo.png" alt="Logic Nagoya" class="loader-logo">
+      <div class="loader-spinner"></div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="logo-link">
+          <img src="https://logicnagoya.com/wp-content/uploads/2022/05/WP_hedder_Logo.png" alt="Logic Nagoya" class="logo">
+        </a>
+        <div class="menu-toggle">
+          <i class="fas fa-bars"></i>
+        </div>
+        <ul class="nav-links">
+          <li><a href="/#about">ABOUT</a></li>
+          <li><a href="/#events">EVENT</a></li>
+          <li><a href="/#gallery">GALLERY</a></li>
+          <li><a href="/equipment-list/" class="active">設備</a></li>
+          <li><a href="/floor-map/">MAP</a></li>
+          <li><a href="/#contact">CONTACT</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Header -->
+  <section class="page-header">
+    <div class="page-header-content">
+      <h1 class="page-title">設備</h1>
+      <p class="page-subtitle">Logic Nagoyaが誇る音響・照明・映像機材の設備リスト。あらゆるタイプのイベントに対応できる充実の設備をご紹介します。</p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="main-content">
+    <div class="container content-container">
+      <p class="equipment-intro">
+        Logic Nagoyaでは、ライブイベント、トークショー、ワークショップ、配信など様々な用途に対応できるよう、
+        プロフェッショナルな機材を取り揃えています。お客様のイベントに最適な環境をご提供するため、
+        音響・照明・映像など各分野のスペシャリストがサポートいたします。
+      </p>
+
+      <!-- Equipment Tabs -->
+      <div class="equipment-tabs">
+        <div class="equipment-tab active" data-tab="sound">音響機材</div>
+        <div class="equipment-tab" data-tab="lighting">照明機材</div>
+        <div class="equipment-tab" data-tab="stage">ステージ設備</div>
+        <div class="equipment-tab" data-tab="video">映像・配信機材</div>
+        <div class="equipment-tab" data-tab="other">その他設備</div>
+      </div>
+
+      <!-- Sound Equipment -->
+      <div class="equipment-content active" id="sound-content">
+        <div class="equipment-grid">
+          <!-- Mixer -->
+          <div class="equipment-card">
+            <div class="equipment-header">
+              <h3 class="equipment-title">
+                <div class="equipment-icon">
+                  <i class="fas fa-sliders-h"></i>
+                </div>
+                ミキサー
+              </h3>
+            </div>
+            <div class="equipment-body">
+              <ul class="equipment-list">
+                <li class="equipment-item">YAMAHA QL5 デジタルミキサー</li>
+                <li class="equipment-item">YAMAHA Rio3224-D2 (32in/16out)</li>
+                <li class="equipment-item">YAMAHA Rio1608-D2 (16in/8out)</li>
+                <li class="equipment-item">BEHRINGER X32 RACK (バックアップ用)</li>
+              </ul>
+              <p class="equipment-note">※デジタルミキサーのため、iPadからのリモート操作も可能です。</p>
+            </div>
+          </div>
+
+          <!-- Speakers -->
+          <div class="equipment-card">
+            <div class="equipment-header">
+              <h3 class="equipment-title">
+                <div class="equipment-icon">
+                  <i class="fas fa-volume-up"></i>
+                </div>
+                スピーカー
+              </h3>
+            </div>
+            <div class="equipment-body">
+              <ul class="equipment-list">
+                <li class="equipment-item">d&b audiotechnik Y8 ラインアレイ (メイン×4基)</li>
+                <li class="equipment-item">d&b audiotechnik Y-SUB (サブウーファー×2基)</li>
+                <li class="equipment-item">d&b audiotechnik E8 (フロントフィル×2基)</li>
+                <li class="equipment-item">d&b audiotechnik M4 (ステージモニター×4基)</li>
+                <li class="equipment-item">d&b audiotechnik D80 アンプ×2台</li>
+              </ul>
+              <p class="equipment-note">※会場の規模やイベント内容に合わせて最適なセッティングを提案いたします。</p>
+            </div>
+          </div>
+
+          <!-- Microphones -->
+          <div class="equipment-card">
+            <div class="equipment-header">
+              <h3 class="equipment-title">
+                <div class="equipment-icon">
+                  <i class="fas fa-microphone"></i>
+                </div>
+                マイク
+              </h3>
+            </div>
+            <div class="equipment-body">
+              <ul class="equipment-list">
+                <li class="equipment-item">Shure SM58 (ボーカル用×8本)</li>
+                <li class="equipment-item">Shure SM57 (楽器用×8本)</li>
+                <li class="equipment-item">Shure BETA 52A (バスドラム用×2本)</li>
+                <li class="equipment-item">Shure BETA 91A (バスドラム用×1本)</li>
+                <li class="equipment-item">AKG C414 XLS (コンデンサーマイク×2本)</li>
+                <li class="equipment-item">Sennheiser e904 (タム用×4本)</li>
+                <li class="equipment-item">Sennheiser e906 (ギターアンプ用×2本)</li>
+                <li class="equipment-item">Sennheiser EW500 G4 (ワイヤレス×4ch)</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- DI and Others -->
+          <div class="equipment-card">
+            <div class="equipment-header">
+              <h3 class="equipment-title">
+                <div class="equipment-icon">
+                  <i class="fas fa-plug"></i>
+                </div>
+                DI・その他
+              </h3>
+            </div>
+            <div class="equipment-body">
+              <ul class="equipment-list">
+                <li class="equipment-item">RADIAL J48 (アクティブDI×4台)</li>
+                <li class="equipment-item">RADIAL PRO D2 (パッシブDI×4台)</li>
+                <li class="equipment-item">RADIAL ProAV2 (ステレオDI×2台)</li>
+                <li class="equipment-item">dbx 266XL (コンプレッサー/リミッター×2台)</li>
+                <li class="equipment-item">TC Electronic M-One XL (マルチエフェクター×1台)</li>
+                <li class="equipment-item">LINE6 POD HD500X (ギターエフェクター×1台)</li>
+                <li class="equipment-item">YAMAHA SPX2000 (マルチエフェクター×1台)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lighting Equipment -->
+      <div class="equipment-content" id="lighting-content">
+        <div class="equipment-grid">
+          <!-- Moving Lights -->
+          <div class="equipment-card">
+            <div class="equipment-header">
+              <h3 class="equipment-title">
+                <div class="equipment-icon">
+                  <i class="fas fa-lightbulb"></i>
+                </div>
+                ムービングライト
+              </h3>
+            </div>
+            <div class="equipment-body">
+              <ul class="equipment-list">
+                <li class="equipment-item">Martin MAC Aura XB (LED×8台)</li>
+                <li class="equipment-item">Martin MAC Quantum Profile (LED×4台)</li>
+                <li class="equipment-item">Robe Robin 600 LED Wash (LED×4台)</li>
+                <li class="equipment-item">Elation Platinum Beam 5R Extreme (ビーム×4台)</li>
+              </ul>
+              <p class="equipment-note">※プログラミング済みのシーンを多数用意しています。</p>
+            </div>
+          </div>
+
+          <!-- LED Fixtures -->
+          <div class="equipment-card">
+            <div class="equipment-header">
+              <h3 class="equipment-title">
+                <div class="equipment-icon">
+                  <i class="fas fa-compact-disc"></i>
+                </div>
+                LED照明
+              </h3>
+            </div>
+            <div class="equipment-body">
+              <ul class="equipment-list">
+                <li class="equipment-item">CHAUVET COLORado 1 Tri Tour (LED PAR×12台)</li>
+                <li class="equipment-item">Elation SIXPAR 200 (LED PAR×8台)</li>
+                <li class="equipment-item">ADJ COB Cannon Wash (LED ウォッシュ×4台)</li>
+                <li class="equipment-item">Astera AX3 LightDrop (バッテリー式LED×12台)</li>
+                <li class="equipment-item">Elation SIXBAR 1000 (LED バー×4台)</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Conventional Lighting -->
+          <div class="equipment-card">
+            <div class="equipment-header">
+              <h3 class="equipment-title">
+                <div class="equipment-icon">
+                  <i class="fas fa-fire"></i>
+                </div>
+                従来型照明
+              </h3>
+            </div>
+            <div class="equipment-body">
+              <ul class="equipment-list">
+                <li class="equipment-item">ETC Source Four Profile 26° (575W×4台)</li>
+                <li class="equipment-item">ETC Source Four Profile 36° (575W×4台)</li>
+                <li class="equipment-item">ETC Source Four PAR (575W×8台)</li>
+                <li class="equipment-item">STRAND LIGHTING SL 15/32 (1kW×4台)</li>
+                <li class="equipment-item">PAR64 (1kW×8台)</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Controllers & Others -->
+          <div class="equipment-card">
+            <div class="equipment-header">
+              <h3 class="equipment-title">
+                <div class="equipment-icon">
+                  <i class="fas fa-desktop"></i>
+                </div>
+                コントローラー・他
+              </h3>
+            </div>
+            <div class="equipment-body">
+              <ul class="equipment-list">
+                <li class="equipment-item">MA Lighting dot2 XL-F (照明コンソール×1台)</li>
+                <li class="equipment-item">CHAMSYS MagicQ MQ80 (バックアップ用×1台)</li>
+                <li class="equipment-item">Antari Z-1500II (フォグマシン×1台)</li>
+                <li class="equipment-item">JEM ZR45 (ヘイズマシン×1台)</li>
+                <li class="equipment-item">Dimmer Rack 24ch (12kW)</li>
+              </ul>
+              <p class="equipment-note">※DMX over Ethernet（ArtNet, sACN）対応</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage Equipment -->
+      <div class="equipment-content" id="stage-content">
+        <div class="equipment-grid">
+          <!-- Stage Structure -->
+          <div class="equipment-card">
+            <div class="equipment-header">
+              <h3 class="equipment-title">
+                <div class="equipment-icon">
+                  <i class="fas fa-theater-masks"></i>
+                </div>
+                ステージ構造
+              </h3>
+            </div>
+            <div class="equipment-body">
+              <ul class="equipment-list">
+                <li class="equipment-item">メインステージ: W8.0m × D4.0m × H0.6m</li>
+                <li class="equipment-item">サブステージ: W2.0m × D2.0m × H0.3m (ドラム用)</li>
+                <li class="equipment-item">舞台袖: 左右各2.0m</li>
+                <li class="equipment-item">昇降機: 電動バトン×2系統</li>
+              </ul>
+              <p class="equipment-note">※ステージの拡張・縮小も可能です。事前にご相談ください。</p>
+            </div>
+          </div>
+
+          <!-- Stage Equipment -->
+          <div class="equipment-card">
+            <div class="equipment-header">
+              <h3 class="equipment-title">
+                <div class="equipment-icon">
+                  <i class="fas fa-music"></i>
+                </div>
+                ステージ設備
+              </h3>
+            </div>
+            <div class="equipment-body">
+              <ul class="equipment-list">
+                <li class="equipment-item">ドラム用ライザー (W2.0m × D2.0m × H0.3m)</li>
+                <li class="equipment-item">ピアノ: YAMAHA C3（要事前予約）</li>
+                <li class="equipment-item">電子ピアノ: Roland RD-2000</li>
+                <li class="equipment-item">ギターアンプ: Fender Twin Reverb, Marshall JCM900</li>
+                <li class="equipment-item">ベースアンプ: Ampeg SVT-4PRO + 8×10キャビネット</li>
+                <li class="equipment-item">ドラムセット: TAMA Starclassic (要事前予約)</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Curtains & Backdrop -->
+          <div class="equipment-card">
+            <div class="equipment-header">
+              <h3 class="equipment-title">
+                <div class="equipment-icon">
+                  <i class="fas fa-square"></i>
+                </div>
+                カーテン・背景
+              </h3>
+            </div>
+            <div class="equipment-body">
+              <ul class="equipment-list">
+                <li class="equipment-item">ブラックカーテン（ステージ背面）</li>
+                <li class="equipment-item">サイドカーテン（左右）</li>
+                <li class="equipment-item">ホリゾント幕（ホワイト・グレー）</li>
+                <li class="equipment-item">プロジェクション用スクリーン（180インチ）</li>
+                <li class="equipment-item">バナーフレーム（背景用）</li>
+              </ul>
+              <p class="equipment-note">※特殊な背景が必要な場合はご相談ください。</p>
+            </div>
+          </div>
+
+          <!-- Trussing -->
+          <div class="equipment-card">
+            <div class="equipment-header">
+              <h3 class="equipment-title">
+                <div class="equipment-icon">
+                  <i class="fas fa-grip-lines"></i>
+                </div>
+                トラス
+              </h3>
+            </div>
+            <div class="equipment-body">
+              <ul class="equipment-list">
+                <li class="equipment-item">Global Truss F34 (メイントラス: 横6m×2列)</li>
+                <li class="equipment-item">Global Truss F31 (サイドトラス: 縦3m×左右)</li>
+                <li class="equipment-item">電動ホイスト (1t×4基)</li>
+                <li class="equipment-item">チェーンホイスト (500kg×2基)</li>
+                <li class="equipment-item">垂直トラス (2m×4本)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video Equipment -->
+      <div class="equipment-content" id="video-content">
+        <div class="equipment-grid">
+          <!-- Cameras -->
+          <div class="equipment-card">
+            <div class="equipment-header">
+              <h3 class="equipment-title">
+                <div class="equipment-icon">
+                  <i class="fas fa-video"></i>
+                </div>
+                カメラ
+              </h3>
+            </div>
+            <div class="equipment-body">
+              <ul class="equipment-list">
+                <li class="equipment-item">Sony PXW-FS7 (メインカメラ×2台)</li>
+                <li class="equipment-item">Sony PXW-Z150 (サブカメラ×2台)</li>
+                <li class="equipment-item">Panasonic AG-UX180 (ワイド用×1台)</li>
+                <li class="equipment-item">BMPCC 6K Pro (シネマカメラ×1台)</li>
+                <li class="equipment-item">各種レンズ (広角〜望遠)</li>
+              </ul>
+              <p class="equipment-note">※SDI/HDMI出力対応。4K収録オプションあり（要事前相談）</p>
+            </div>
+          </div>
+
+          <!-- Switchers & Streaming -->
+          <div class="equipment-card">
+            <div class="equipment-header">
+              <h3 class="equipment-title">
+                <div class="equipment-icon">
+                  <i class="fas fa-random"></i>
+                </div>
+                スイッチャー・配信
+              </h3>
+            </div>
+            <div class="equipment-body">
+              <ul class="equipment-list">
+                <li class="equipment-item">Blackmagic ATEM Television Studio Pro 4K</li>
+                <li class="equipment-item">Blackmagic Web Presenter 4K</li>
+                <li class="equipment-item">Roland V-8HD (サブスイッチャー)</li>
+                <li class="equipment-item">AJA Helo (H.264エンコーダー/レコーダー)</li>
+                <li class="equipment-item">インターネット回線: 光回線 1Gbps</li>
+                <li class="equipment-item">OBS Studio / vMix / Wirecast</li>
+              </ul>
+              <p class="equipment-note">※YouTube Live, Zoom, Vimeo, ニコニコ生放送などの配信実績あり</p>
+            </div>
+          </div>
+
+          <!-- Projectors & Displays -->
+          <div class="equipment-card">
+            <div class="equipment-header">
+              <h3 class="equipment-title">
+                <div class="equipment-icon">
+                  <i class="fas fa-projector"></i>
+                </div>
+                プロジェクター・ディスプレイ
+              </h3>
+            </div>
+            <div class="equipment-body">
+              <ul class="equipment-list">
+                <li class="equipment-item">EPSON EB-L1100U (レーザープロジェクター, 6000lm)</li>
+                <li class="equipment-item">EPSON EB-L610U (レーザープロジェクター, 6000lm)</li>
+                <li class="equipment-item">170インチ電動スクリーン (16:9)</li>
+                <li class="equipment-item">LG 75インチ4Kディスプレイ (サブモニター用)</li>
+                <li class="equipment-item">LG 55インチFHDディスプレイ×2台 (サイド表示用)</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Video Processing -->
+          <div class="equipment-card">
+            <div class="equipment-header">
+              <h3 class="equipment-title">
+                <div class="equipment-icon">
+                  <i class="fas fa-cogs"></i>
+                </div>
+                映像処理・その他
+              </h3>
+            </div>
+            <div class="equipment-body">
+              <ul class="equipment-list">
+                <li class="equipment-item">Blackmagic ATEM Mini Pro ISO (小規模配信用)</li>
+                <li class="equipment-item">Roland V-1HD (HDMI小型スイッチャー)</li>
+                <li class="equipment-item">AJA FS1-X (フレームシンクロナイザー)</li>
+                <li class="equipment-item">Blackmagic SmartScope Duo (波形モニター)</li>
+                <li class="equipment-item">HDMI/SDIマトリクススイッチャー</li>
+                <li class="equipment-item">HDMI/SDI各種コンバーター</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Other Equipment -->
+      <div class="equipment-content" id="other-content">
+        <div class="equipment-grid">
+          <!-- Power -->
+          <div class="equipment-card">
+            <div class="equipment-header">
+              <h3 class="equipment-title">
+                <div class="equipment-icon">
+                  <i class="fas fa-bolt"></i>
+                </div>
+                電源設備
+              </h3>
+            </div>
+            <div class="equipment-body">
+              <ul class="equipment-list">
+                <li class="equipment-item">3相200V (100A): メイン電源</li>
+                <li class="equipment-item">単相100V (60A×4回路): 機材用電源</li>
+                <li class="equipment-item">単相100V (20A×12回路): 一般電源</li>
+                <li class="equipment-item">UPS (無停電電源装置): 重要機器用</li>
+                <li class="equipment-item">配電盤・延長コード各種</li>
+              </ul>
+              <p class="equipment-note">※特殊な電源や大容量電源が必要な場合は事前にご相談ください。</p>
+            </div>
+          </div>
+
+          <!-- Communication -->
+          <div class="equipment-card">
+            <div class="equipment-header">
+              <h3 class="equipment-title">
+                <div class="equipment-icon">
+                  <i class="fas fa-headset"></i>
+                </div>
+                通信・インカム
+              </h3>
+            </div>
+            <div class="equipment-body">
+              <ul class="equipment-list">
+                <li class="equipment-item">Clear-Com HelixNet (デジタルインカム)</li>
+                <li class="equipment-item">Clear-Com FreeSpeak II (ワイヤレスインカム×8台)</li>
+                <li class="equipment-item">Motorola 簡易無線機 (スタッフ間通信用×10台)</li>
+                <li class="equipment-item">有線インターカム (固定ポジション用×4台)</li>
+                <li class="equipment-item">cueB (キュー出しシステム)</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Furniture & Stands -->
+          <div class="equipment-card">
+            <div class="equipment-header">
+              <h3 class="equipment-title">
+                <div class="equipment-icon">
+                  <i class="fas fa-chair"></i>
+                </div>
+                家具・スタンド類
+              </h3>
+            </div>
+            <div class="equipment-body">
+              <ul class="equipment-list">
+                <li class="equipment-item">折りたたみ椅子 (観客用×100脚)</li>
+                <li class="equipment-item">テーブル (W1800×D600×H700mm×10台)</li>
+                <li class="equipment-item">テーブル (丸型Φ900mm×5台)</li>
+                <li class="equipment-item">ハイテーブル (バー用×4台)</li>
+                <li class="equipment-item">マイクスタンド各種</li>
+                <li class="equipment-item">譜面台 (20台)</li>
+                <li class="equipment-item">ギタースタンド (10台)</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Bar & Catering -->
+          <div class="equipment-card">
+            <div class="equipment-header">
+              <h3 class="equipment-title">
+                <div class="equipment-icon">
+                  <i class="fas fa-glass-cheers"></i>
+                </div>
+                バー・ケータリング
+              </h3>
+            </div>
+            <div class="equipment-body">
+              <ul class="equipment-list">
+                <li class="equipment-item">バーカウンター (L字型)</li>
+                <li class="equipment-item">冷蔵庫 (大型×1台, 小型×2台)</li>
+                <li class="equipment-item">製氷機 (キューブアイス用)</li>
+                <li class="equipment-item">ドリンクディスペンサー (2台)</li>
+                <li class="equipment-item">電子レンジ (2台)</li>
+                <li class="equipment-item">コーヒーメーカー (業務用)</li>
+                <li class="equipment-item">ケータリングエリア (スタッフ用)</li>
+              </ul>
+              <p class="equipment-note">※イベント用ドリンクメニューや軽食の提供も可能です。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floor Plan Section -->
+      <div class="floor-plan">
+        <h2 class="section-title">フロアプラン</h2>
+        <div class="floor-plan-container">
+          <img src="https://logicnagoya.com/wp-content/uploads/2022/10/HP-TOP-IMAGE-2.jpg" alt="Logic Nagoya Floor Plan" class="floor-plan-image">
+          
+          <div class="floor-plan-content">
+            <h3 class="floor-plan-title">会場レイアウト</h3>
+            <p class="floor-plan-text">
+              Logic Nagoyaは、様々なイベントの用途に合わせてフレキシブルなレイアウト変更が可能です。
+              ライブ、トークショー、ワークショップ、配信など、イベントの性質に応じて最適な空間をご提供します。
+            </p>
+            
+            <div class="floor-plan-details">
+              <div class="floor-plan-item">
+                <div class="floor-plan-icon">
+                  <i class="fas fa-users"></i>
+                </div>
+                <div class="floor-plan-info">
+                  <h4>収容人数</h4>
+                  <p>着席スタイル: 最大60名<br>スタンディング: 最大120名</p>
+                </div>
+              </div>
+              
+              <div class="floor-plan-item">
+                <div class="floor-plan-icon">
+                  <i class="fas fa-vector-square"></i>
+                </div>
+                <div class="floor-plan-info">
+                  <h4>会場サイズ</h4>
+                  <p>メインエリア: 約130平方メートル<br>天井高: 約3.5メートル</p>
+                </div>
+              </div>
+              
+              <div class="floor-plan-item">
+                <div class="floor-plan-icon">
+                  <i class="fas fa-door-open"></i>
+                </div>
+                <div class="floor-plan-info">
+                  <h4>アクセス</h4>
+                  <p>搬入口: 幅1.8m×高さ2.1m<br>エレベーター: 幅1.5m×奥行1.7m×高さ2.0m</p>
+                </div>
+              </div>
+            </div>
+            
+            <a href="/floor-map/" class="btn btn-outline">詳細なフロアマップを見る</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Technical Specifications -->
+      <div class="tech-specs">
+        <h2 class="section-title">技術仕様</h2>
+        
+        <table class="specs-table">
+          <thead>
+            <tr>
+              <th>項目</th>
+              <th>仕様</th>
+              <th>備考</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>電源容量</td>
+              <td>3相200V 100A / 単相100V 60A×4</td>
+              <td>合計約60kVA</td>
+            </tr>
+            <tr>
+              <td>スピーカー出力</td>
+              <td>メインPA: 10,000W / モニター: 2,000W</td>
+              <td>d&b audiotechnik システム</td>
+            </tr>
+            <tr>
+              <td>入力チャンネル数</td>
+              <td>最大48チャンネル</td>
+              <td>アナログ/デジタル混在可</td>
+            </tr>
+            <tr>
+              <td>DMXユニバース</td>
+              <td>最大8ユニバース</td>
+              <td>sACN/ArtNet対応</td>
+            </tr>
+            <tr>
+              <td>インターネット回線</td>
+              <td>光回線 下り1Gbps / 上り1Gbps</td>
+              <td>有線LAN/Wi-Fi利用可</td>
+            </tr>
+            <tr>
+              <td>映像入力</td>
+              <td>HDMI×8 / SDI×4 / アナログ(VGA)×2</td>
+              <td>4K入力対応(一部)</td>
+            </tr>
+            <tr>
+              <td>映像出力</td>
+              <td>プロジェクター×2 / LCD×3</td>
+              <td>マトリクス切替可能</td>
+            </tr>
+            <tr>
+              <td>空調</td>
+              <td>業務用エアコン 23kW</td>
+              <td>室温調整可能</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Download Section -->
+      <div class="download-section">
+        <h3 class="download-title">詳細な設備リスト</h3>
+        <p class="download-text">
+          より詳細な設備リストや技術仕様書をご希望の場合は、以下のPDFファイルをダウンロードしてください。
+          イベント計画の際にお役立てください。
+        </p>
+        <a href="#" class="download-button">
+          <div class="download-icon">
+            <i class="fas fa-file-pdf"></i>
+          </div>
+          <span>設備詳細PDFをダウンロード</span>
+        </a>
+      </div>
+
+      <!-- Contact CTA -->
+      <div class="contact-cta">
+        <div class="cta-content">
+          <h2 class="cta-title">お問い合わせ</h2>
+          <p class="cta-text">
+            ご不明な点や追加設備のご相談、イベントに関するお問い合わせは、お気軽にご連絡ください。
+            お客様のイベントに最適な機材・設備をご提案いたします。
+          </p>
+          <div class="cta-buttons">
+            <a href="/#contact" class="btn btn-accent">お問い合わせ</a>
+            <a href="/floor-map/" class="btn btn-outline">フロアマップを見る</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-container">
+        <div class="footer-logo">
+          <img src="https://logicnagoya.com/wp-content/uploads/2022/05/WP_hedder_Logo.png" alt="Logic Nagoya">
+          <p class="footer-about">
+            名古屋栄のライブハウス「Logic Nagoya」は、ライブやトークショー、配信など様々な用途でご利用いただける多目的スペースです。
+          </p>
+        </div>
+        
+        <div class="footer-nav">
+          <h3 class="footer-heading">メニュー</h3>
+          <ul class="footer-links">
+            <li><a href="/#about">ABOUT</a></li>
+            <li><a href="/#events">EVENT</a></li>
+            <li><a href="/#gallery">GALLERY</a></li>
+            <li><a href="/equipment-list/">設備</a></li>
+            <li><a href="/floor-map/">MAP</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-contact">
+          <h3 class="footer-heading">お問い合わせ</h3>
+          <div class="footer-contact-item">
+            <div class="footer-contact-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <p>愛知県名古屋市中区栄3-13-31</p>
+          </div>
+          <div class="footer-contact-item">
+            <div class="footer-contact-icon">
+              <i class="fas fa-phone-alt"></i>
+            </div>
+            <p>052-241-7772</p>
+          </div>
+          <div class="footer-contact-item">
+            <div class="footer-contact-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <p>kozuki@logicnagoya.com</p>
+          </div>
+        </div>
+        
+        <div class="footer-social">
+          <h3 class="footer-heading">FOLLOW US</h3>
+          <p style="margin-bottom: 15px;">最新情報はSNSでもチェックできます。<br>フォローして最新のイベント情報をゲット！</p>
+          <div class="footer-social-links">
+            <a href="https://twitter.com/logicnagoya" class="footer-social-link" target="_blank">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://www.facebook.com/logicnagoya" class="footer-social-link" target="_blank">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; Copyright 2025 Logic Nagoya. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to top button -->
+  <div class="back-to-top">
+    <i class="fas fa-chevron-up"></i>
+  </div>
+
+  <script>
+    // Page Loader
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        document.querySelector('.loader').classList.add('loaded');
+      }, 1500);
+      
+      // Animate elements
+      animateOnScroll();
+    });
+
+    // Header Scroll Effect
+    window.addEventListener('scroll', function() {
+      const header = document.querySelector('header');
+      const backToTop = document.querySelector('.back-to-top');
+      
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+        backToTop.classList.add('visible');
+      } else {
+        header.classList.remove('scrolled');
+        backToTop.classList.remove('visible');
+      }
+      
+      // Animation on scroll
+      animateOnScroll();
+    });
+
+    // Mobile Menu Toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    menuToggle.addEventListener('click', function() {
+      navLinks.classList.toggle('active');
+      menuToggle.innerHTML = navLinks.classList.contains('active') ? 
+        '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+    });
+    
+    // Equipment Tabs
+    const equipmentTabs = document.querySelectorAll('.equipment-tab');
+    
+    equipmentTabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        // Remove active class from all tabs
+        equipmentTabs.forEach(t => t.classList.remove('active'));
+        
+        // Add active class to clicked tab
+        this.classList.add('active');
+        
+        // Hide all content
+        document.querySelectorAll('.equipment-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        
+        // Show corresponding content
+        const tabId = this.getAttribute('data-tab');
+        document.getElementById(tabId + '-content').classList.add('active');
+      });
+    });
+
+    // Back to Top Button
+    document.querySelector('.back-to-top').addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    // Animation on Scroll
+    function animateOnScroll() {
+      const floorPlanImage = document.querySelector('.floor-plan-image');
+      const floorPlanContent = document.querySelector('.floor-plan-content');
+      const downloadSection = document.querySelector('.download-section');
+      
+      const triggerBottom = window.innerHeight * 0.8;
+      
+      if (floorPlanImage) {
+        const imageTop = floorPlanImage.getBoundingClientRect().top;
+        if (imageTop < triggerBottom) {
+          floorPlanImage.classList.add('animate');
+        }
+      }
+      
+      if (floorPlanContent) {
+        const contentTop = floorPlanContent.getBoundingClientRect().top;
+        if (contentTop < triggerBottom) {
+          floorPlanContent.classList.add('animate');
+        }
+      }
+      
+      if (downloadSection) {
+        const downloadTop = downloadSection.getBoundingClientRect().top;
+        if (downloadTop < triggerBottom) {
+          downloadSection.classList.add('animate');
+        }
+      }
+    }
+  </script>
+</body>
+</html>

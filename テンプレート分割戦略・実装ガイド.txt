@@ -1,0 +1,757 @@
+# Logic Nagoya テンプレートファイル分割戦略・実装ガイド
+
+## 📁 **ファイル分割マッピング**
+
+### 現在の問題
+```
+❌ 現在の構造
+├── logic-nagoya-equipment.html (2000行+ CSS/JS重複)
+├── logic-nagoya-events.html (2000行+ CSS/JS重複) 
+├── logic-nagoya-pricing.html (2000行+ CSS/JS重複)
+└── logic-nagoya-about.html (2000行+ CSS/JS重複)
+```
+
+### 新しいWordPressテンプレート構造
+```
+✅ WordPress構造
+├── style.css (150行 - テーマ情報のみ)
+├── functions.php (スクリプト・機能管理)
+├── header.php (共通ヘッダー)
+├── footer.php (共通フッター)
+│
+├── page-about.php (About専用)
+├── page-equipment.php (設備専用)  
+├── page-pricing.php (料金専用)
+├── archive-event.php (イベント一覧)
+├── single-event.php (イベント詳細)
+│
+├── template-parts/ (再利用コンポーネント)
+│   ├── hero-section.php
+│   ├── equipment-tabs.php
+│   ├── event-card.php
+│   ├── pricing-table.php
+│   ├── team-member.php
+│   ├── testimonial.php
+│   └── faq-section.php
+│
+└── assets/
+    ├── css/
+    │   ├── main.css (共通スタイル)
+    │   ├── components.css (コンポーネント)
+    │   └── pages.css (ページ固有)
+    └── js/
+        ├── main.js (共通機能)
+        ├── components.js (コンポーネント機能)
+        └── pages.js (ページ固有機能)
+```
+
+## 🔧 **1. 基本テンプレートファイル**
+
+### functions.php
+```php
+<?php
+/**
+ * Logic Nagoya Theme Functions
+ */
+
+// テーマサポート機能
+function logic_nagoya_theme_support() {
+    add_theme_support('post-thumbnails');
+    add_theme_support('title-tag');
+    add_theme_support('custom-logo');
+    add_theme_support('html5', ['search-form', 'gallery', 'caption']);
+    
+    // ナビゲーションメニュー
+    register_nav_menus([
+        'primary' => 'メインメニュー',
+        'footer' => 'フッターメニュー',
+    ]);
+}
+add_action('after_setup_theme', 'logic_nagoya_theme_support');
+
+// スタイル・スクリプトの読み込み
+function logic_nagoya_enqueue_assets() {
+    // CSS
+    wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+    wp_enqueue_style('animate-css', 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
+    wp_enqueue_style('logic-nagoya-main', get_template_directory_uri() . '/assets/css/main.css', [], '1.0.0');
+    wp_enqueue_style('logic-nagoya-components', get_template_directory_uri() . '/assets/css/components.css', ['logic-nagoya-main'], '1.0.0');
+    
+    // JavaScript
+    wp_enqueue_script('logic-nagoya-main', get_template_directory_uri() . '/assets/js/main.js', [], '1.0.0', true);
+    
+    // ページ固有のアセット読み込み
+    if (is_page('equipment')) {
+        wp_enqueue_script('equipment-tabs', get_template_directory_uri() . '/assets/js/equipment-tabs.js', ['logic-nagoya-main'], '1.0.0', true);
+    }
+    
+    if (is_page('events') || is_post_type_archive('event')) {
+        wp_enqueue_script('events-calendar', get_template_directory_uri() . '/assets/js/events-calendar.js', ['logic-nagoya-main'], '1.0.0', true);
+        wp_enqueue_script('events-modal', get_template_directory_uri() . '/assets/js/events-modal.js', ['logic-nagoya-main'], '1.0.0', true);
+    }
+    
+    if (is_page('pricing')) {
+        wp_enqueue_script('pricing-tabs', get_template_directory_uri() . '/assets/js/pricing-tabs.js', ['logic-nagoya-main'], '1.0.0', true);
+        wp_enqueue_script('faq-accordion', get_template_directory_uri() . '/assets/js/faq-accordion.js', ['logic-nagoya-main'], '1.0.0', true);
+    }
+    
+    // Ajax設定
+    wp_localize_script('logic-nagoya-main', 'logic_nagoya_ajax', [
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('logic_nagoya_nonce'),
+    ]);
+}
+add_action('wp_enqueue_scripts', 'logic_nagoya_enqueue_assets');
+
+// 画像サイズの追加
+function logic_nagoya_image_sizes() {
+    add_image_size('event-card', 400, 300, true);
+    add_image_size('team-member', 300, 400, true);
+    add_image_size('equipment-thumb', 200, 150, true);
+    add_image_size('hero-image', 1920, 800, true);
+}
+add_action('after_setup_theme', 'logic_nagoya_image_sizes');
+?>
+```
+
+### header.php
+```php
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+    <meta charset="<?php bloginfo('charset'); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php wp_head(); ?>
+</head>
+<body <?php body_class(); ?>>
+<?php wp_body_open(); ?>
+
+<!-- Loader -->
+<div class="loader">
+    <div class="loader-content">
+        <?php 
+        $custom_logo_id = get_theme_mod('custom_logo');
+        if ($custom_logo_id) {
+            $logo_image = wp_get_attachment_image_src($custom_logo_id, 'full');
+            echo '<img src="' . esc_url($logo_image[0]) . '" alt="' . get_bloginfo('name') . '" class="loader-logo">';
+        } else {
+            echo '<img src="' . get_template_directory_uri() . '/assets/images/logo.png" alt="' . get_bloginfo('name') . '" class="loader-logo">';
+        }
+        ?>
+        <div class="loader-spinner"></div>
+    </div>
+</div>
+
+<!-- Header -->
+<header>
+    <div class="container">
+        <div class="header-inner">
+            <a href="<?php echo esc_url(home_url('/')); ?>" class="logo-link">
+                <?php 
+                if ($custom_logo_id) {
+                    the_custom_logo();
+                } else {
+                    echo '<img src="' . get_template_directory_uri() . '/assets/images/logo.png" alt="' . get_bloginfo('name') . '" class="logo">';
+                }
+                ?>
+            </a>
+            
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <?php
+            wp_nav_menu([
+                'theme_location' => 'primary',
+                'menu_class' => 'nav-links',
+                'container' => false,
+                'fallback_cb' => 'logic_nagoya_fallback_menu',
+            ]);
+            ?>
+        </div>
+    </div>
+</header>
+
+<?php
+// フォールバックメニュー
+function logic_nagoya_fallback_menu() {
+    echo '<ul class="nav-links">';
+    echo '<li><a href="' . get_permalink(get_page_by_path('about')) . '">ABOUT</a></li>';
+    echo '<li><a href="' . get_post_type_archive_link('event') . '">EVENT</a></li>';
+    echo '<li><a href="#gallery">GALLERY</a></li>';
+    echo '<li><a href="' . get_permalink(get_page_by_path('equipment')) . '">設備</a></li>';
+    echo '<li><a href="' . get_permalink(get_page_by_path('pricing')) . '">料金</a></li>';
+    echo '<li><a href="#contact">CONTACT</a></li>';
+    echo '</ul>';
+}
+?>
+```
+
+### footer.php
+```php
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <?php
+                $custom_logo_id = get_theme_mod('custom_logo');
+                if ($custom_logo_id) {
+                    $logo_image = wp_get_attachment_image_src($custom_logo_id, 'full');
+                    echo '<img src="' . esc_url($logo_image[0]) . '" alt="' . get_bloginfo('name') . '">';
+                }
+                ?>
+                <p class="footer-about">
+                    <?php echo get_field('company_description', 'option') ?: get_bloginfo('description'); ?>
+                </p>
+            </div>
+            
+            <div class="footer-nav">
+                <h3 class="footer-heading">メニュー</h3>
+                <?php
+                wp_nav_menu([
+                    'theme_location' => 'footer',
+                    'menu_class' => 'footer-links',
+                    'container' => false,
+                    'fallback_cb' => 'logic_nagoya_footer_fallback_menu',
+                ]);
+                ?>
+            </div>
+            
+            <div class="footer-contact">
+                <h3 class="footer-heading">お問い合わせ</h3>
+                <?php 
+                $contact_info = get_field('contact_info', 'option');
+                if ($contact_info) :
+                ?>
+                    <?php if ($contact_info['address']) : ?>
+                    <div class="footer-contact-item">
+                        <div class="footer-contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <p><?php echo esc_html($contact_info['address']); ?></p>
+                    </div>
+                    <?php endif; ?>
+                    
+                    <?php if ($contact_info['phone']) : ?>
+                    <div class="footer-contact-item">
+                        <div class="footer-contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <p><?php echo esc_html($contact_info['phone']); ?></p>
+                    </div>
+                    <?php endif; ?>
+                    
+                    <?php if ($contact_info['email']) : ?>
+                    <div class="footer-contact-item">
+                        <div class="footer-contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <p><?php echo esc_html($contact_info['email']); ?></p>
+                    </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </div>
+            
+            <div class="footer-social">
+                <h3 class="footer-heading">FOLLOW US</h3>
+                <p style="margin-bottom: 15px;">最新情報はSNSでもチェックできます。<br>フォローして最新のイベント情報をゲット！</p>
+                <div class="footer-social-links">
+                    <?php 
+                    $social_media = get_field('social_media', 'option');
+                    if ($social_media) :
+                    ?>
+                        <?php if ($social_media['twitter_url']) : ?>
+                        <a href="<?php echo esc_url($social_media['twitter_url']); ?>" class="footer-social-link" target="_blank">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <?php endif; ?>
+                        
+                        <?php if ($social_media['facebook_url']) : ?>
+                        <a href="<?php echo esc_url($social_media['facebook_url']); ?>" class="footer-social-link" target="_blank">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <?php endif; ?>
+                        
+                        <?php if ($social_media['instagram_url']) : ?>
+                        <a href="<?php echo esc_url($social_media['instagram_url']); ?>" class="footer-social-link" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; Copyright <?php echo date('Y'); ?> <?php bloginfo('name'); ?>. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Back to top button -->
+<div class="back-to-top">
+    <i class="fas fa-chevron-up"></i>
+</div>
+
+<?php wp_footer(); ?>
+</body>
+</html>
+```
+
+## 🎯 **2. ページ固有テンプレート**
+
+### page-about.php
+```php
+<?php
+/*
+Template Name: About Page
+*/
+
+get_header(); ?>
+
+<!-- Page Header -->
+<section class="page-header">
+    <div class="page-header-content">
+        <h1 class="page-title"><?php the_title(); ?></h1>
+        <p class="page-subtitle">
+            <?php 
+            $subtitle = get_field('page_subtitle');
+            echo $subtitle ?: get_the_excerpt();
+            ?>
+        </p>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="main-content">
+    <div class="container content-container">
+        <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+            
+            <!-- About Intro -->
+            <div class="about-intro animate">
+                <?php the_content(); ?>
+            </div>
+
+            <!-- Concept Section -->
+            <?php get_template_part('template-parts/about/concept-section'); ?>
+
+            <!-- Features Section -->
+            <?php get_template_part('template-parts/about/features-section'); ?>
+
+            <!-- History Section -->
+            <?php get_template_part('template-parts/about/history-section'); ?>
+
+            <!-- Team Section -->
+            <?php get_template_part('template-parts/about/team-section'); ?>
+
+            <!-- Testimonials Section -->
+            <?php get_template_part('template-parts/about/testimonials-section'); ?>
+
+            <!-- Contact CTA -->
+            <?php get_template_part('template-parts/contact-cta'); ?>
+
+        <?php endwhile; endif; ?>
+    </div>
+</section>
+
+<?php get_footer(); ?>
+```
+
+### page-equipment.php
+```php
+<?php
+/*
+Template Name: Equipment Page
+*/
+
+get_header(); ?>
+
+<?php get_template_part('template-parts/page-header', null, [
+    'title' => '設備',
+    'subtitle' => 'Logic Nagoyaが誇る音響・照明・映像機材の設備リスト。'
+]); ?>
+
+<section class="main-content">
+    <div class="container content-container">
+        <?php get_template_part('template-parts/equipment/equipment-intro'); ?>
+        
+        <?php get_template_part('template-parts/equipment/equipment-tabs'); ?>
+        
+        <?php get_template_part('template-parts/equipment/floor-plan'); ?>
+        
+        <?php get_template_part('template-parts/equipment/tech-specs'); ?>
+        
+        <?php get_template_part('template-parts/contact-cta'); ?>
+    </div>
+</section>
+
+<?php get_footer(); ?>
+```
+
+### archive-event.php
+```php
+<?php
+/*
+Events Archive Template
+*/
+
+get_header(); ?>
+
+<?php get_template_part('template-parts/page-header', null, [
+    'title' => 'EVENTS',
+    'subtitle' => 'Logic Nagoyaで開催される様々なイベント情報。'
+]); ?>
+
+<section class="main-content">
+    <div class="container content-container">
+        <?php get_template_part('template-parts/events/events-navigation'); ?>
+        
+        <?php get_template_part('template-parts/events/events-filter'); ?>
+        
+        <?php get_template_part('template-parts/events/calendar-view'); ?>
+        
+        <div class="events-list active" id="list-view">
+            <div class="event-grid">
+                <?php if (have_posts()) : ?>
+                    <?php while (have_posts()) : the_post(); ?>
+                        <?php get_template_part('template-parts/events/event-card'); ?>
+                    <?php endwhile; ?>
+                <?php else : ?>
+                    <p>現在開催予定のイベントはありません。</p>
+                <?php endif; ?>
+            </div>
+            
+            <?php
+            // ページネーション
+            the_posts_pagination([
+                'prev_text' => '<i class="fas fa-chevron-left"></i>',
+                'next_text' => '<i class="fas fa-chevron-right"></i>',
+            ]);
+            ?>
+        </div>
+    </div>
+</section>
+
+<?php get_template_part('template-parts/events/event-modal'); ?>
+
+<?php get_footer(); ?>
+```
+
+## 🧩 **3. 再利用可能コンポーネント（Template Parts）**
+
+### template-parts/page-header.php
+```php
+<?php
+$title = $args['title'] ?? get_the_title();
+$subtitle = $args['subtitle'] ?? get_field('page_subtitle') ?? get_the_excerpt();
+$background_image = $args['background_image'] ?? get_field('hero_background_image') ?? get_template_directory_uri() . '/assets/images/default-hero.jpg';
+?>
+
+<section class="page-header" style="background-image: url(<?php echo esc_url($background_image); ?>)">
+    <div class="page-header-content">
+        <h1 class="page-title"><?php echo esc_html($title); ?></h1>
+        <?php if ($subtitle) : ?>
+            <p class="page-subtitle"><?php echo esc_html($subtitle); ?></p>
+        <?php endif; ?>
+    </div>
+</section>
+```
+
+### template-parts/events/event-card.php
+```php
+<?php
+$event_date = get_field('event_date');
+$event_time_start = get_field('event_time_start');
+$event_time_open = get_field('event_time_open');
+$pricing = get_field('event_pricing');
+$status = get_field('event_status');
+$featured_image = get_the_post_thumbnail_url(get_the_ID(), 'event-card');
+?>
+
+<div class="event-card">
+    <?php if ($featured_image) : ?>
+    <div class="event-image">
+        <img src="<?php echo esc_url($featured_image); ?>" alt="<?php the_title_attribute(); ?>">
+    </div>
+    <?php endif; ?>
+    
+    <div class="event-content">
+        <?php if ($event_date) : ?>
+        <span class="event-date-badge">
+            <?php echo date('Y.m.d', strtotime($event_date)); ?>
+        </span>
+        <?php endif; ?>
+        
+        <h3 class="event-title"><?php the_title(); ?></h3>
+        
+        <div class="event-details">
+            <?php if ($event_time_start || $event_time_open) : ?>
+            <div class="event-info">
+                <i class="far fa-clock"></i>
+                <span>
+                    <?php if ($event_time_start) : ?>開場 <?php echo $event_time_start; ?><?php endif; ?>
+                    <?php if ($event_time_open) : ?><?php echo $event_time_start ? ' / ' : ''; ?>開演 <?php echo $event_time_open; ?><?php endif; ?>
+                </span>
+            </div>
+            <?php endif; ?>
+            
+            <?php if ($pricing && ($pricing['price_advance'] || $pricing['price_door'])) : ?>
+            <div class="event-info">
+                <i class="fas fa-ticket-alt"></i>
+                <span>
+                    <?php if ($pricing['price_advance']) : ?>前売 ¥<?php echo number_format($pricing['price_advance']); ?><?php endif; ?>
+                    <?php if ($pricing['price_door']) : ?><?php echo $pricing['price_advance'] ? ' / ' : ''; ?>当日 ¥<?php echo number_format($pricing['price_door']); ?><?php endif; ?>
+                </span>
+            </div>
+            <?php endif; ?>
+            
+            <?php if (has_excerpt()) : ?>
+            <p class="event-description"><?php the_excerpt(); ?></p>
+            <?php endif; ?>
+        </div>
+        
+        <div class="event-footer">
+            <?php
+            $terms = get_the_terms(get_the_ID(), 'event_category');
+            if ($terms) :
+                $term = $terms[0];
+            ?>
+            <span class="event-category"><?php echo esc_html($term->name); ?></span>
+            <?php endif; ?>
+            
+            <a href="<?php the_permalink(); ?>" class="btn btn-sm btn-outline">詳細を見る</a>
+        </div>
+    </div>
+</div>
+```
+
+### template-parts/equipment/equipment-tabs.php
+```php
+<div class="equipment-tabs">
+    <?php
+    $categories = [
+        'sound' => '音響機材',
+        'lighting' => '照明機材',
+        'stage' => 'ステージ設備',
+        'video' => '映像・配信機材',
+        'other' => 'その他設備'
+    ];
+    
+    $first = true;
+    foreach ($categories as $slug => $name) :
+    ?>
+    <div class="equipment-tab <?php echo $first ? 'active' : ''; ?>" data-tab="<?php echo esc_attr($slug); ?>">
+        <?php echo esc_html($name); ?>
+    </div>
+    <?php 
+        $first = false;
+    endforeach; 
+    ?>
+</div>
+
+<?php foreach ($categories as $slug => $name) : ?>
+<div class="equipment-content <?php echo $slug === 'sound' ? 'active' : ''; ?>" id="<?php echo esc_attr($slug); ?>-content">
+    <div class="equipment-grid">
+        <?php
+        $equipment_query = new WP_Query([
+            'post_type' => 'equipment',
+            'posts_per_page' => -1,
+            'meta_query' => [
+                [
+                    'key' => 'equipment_category',
+                    'value' => $slug,
+                    'compare' => '='
+                ]
+            ],
+            'orderby' => 'menu_order title',
+            'order' => 'ASC'
+        ]);
+        
+        if ($equipment_query->have_posts()) :
+            while ($equipment_query->have_posts()) : $equipment_query->the_post();
+                get_template_part('template-parts/equipment/equipment-card');
+            endwhile;
+            wp_reset_postdata();
+        endif;
+        ?>
+    </div>
+</div>
+<?php endforeach; ?>
+```
+
+### template-parts/equipment/equipment-card.php
+```php
+<?php
+$icon = get_field('equipment_icon') ?: 'fas fa-tools';
+$specs = get_field('equipment_specs');
+$notes = get_field('equipment_notes');
+?>
+
+<div class="equipment-card">
+    <div class="equipment-header">
+        <h3 class="equipment-title">
+            <div class="equipment-icon">
+                <i class="<?php echo esc_attr($icon); ?>"></i>
+            </div>
+            <?php the_title(); ?>
+        </h3>
+    </div>
+    
+    <div class="equipment-body">
+        <?php if ($specs) : ?>
+        <ul class="equipment-list">
+            <?php foreach ($specs as $spec) : ?>
+            <li class="equipment-item">
+                <?php echo esc_html($spec['spec_name']); ?>
+                <?php if ($spec['spec_model']) : ?>
+                    - <?php echo esc_html($spec['spec_model']); ?>
+                <?php endif; ?>
+                <?php if ($spec['spec_quantity']) : ?>
+                    (<?php echo esc_html($spec['spec_quantity']); ?>)
+                <?php endif; ?>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+        <?php endif; ?>
+        
+        <?php if ($notes) : ?>
+        <p class="equipment-note"><?php echo esc_html($notes); ?></p>
+        <?php endif; ?>
+        
+        <?php if (has_content()) : ?>
+        <div class="equipment-description">
+            <?php the_content(); ?>
+        </div>
+        <?php endif; ?>
+    </div>
+</div>
+```
+
+## ⚡ **4. パフォーマンス最適化戦略**
+
+### CSS分割とロード最適化
+```php
+// functions.php内での条件付きCSS読み込み
+function logic_nagoya_conditional_styles() {
+    // ページ固有のスタイル
+    if (is_page('equipment')) {
+        wp_enqueue_style('equipment-styles', get_template_directory_uri() . '/assets/css/pages/equipment.css');
+    }
+    
+    if (is_page('events') || is_post_type_archive('event')) {
+        wp_enqueue_style('events-styles', get_template_directory_uri() . '/assets/css/pages/events.css');
+        wp_enqueue_style('calendar-styles', get_template_directory_uri() . '/assets/css/components/calendar.css');
+    }
+    
+    if (is_page('pricing')) {
+        wp_enqueue_style('pricing-styles', get_template_directory_uri() . '/assets/css/pages/pricing.css');
+    }
+    
+    if (is_page('about')) {
+        wp_enqueue_style('about-styles', get_template_directory_uri() . '/assets/css/pages/about.css');
+    }
+}
+add_action('wp_enqueue_scripts', 'logic_nagoya_conditional_styles');
+```
+
+### JavaScript最適化
+```php
+// 遅延読み込みとモジュール化
+function logic_nagoya_optimize_scripts() {
+    // アニメーション系は遅延読み込み
+    wp_enqueue_script('animations', get_template_directory_uri() . '/assets/js/animations.js', [], '1.0.0', true);
+    
+    // ページ固有の機能のみ読み込み
+    if (is_page('events') || is_post_type_archive('event')) {
+        wp_enqueue_script('event-filter', get_template_directory_uri() . '/assets/js/components/event-filter.js', ['jquery'], '1.0.0', true);
+        
+        // Ajax用設定
+        wp_localize_script('event-filter', 'event_ajax', [
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('event_filter_nonce'),
+        ]);
+    }
+}
+```
+
+## 🔍 **5. SEO最適化実装**
+
+### 動的メタタグ生成
+```php
+// functions.php
+function logic_nagoya_seo_meta() {
+    if (is_singular('event')) {
+        $event_date = get_field('event_date');
+        $description = 'Logic Nagoyaで開催される' . get_the_title();
+        
+        if ($event_date) {
+            $description .= '（' . date('Y年m月d日', strtotime($event_date)) . '開催）';
+        }
+        
+        echo '<meta name="description" content="' . esc_attr($description) . '">';
+        
+        // Event用構造化データ
+        $json_ld = [
+            '@context' => 'https://schema.org',
+            '@type' => 'Event',
+            'name' => get_the_title(),
+            'startDate' => $event_date,
+            'location' => [
+                '@type' => 'Place',
+                'name' => 'Logic Nagoya',
+                'address' => get_field('address', 'option')
+            ]
+        ];
+        
+        echo '<script type="application/ld+json">' . json_encode($json_ld) . '</script>';
+    }
+}
+add_action('wp_head', 'logic_nagoya_seo_meta');
+```
+
+## 📱 **6. レスポンシブ対応強化**
+
+### ブレークポイント管理
+```scss
+// assets/css/variables.scss
+$breakpoints: (
+  'mobile': 768px,
+  'tablet': 1024px,
+  'desktop': 1200px
+);
+
+@mixin mobile {
+  @media (max-width: #{map-get($breakpoints, 'mobile')}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: #{map-get($breakpoints, 'tablet')}) {
+    @content;
+  }
+}
+```
+
+## 🎯 **実装優先順位**
+
+### Phase 1: 基盤（1-2週間）
+1. ✅ `header.php`, `footer.php`の分離
+2. ✅ `functions.php`の基本機能実装
+3. ✅ アセット読み込み最適化
+4. ✅ 基本テンプレートファイル作成
+
+### Phase 2: コンテンツ（2-3週間）
+1. ✅ カスタム投稿タイプ実装
+2. ✅ ページ固有テンプレート作成
+3. ✅ Template Parts実装
+4. ✅ 管理画面でのコンテンツ編集機能
+
+### Phase 3: 最適化（1-2週間）
+1. ✅ パフォーマンス最適化
+2. ✅ SEO機能実装
+3. ✅ セキュリティ強化
+4. ✅ 最終テスト・調整
+
+この分割戦略により、**保守性の向上**、**パフォーマンスの最適化**、**管理性の大幅改善**が実現できます。

@@ -1,9 +1,6 @@
 <?php
 /**
- * The main template file
- *
- * This is the most generic template file in a WordPress theme
- * and one of the two required files for a theme (the other being style.css).
+ * The template for displaying archive pages
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
@@ -15,19 +12,14 @@ get_header();
 
 	<main id="primary" class="site-main">
 		<div class="container" style="padding-top: 150px; padding-bottom: 100px;">
-			
+
 			<?php if ( have_posts() ) : ?>
 
 				<header class="page-header">
-					<h1 class="section-title">
-						<?php
-						if ( is_home() && ! is_front_page() ) :
-							single_post_title();
-						else :
-							esc_html_e( 'Latest Posts', 'logic-nagoya' );
-						endif;
-						?>
-					</h1>
+					<?php
+					the_archive_title( '<h1 class="section-title">', '</h1>' );
+					the_archive_description( '<div class="archive-description">', '</div>' );
+					?>
 				</header><!-- .page-header -->
 
 				<div class="post-grid">

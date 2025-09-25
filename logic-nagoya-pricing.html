@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Logic Nagoyaのシステムと料金のご案内。小規模から大規模なライブまで、様々な用途に合わせた柔軟な料金体系でご利用いただけます。">
+  <title>Logic Nagoya - システムと料金</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;700&family=Raleway:wght@300;400;500;700&display=swap');
+    
+    :root {
+      --primary: #ca6666;
+      --secondary: #b09065;
+      --dark: #0a0a0a;
+      --darker: #050505;
+      --light: #f5f5f5;
+      --gray: #333333;
+      --accent: #e74c3c;
+      --transition: 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+      --transition-slow: 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-snap-type: y proximity;
+    }
+
+    body {
+      font-family: 'Noto Serif JP', serif;
+      color: var(--light);
+      background-color: var(--dark);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Raleway', 'Noto Serif JP', sans-serif;
+      font-weight: 400;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 30px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 30px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 0;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: var(--transition);
+      z-index: -1;
+    }
+
+    .btn:hover::before {
+      left: 0;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--light);
+      border: 1px solid var(--light);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--light);
+      color: var(--dark);
+    }
+
+    .btn-accent {
+      background-color: var(--accent);
+    }
+
+    .btn-accent:hover {
+      background-color: #c0392b;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(5, 5, 5, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 1000;
+      transition: var(--transition);
+      padding: 15px 0;
+    }
+
+    header.scrolled {
+      padding: 10px 0;
+      background-color: rgba(5, 5, 5, 0.95);
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      height: 45px;
+      transition: var(--transition);
+    }
+
+    header.scrolled .logo {
+      height: 35px;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      position: relative;
+    }
+
+    .nav-links li {
+      margin-left: 35px;
+      position: relative;
+    }
+
+    .nav-links a {
+      font-weight: 300;
+      position: relative;
+      padding-bottom: 5px;
+      transition: var(--transition);
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background-color: var(--accent);
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .menu-toggle {
+      display: none;
+      cursor: pointer;
+      font-size: 24px;
+    }
+
+    /* Page Header */
+    .page-header {
+      height: 50vh;
+      background-color: var(--darker);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      z-index: 1;
+      background-image: url('https://logicnagoya.com/wp-content/uploads/2023/08/IMG_7590-800x533.jpg');
+      background-size: cover;
+      background-position: center;
+      margin-top: 72px;
+    }
+
+    .page-header::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 0;
+    }
+
+    .page-header-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    .page-title {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      font-weight: 300;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s forwards 0.5s;
+    }
+
+    .page-subtitle {
+      font-size: 1.2rem;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s forwards 0.7s;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    /* Main Content Section */
+    .main-content {
+      padding: 80px 0;
+      background-color: var(--dark);
+      position: relative;
+    }
+
+    .main-content::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background-color: var(--dark);
+      transform: skewY(-2deg);
+      z-index: 1;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 50px;
+      position: relative;
+      font-weight: 300;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 1px;
+      background-color: var(--accent);
+    }
+
+    .content-container {
+      position: relative;
+      z-index: 2;
+    }
+
+    .intro-text {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 60px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1.1rem;
+      line-height: 1.8;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s forwards;
+    }
+
+    /* Pricing Section */
+    .pricing-section {
+      margin-bottom: 80px;
+    }
+
+    .pricing-tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    .pricing-tab {
+      padding: 12px 25px;
+      background-color: rgba(20, 20, 20, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--light);
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 1rem;
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .pricing-tab:first-child {
+      border-radius: 4px 0 0 4px;
+    }
+
+    .pricing-tab:last-child {
+      border-radius: 0 4px 4px 0;
+    }
+
+    .pricing-tab.active {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    .pricing-content {
+      display: none;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .pricing-content.active {
+      display: block;
+    }
+
+    .pricing-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+      background-color: rgba(20, 20, 20, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .pricing-table th,
+    .pricing-table td {
+      padding: 15px 20px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .pricing-table th {
+      background-color: rgba(0, 0, 0, 0.3);
+      color: var(--light);
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.9rem;
+    }
+
+    .pricing-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .pricing-table td {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .price {
+      color: var(--light);
+      font-weight: 500;
+    }
+
+    .price-accent {
+      color: var(--accent);
+    }
+
+    .pricing-note {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 20px;
+      font-style: italic;
+    }
+
+    /* System Section */
+    .system-section {
+      margin-bottom: 80px;
+    }
+
+    .system-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 50px;
+    }
+
+    .system-card {
+      background-color: rgba(20, 20, 20, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 30px;
+      transition: var(--transition);
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .system-card.animate {
+      animation: fadeInUp 1s forwards;
+    }
+
+    .system-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .system-icon {
+      font-size: 2.5rem;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .system-title {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .system-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 1px;
+      background-color: var(--accent);
+      transition: var(--transition);
+    }
+
+    .system-card:hover .system-title::after {
+      width: 60px;
+    }
+
+    .system-text {
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.7;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      margin-bottom: 80px;
+    }
+
+    .faq-list {
+      max-width: 900px;
+      margin: 50px auto 0;
+    }
+
+    .faq-item {
+      margin-bottom: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      background-color: rgba(20, 20, 20, 0.5);
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .faq-item.animate {
+      animation: fadeInUp 0.8s forwards;
+    }
+
+    .faq-question {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 400;
+      font-size: 1.1rem;
+      border-bottom: 1px solid transparent;
+    }
+
+    .faq-question:hover {
+      background-color: rgba(30, 30, 30, 0.5);
+    }
+
+    .faq-question.active {
+      border-bottom-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .faq-toggle {
+      font-size: 1.2rem;
+      transition: var(--transition);
+    }
+
+    .faq-question.active .faq-toggle {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .faq-answer-inner {
+      padding: 0 20px 20px;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.7;
+    }
+
+    /* Contact CTA Section */
+    .contact-cta {
+      padding: 80px 0;
+      background-color: var(--darker);
+      position: relative;
+      text-align: center;
+    }
+
+    .contact-cta::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://logicnagoya.com/wp-content/uploads/2022/10/HP-TOP-IMAGE-2.jpg') no-repeat center/cover;
+      opacity: 0.1;
+      z-index: 0;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .cta-title {
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      font-weight: 300;
+      letter-spacing: 2px;
+    }
+
+    .cta-text {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.7;
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--darker);
+      color: rgba(255, 255, 255, 0.7);
+      padding: 80px 0 20px;
+      position: relative;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+    }
+
+    .footer-container {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+
+    .footer-logo {
+      grid-column: span 3;
+    }
+
+    .footer-logo img {
+      height: 35px;
+      margin-bottom: 20px;
+    }
+
+    .footer-about {
+      margin-bottom: 20px;
+      line-height: 1.7;
+      font-size: 0.9rem;
+    }
+
+    .footer-nav {
+      grid-column: span 2;
+    }
+
+    .footer-contact {
+      grid-column: span 3;
+    }
+
+    .footer-social {
+      grid-column: span 4;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .footer-heading {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      color: var(--light);
+      position: relative;
+      padding-bottom: 10px;
+      font-weight: 400;
+    }
+
+    .footer-heading::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 30px;
+      height: 1px;
+      background-color: var(--accent);
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      transition: var(--transition);
+      font-size: 0.9rem;
+      position: relative;
+      padding-left: 15px;
+    }
+
+    .footer-links a::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--light);
+      padding-left: 20px;
+    }
+
+    .footer-links a:hover::before {
+      left: 5px;
+    }
+
+    .footer-contact-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 15px;
+      font-size: 0.9rem;
+    }
+
+    .footer-contact-icon {
+      margin-right: 10px;
+      color: var(--accent);
+    }
+
+    .footer-social-links {
+      display: flex;
+      margin-top: 10px;
+    }
+
+    .footer-social-link {
+      width: 35px;
+      height: 35px;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--light);
+      margin-left: 10px;
+      transition: var(--transition);
+    }
+
+    .footer-social-link:hover {
+      background-color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.9rem;
+    }
+
+    /* Back to top button */
+    .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 45px;
+      height: 45px;
+      background-color: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      z-index: 100;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      background-color: #c0392b;
+      transform: translateY(-5px);
+    }
+
+    /* Loader */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--darker);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .loader.loaded {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-content {
+      text-align: center;
+    }
+
+    .loader-logo {
+      width: 200px;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeIn 1s forwards 0.3s;
+    }
+
+    .loader-spinner {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      border-top-color: var(--accent);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes zoomIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Mobile Responsive */
+    @media screen and (max-width: 1024px) {
+      .footer-container {
+        grid-template-columns: repeat(6, 1fr);
+      }
+
+      .footer-logo, .footer-nav {
+        grid-column: span 3;
+      }
+
+      .footer-contact, .footer-social {
+        grid-column: span 3;
+      }
+
+      .footer-social {
+        align-items: flex-start;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .cta-buttons .btn {
+        width: 100%;
+        max-width: 300px;
+        text-align: center;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      .header-inner {
+        padding: 10px 0;
+      }
+
+      .logo {
+        height: 35px;
+        z-index: 10;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background-color: rgba(10, 10, 10, 0.95);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+        z-index: 5;
+      }
+
+      .nav-links.active {
+        right: 0;
+      }
+
+      .nav-links li {
+        margin: 15px 0;
+      }
+
+      .menu-toggle {
+        display: block;
+        z-index: 10;
+      }
+
+      .page-title {
+        font-size: 2.2rem;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .pricing-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      .pricing-tabs {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .pricing-tab {
+        width: 100%;
+        max-width: 300px;
+        text-align: center;
+        border-radius: 4px !important;
+      }
+
+      .system-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .footer-logo, .footer-nav, .footer-contact, .footer-social {
+        grid-column: span 1;
+      }
+
+      .footer-heading::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .footer-links a {
+        padding-left: 0;
+      }
+
+      .footer-links a::before {
+        display: none;
+      }
+
+      .footer-contact-item {
+        justify-content: center;
+      }
+
+      .footer-social {
+        align-items: center;
+      }
+
+      .footer-social-link {
+        margin: 0 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Loader -->
+  <div class="loader">
+    <div class="loader-content">
+      <img src="https://logicnagoya.com/wp-content/uploads/2022/05/WP_hedder_Logo.png" alt="Logic Nagoya" class="loader-logo">
+      <div class="loader-spinner"></div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="logo-link">
+          <img src="https://logicnagoya.com/wp-content/uploads/2022/05/WP_hedder_Logo.png" alt="Logic Nagoya" class="logo">
+        </a>
+        <div class="menu-toggle">
+          <i class="fas fa-bars"></i>
+        </div>
+        <ul class="nav-links">
+          <li><a href="/#about">ABOUT</a></li>
+          <li><a href="/#events">EVENT</a></li>
+          <li><a href="/#gallery">GALLERY</a></li>
+          <li><a href="/equipment-list/">設備</a></li>
+          <li><a href="/floor-map/">MAP</a></li>
+          <li><a href="/#contact">CONTACT</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Header -->
+  <section class="page-header">
+    <div class="page-header-content">
+      <h1 class="page-title">システムと料金</h1>
+      <p class="page-subtitle">Logic Nagoyaの利用システムと料金プランの詳細をご紹介します。様々な用途に合わせた柔軟なプランをご用意しています。</p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="main-content">
+    <div class="container content-container">
+      <p class="intro-text">
+        Logic Nagoyaでは、一般的な貸切ライブ利用から、配信、トークイベント、ワークショップなど様々な用途に対応できるよう、
+        フレキシブルなシステムと料金体系をご用意しています。皆様のイベントに最適なプランをお選びください。
+      </p>
+
+      <!-- Pricing Section -->
+      <div class="pricing-section">
+        <h2 class="section-title">料金プラン</h2>
+        
+        <div class="pricing-tabs">
+          <div class="pricing-tab active" data-tab="standard">スタンダードプラン</div>
+          <div class="pricing-tab" data-tab="streaming">配信プラン</div>
+          <div class="pricing-tab" data-tab="other">その他のプラン</div>
+        </div>
+        
+        <div class="pricing-content active" id="standard-content">
+          <table class="pricing-table">
+            <thead>
+              <tr>
+                <th>時間帯</th>
+                <th>基本料金（平日）</th>
+                <th>基本料金（土日祝）</th>
+                <th>収容人数</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>午前の部 (10:00-15:00)</td>
+                <td><span class="price">¥55,000</span></td>
+                <td><span class="price price-accent">¥65,000</span></td>
+                <td>最大100名</td>
+              </tr>
+              <tr>
+                <td>夕方の部 (16:00-21:00)</td>
+                <td><span class="price">¥65,000</span></td>
+                <td><span class="price price-accent">¥75,000</span></td>
+                <td>最大100名</td>
+              </tr>
+              <tr>
+                <td>終日 (10:00-21:00)</td>
+                <td><span class="price">¥100,000</span></td>
+                <td><span class="price price-accent">¥120,000</span></td>
+                <td>最大100名</td>
+              </tr>
+              <tr>
+                <td>深夜の部 (22:00-翌5:00)</td>
+                <td><span class="price">¥80,000</span></td>
+                <td><span class="price price-accent">¥90,000</span></td>
+                <td>最大100名</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <p class="pricing-note">※基本料金には、PA/照明オペレーターの人件費、基本的な音響・照明機材の使用料が含まれています。</p>
+          <p class="pricing-note">※延長料金は1時間あたり平日¥15,000、土日祝¥18,000となります。</p>
+        </div>
+        
+        <div class="pricing-content" id="streaming-content">
+          <table class="pricing-table">
+            <thead>
+              <tr>
+                <th>配信プラン</th>
+                <th>基本料金</th>
+                <th>内容</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ベーシック配信</td>
+                <td><span class="price">¥45,000〜</span></td>
+                <td>シンプルな1〜2カメラでの配信対応</td>
+              </tr>
+              <tr>
+                <td>スタンダード配信</td>
+                <td><span class="price">¥75,000〜</span></td>
+                <td>3〜4カメラ切替での本格的な配信</td>
+              </tr>
+              <tr>
+                <td>プレミアム配信</td>
+                <td><span class="price price-accent">¥120,000〜</span></td>
+                <td>マルチカメラ+特殊効果を使った映像演出付き配信</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <p class="pricing-note">※配信プランはスペース利用料に追加する形で提供されます。</p>
+          <p class="pricing-note">※配信オペレーター、配信機材の利用料が含まれています。</p>
+          <p class="pricing-note">※配信プラットフォーム（YouTube、ニコニコ動画など）への接続設定もサポートいたします。</p>
+        </div>
+        
+        <div class="pricing-content" id="other-content">
+          <table class="pricing-table">
+            <thead>
+              <tr>
+                <th>プラン名</th>
+                <th>基本料金</th>
+                <th>詳細</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>リハーサルプラン</td>
+                <td><span class="price">¥3,000/時間〜</span></td>
+                <td>機材のセッティングやリハーサルのための時間貸し</td>
+              </tr>
+              <tr>
+                <td>撮影プラン</td>
+                <td><span class="price">¥35,000〜</span></td>
+                <td>プロモーション映像やMV撮影向けのプラン</td>
+              </tr>
+              <tr>
+                <td>トークイベントプラン</td>
+                <td><span class="price">¥45,000〜</span></td>
+                <td>セミナーやトークショー向けの設備プラン</td>
+              </tr>
+              <tr>
+                <td>レコーディングプラン</td>
+                <td><span class="price price-accent">¥50,000〜</span></td>
+                <td>ライブレコーディング対応プラン</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <p class="pricing-note">※各プランは利用時間や必要機材によって料金が変動します。詳細はお問い合わせください。</p>
+        </div>
+      </div>
+
+      <!-- System Section -->
+      <div class="system-section">
+        <h2 class="section-title">利用システム</h2>
+        
+        <div class="system-grid">
+          <div class="system-card">
+            <div class="system-icon">
+              <i class="fas fa-music"></i>
+            </div>
+            <h3 class="system-title">ライブイベント</h3>
+            <p class="system-text">
+              バンド演奏からアコースティックライブ、DJイベントまで多様なスタイルに対応。
+              プロフェッショナルな音響・照明設備と経験豊かなスタッフがイベントをサポートします。
+              セッティングから本番、撤収までスムーズに進行できるよう、万全の体制を整えています。
+            </p>
+          </div>
+          
+          <div class="system-card">
+            <div class="system-icon">
+              <i class="fas fa-video"></i>
+            </div>
+            <h3 class="system-title">配信サポート</h3>
+            <p class="system-text">
+              高品質な配信環境を提供。専門スタッフによる配信サポートで、オンラインでも臨場感あるパフォーマンスを届けられます。
+              複数カメラでの撮影や、ライブ映像のミキシング、各種配信プラットフォームへの接続など、
+              ニーズに合わせた配信スタイルを実現します。
+            </p>
+          </div>
+          
+          <div class="system-card">
+            <div class="system-icon">
+              <i class="fas fa-microphone-alt"></i>
+            </div>
+            <h3 class="system-title">トークイベント</h3>
+            <p class="system-text">
+              トークショーやセミナー、ワークショップなどに最適な環境を提供。
+              クリアな音響と快適な空間で、話者の声を確実に届けます。
+              プロジェクターやスクリーンなどの映像設備も充実しており、
+              プレゼンテーションやデモンストレーションも効果的に行えます。
+            </p>
+          </div>
+          
+          <div class="system-card">
+            <div class="system-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h3 class="system-title">設備・サポート</h3>
+            <p class="system-text">
+              最大100名を収容可能な空間で、着席スタイルやオールスタンディング、
+              さらにはソーシャルディスタンスを考慮したレイアウトなど、イベントに合わせた設営が可能です。
+              搬入からセッティング、本番中のサポート、撤収まで、経験豊富なスタッフがトータルサポートします。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ Section -->
+      <div class="faq-section">
+        <h2 class="section-title">よくある質問</h2>
+        
+        <div class="faq-list">
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>予約はどのように行えばよいですか？</span>
+              <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                予約はお電話（052-241-7772）または公式サイトのお問い合わせフォームから受け付けております。
+                希望日時、イベント内容、参加予定人数などをお知らせください。
+                空き状況を確認後、担当スタッフよりご連絡いたします。
+              </div>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>キャンセル料はかかりますか？</span>
+              <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                キャンセル料は以下の通りです：<br>
+                - 利用日の30日前まで：キャンセル料なし<br>
+                - 利用日の29〜15日前：基本料金の30%<br>
+                - 利用日の14〜7日前：基本料金の50%<br>
+                - 利用日の6日前〜当日：基本料金の100%<br>
+                ※感染症や災害による中止の場合は、別途ご相談ください。
+              </div>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>機材の持ち込みは可能ですか？</span>
+              <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                基本的に機材の持ち込みは可能です。ただし、事前に持ち込み機材の詳細をお知らせいただき、
+                当会場のシステムとの互換性や安全性を確認させていただきます。
+                特に電源容量や接続方法に関しては、事前の確認が必要です。
+              </div>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>飲食物の持ち込みや販売はできますか？</span>
+              <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                飲食物の持ち込みは基本的に可能ですが、会場内での調理は安全上の理由からご遠慮いただいております。
+                物販に関しては、事前にご相談いただければ対応可能です。
+                また、アルコール提供を伴うイベントの場合は、別途許可が必要となりますので、お申し込み時にご相談ください。
+              </div>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>駐車場はありますか？</span>
+              <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                会場専用の駐車場はございませんが、近隣に複数のコインパーキングがございます。
+                機材搬入などの際は、ホテル敷地内の一時停車スペースをご利用いただける場合がありますので、
+                事前にお問い合わせください。
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact CTA -->
+      <div class="contact-cta">
+        <div class="cta-content">
+          <h2 class="cta-title">CONTACT US</h2>
+          <p class="cta-text">
+            具体的な料金やシステムについてのご質問や、ご予約のお問い合わせはこちらから。
+            皆様のイベントにぴったりの提案をさせていただきます。
+          </p>
+          <div class="cta-buttons">
+            <a href="/#contact" class="btn btn-accent">お問い合わせ</a>
+            <a href="/equipment-list/" class="btn btn-outline">設備リストを見る</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-container">
+        <div class="footer-logo">
+          <img src="https://logicnagoya.com/wp-content/uploads/2022/05/WP_hedder_Logo.png" alt="Logic Nagoya">
+          <p class="footer-about">
+            名古屋栄のライブハウス「Logic Nagoya」は、ライブやトークショー、配信など様々な用途でご利用いただける多目的スペースです。
+          </p>
+        </div>
+        
+        <div class="footer-nav">
+          <h3 class="footer-heading">メニュー</h3>
+          <ul class="footer-links">
+            <li><a href="/#about">ABOUT</a></li>
+            <li><a href="/#events">EVENT</a></li>
+            <li><a href="/#gallery">GALLERY</a></li>
+            <li><a href="/equipment-list/">設備</a></li>
+            <li><a href="/floor-map/">MAP</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-contact">
+          <h3 class="footer-heading">お問い合わせ</h3>
+          <div class="footer-contact-item">
+            <div class="footer-contact-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <p>愛知県名古屋市中区栄3-13-31</p>
+          </div>
+          <div class="footer-contact-item">
+            <div class="footer-contact-icon">
+              <i class="fas fa-phone-alt"></i>
+            </div>
+            <p>052-241-7772</p>
+          </div>
+          <div class="footer-contact-item">
+            <div class="footer-contact-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <p>kozuki@logicnagoya.com</p>
+          </div>
+        </div>
+        
+        <div class="footer-social">
+          <h3 class="footer-heading">FOLLOW US</h3>
+          <p style="margin-bottom: 15px;">最新情報はSNSでもチェックできます。<br>フォローして最新のイベント情報をゲット！</p>
+          <div class="footer-social-links">
+            <a href="https://twitter.com/logicnagoya" class="footer-social-link" target="_blank">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://www.facebook.com/logicnagoya" class="footer-social-link" target="_blank">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; Copyright 2025 Logic Nagoya. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to top button -->
+  <div class="back-to-top">
+    <i class="fas fa-chevron-up"></i>
+  </div>
+
+  <script>
+    // Page Loader
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        document.querySelector('.loader').classList.add('loaded');
+      }, 1500);
+    });
+
+    // Header Scroll Effect
+    window.addEventListener('scroll', function() {
+      const header = document.querySelector('header');
+      const backToTop = document.querySelector('.back-to-top');
+      
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+        backToTop.classList.add('visible');
+      } else {
+        header.classList.remove('scrolled');
+        backToTop.classList.remove('visible');
+      }
+      
+      // Animation on scroll
+      animateOnScroll();
+    });
+
+    // Mobile Menu Toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    menuToggle.addEventListener('click', function() {
+      navLinks.classList.toggle('active');
+      menuToggle.innerHTML = navLinks.classList.contains('active') ? 
+        '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+    });
+    
+    // Pricing Tabs
+    const pricingTabs = document.querySelectorAll('.pricing-tab');
+    
+    pricingTabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        // Remove active class from all tabs
+        pricingTabs.forEach(t => t.classList.remove('active'));
+        
+        // Add active class to clicked tab
+        this.classList.add('active');
+        
+        // Hide all content
+        document.querySelectorAll('.pricing-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        
+        // Show corresponding content
+        const tabId = this.getAttribute('data-tab');
+        document.getElementById(tabId + '-content').classList.add('active');
+      });
+    });
+    
+    // FAQ Accordions
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    
+    faqQuestions.forEach(question => {
+      question.addEventListener('click', function() {
+        const answer = this.nextElementSibling;
+        const isActive = this.classList.contains('active');
+        
+        // Close all other FAQs
+        faqQuestions.forEach(q => {
+          q.classList.remove('active');
+          q.nextElementSibling.style.maxHeight = null;
+        });
+        
+        // Toggle current FAQ
+        if (!isActive) {
+          this.classList.add('active');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+        }
+      });
+    });
+
+    // Back to Top Button
+    document.querySelector('.back-to-top').addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    // Animation on Scroll
+    function animateOnScroll() {
+      const systemCards = document.querySelectorAll('.system-card');
+      const faqItems = document.querySelectorAll('.faq-item');
+      
+      const triggerBottom = window.innerHeight * 0.8;
+      
+      systemCards.forEach((card, index) => {
+        const cardTop = card.getBoundingClientRect().top;
+        
+        if (cardTop < triggerBottom) {
+          setTimeout(() => {
+            card.classList.add('animate');
+          }, index * 150);
+        }
+      });
+      
+      faqItems.forEach((item, index) => {
+        const itemTop = item.getBoundingClientRect().top;
+        
+        if (itemTop < triggerBottom) {
+          setTimeout(() => {
+            item.classList.add('animate');
+          }, index * 100);
+        }
+      });
+    }
+    
+    // Initial animation check
+    setTimeout(animateOnScroll, 500);
+  </script>
+</body>
+</html>

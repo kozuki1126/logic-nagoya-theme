@@ -1,0 +1,38 @@
+<?php
+// Create a placeholder screenshot for the theme
+// The WordPress theme screenshot should be 1200x900 pixels
+header('Content-Type: image/png');
+$width = 1200;
+$height = 900;
+
+// Create image
+$image = imagecreatetruecolor($width, $height);
+
+// Colors
+$dark = imagecolorallocate($image, 10, 10, 10);
+$accent = imagecolorallocate($image, 231, 76, 60);
+$light = imagecolorallocate($image, 245, 245, 245);
+
+// Fill background
+imagefill($image, 0, 0, $dark);
+
+// Theme name
+$text = 'Logic Nagoya';
+$font_size = 5;
+$text_width = imagefontwidth($font_size) * strlen($text);
+$text_height = imagefontheight($font_size);
+$x = ($width - $text_width) / 2;
+$y = $height / 2 - $text_height;
+imagestring($image, $font_size, $x, $y, $text, $light);
+
+// Theme description
+$text = 'Music Live House WordPress Theme';
+$font_size = 3;
+$text_width = imagefontwidth($font_size) * strlen($text);
+$x = ($width - $text_width) / 2;
+$y = $height / 2 + $text_height;
+imagestring($image, $font_size, $x, $y, $text, $accent);
+
+// Output image
+imagepng($image);
+imagedestroy($image);
