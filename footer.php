@@ -30,7 +30,11 @@ defined('ABSPATH') || exit;
 				printf( 
 					esc_html__( 'Theme: %1$s by %2$s.', 'logic-nagoya' ), 
 					'Logic Nagoya', 
-					'<a href="#">' . esc_html__( 'Logic Nagoya Team', 'logic-nagoya' ) . '</a>'
+					sprintf(
+						'<a href="%s">%s</a>',
+						esc_url( '#' ),
+						esc_html__( 'Logic Nagoya Team', 'logic-nagoya' )
+					)
 				);
 				?>
 
