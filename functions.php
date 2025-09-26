@@ -386,7 +386,7 @@ function logic_nagoya_structured_data() {
     foreach ($schema_data as $schema) {
         if (!empty($schema)) {
             echo '<script type="application/ld+json">' . "\n";
-            echo json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) . "\n";
+            echo wp_json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) . "\n";
             echo '</script>' . "\n";
         }
     }
