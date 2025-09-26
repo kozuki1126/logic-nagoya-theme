@@ -1094,9 +1094,12 @@ function logic_nagoya_scripts() {
 		wp_enqueue_style( 'logic-nagoya-event-styles', get_template_directory_uri() . '/event-styles.css', array(), LOGIC_NAGOYA_VERSION );
 	}
 	
-	// Removed empty JavaScript files to reduce HTTP requests:
-	// - js/navigation.js (empty)
-	// - js/main.js (empty)
+        // Global site interactions
+        wp_enqueue_script( 'logic-nagoya-site-interactions', get_template_directory_uri() . '/js/site-interactions.js', array(), LOGIC_NAGOYA_VERSION, true );
+
+        // Removed empty JavaScript files to reduce HTTP requests:
+        // - js/navigation.js (empty)
+        // - js/main.js (empty)
 	
 	// FAQ styles and scripts - conditional loading based on page content
 	if ( logic_nagoya_needs_faq() ) {
