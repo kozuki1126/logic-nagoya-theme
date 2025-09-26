@@ -1540,23 +1540,7 @@ add_filter('template_include', 'logic_nagoya_template_include');
 
 
 /**
- * Create directory for required files if they don't exist
- */
-function logic_nagoya_create_required_directories() {
-	// Create inc directory
-	if (!file_exists(get_template_directory() . '/inc')) {
-		mkdir(get_template_directory() . '/inc', 0755);
-	}
-	
-	// Create js directory 
-	if (!file_exists(get_template_directory() . '/js')) {
-		mkdir(get_template_directory() . '/js', 0755);
-	}
-}
-add_action('after_switch_theme', 'logic_nagoya_create_required_directories');
-
-/**
- * Event post type 
+ * Event post type
  */
 function logic_nagoya_register_event_post_type() {
 	$labels = array(
