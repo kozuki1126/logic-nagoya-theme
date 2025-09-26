@@ -1744,6 +1744,51 @@ function logic_nagoya_advanced_image_optimization_init() {
 add_action('init', 'logic_nagoya_advanced_image_optimization_init');
 
 /**
+ * 高度な画像最適化が必要かを判定
+ */
+function logic_nagoya_needs_advanced_image_optimization() {
+    if (is_admin()) {
+        return false;
+    }
+
+    if (has_post_thumbnail()) {
+        return true;
+    }
+
+    if (is_post_type_archive(array('gallery', 'event')) || is_singular(array('gallery', 'event'))) {
+        return true;
+    }
+
+    if (is_front_page() || is_home()) {
+        return true;
+    }
+
+    if (is_page()) {
+        global $post;
+
+        if ($post instanceof WP_Post) {
+            $custom_images = get_post_meta($post->ID, '_logic_nagoya_floor_plan_image', true) ||
+                get_post_meta($post->ID, '_logic_nagoya_concept_image', true) ||
+                get_post_meta($post->ID, 'floor_plan_image', true) ||
+                get_post_meta($post->ID, 'concept_image', true);
+
+            if ($custom_images || strpos($post->post_content, '<img') !== false) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+/**
+ * 旧関数名との互換用ラッパー
+ */
+function logic_nagoya_needs_image_optimization() {
+    return logic_nagoya_needs_advanced_image_optimization();
+}
+
+/**
  * WebP画像の高度な自動生成（改良版）
  */
 function logic_nagoya_generate_webp_images_enhanced($metadata) {
@@ -1873,22 +1918,22 @@ function logic_nagoya_add_advanced_lazy_loading_attributes($attr, $attachment, $
     if (is_admin() || is_feed() || (wp_is_mobile() && function_exists('is_amp') && is_amp())) {
         return $attr;
     }
-    
+
     // Above the foldの画像は遅延読み込みをスキップ
-    if (logic_nagoya_is_above_fold_image($attachment)) {
+    if (logic_nagoya_is_above_fold_image($attachment, $size)) {
         $attr['class'] = (isset($attr['class']) ? $attr['class'] . ' ' : '') . 'above-fold';
         return $attr;
     }
-    
+
     // data-src属性に元のsrcを移動し、srcには軽量なプレースホルダーを設定
     if (isset($attr['src'])) {
         // WebP対応 URLを取得
         $optimized_src = logic_nagoya_get_webp_image_url($attr['src']);
-        
+
         $attr['data-src'] = $optimized_src;
         $attr['src'] = logic_nagoya_get_placeholder_image();
         $attr['class'] = (isset($attr['class']) ? $attr['class'] . ' ' : '') . 'lazy-load';
-        
+
         // srcsetも遅延読み込み対応（WebP最適化）
         if (isset($attr['srcset'])) {
             $attr['data-srcset'] = logic_nagoya_optimize_srcset_webp($attr['srcset']);
@@ -1933,15 +1978,21 @@ function logic_nagoya_add_lazy_loading_to_content($content) {
             // src属性を抽出
             if (preg_match('/src="([^"]+)"/i', $img_tag, $src_matches)) {
                 $original_src = $src_matches[1];
+                $optimized_src = logic_nagoya_get_webp_image_url($original_src);
                 $placeholder = logic_nagoya_get_placeholder_image();
-                
+
                 // src属性をdata-srcに変更し、プレースホルダーを設定
-                $img_tag = str_replace('src="' . $original_src . '"', 'src="' . $placeholder . '" data-src="' . $original_src . '"', $img_tag);
-                
+                $img_tag = str_replace(
+                    'src="' . $original_src . '"',
+                    'src="' . $placeholder . '" data-src="' . $optimized_src . '"',
+                    $img_tag
+                );
+
                 // srcset属性の処理
                 if (preg_match('/srcset="([^"]+)"/i', $img_tag, $srcset_matches)) {
                     $original_srcset = $srcset_matches[1];
-                    $img_tag = str_replace('srcset="' . $original_srcset . '"', 'data-srcset="' . $original_srcset . '"', $img_tag);
+                    $optimized_srcset = logic_nagoya_optimize_srcset_webp($original_srcset);
+                    $img_tag = str_replace('srcset="' . $original_srcset . '"', 'data-srcset="' . $optimized_srcset . '"', $img_tag);
                 }
                 
                 // sizes属性の処理
@@ -2017,7 +2068,7 @@ function logic_nagoya_optimize_image_srcset($sources, $size_array, $image_src, $
     if (!$sources || !logic_nagoya_browser_supports_webp()) {
         return $sources;
     }
-    
+
     // 各srcsetのURLをWebP版に変換
     foreach ($sources as $width => $source) {
         $webp_url = logic_nagoya_get_webp_image_url($source['url']);
@@ -2025,8 +2076,114 @@ function logic_nagoya_optimize_image_srcset($sources, $size_array, $image_src, $
             $sources[$width]['url'] = $webp_url;
         }
     }
-    
+
     return $sources;
+}
+
+/**
+ * srcset文字列をWebP対応に変換
+ */
+function logic_nagoya_optimize_srcset_webp($srcset) {
+    if (empty($srcset) || !logic_nagoya_browser_supports_webp()) {
+        return $srcset;
+    }
+
+    $sources = array_map('trim', explode(',', $srcset));
+
+    foreach ($sources as &$source) {
+        $parts = preg_split('/\s+/', $source);
+
+        if (!empty($parts[0])) {
+            $parts[0] = logic_nagoya_get_webp_image_url($parts[0]);
+        }
+
+        $source = implode(' ', array_filter($parts, 'strlen'));
+    }
+
+    return implode(', ', $sources);
+}
+
+/**
+ * Above the fold画像の判定
+ */
+function logic_nagoya_is_above_fold_image($attachment, $size) {
+    $priority_sizes = array(
+        'hero-image',
+        'hero-image-2x',
+        'hero-desktop',
+        'hero-desktop-2x',
+        'hero-tablet',
+        'hero-tablet-2x',
+        'hero-mobile',
+        'hero-mobile-2x'
+    );
+
+    if (in_array($size, $priority_sizes, true)) {
+        return true;
+    }
+
+    if (!($attachment instanceof WP_Post)) {
+        return false;
+    }
+
+    $queried_id = get_queried_object_id();
+
+    if ($queried_id && has_post_thumbnail($queried_id)) {
+        $featured_id = get_post_thumbnail_id($queried_id);
+
+        if ($featured_id && (int) $featured_id === (int) $attachment->ID) {
+            return is_front_page() || is_singular();
+        }
+    }
+
+    return false;
+}
+
+/**
+ * クリティカル画像をプリロード
+ */
+function logic_nagoya_preload_critical_images() {
+    $critical_images = array();
+
+    if (is_front_page()) {
+        $hero_image_id = get_theme_mod('hero_image');
+
+        if ($hero_image_id) {
+            $hero_image = wp_get_attachment_image_src($hero_image_id, 'hero-desktop');
+
+            if ($hero_image) {
+                $critical_images[] = logic_nagoya_get_webp_image_url($hero_image[0]);
+            }
+        }
+    }
+
+    if (is_singular() && has_post_thumbnail()) {
+        $featured_image = wp_get_attachment_image_src(get_post_thumbnail_id(), 'large');
+
+        if ($featured_image) {
+            $critical_images[] = logic_nagoya_get_webp_image_url($featured_image[0]);
+        }
+    }
+
+    foreach (array_unique($critical_images) as $image_url) {
+        if (empty($image_url)) {
+            continue;
+        }
+
+        echo '<link rel="preload" as="image" href="' . esc_url($image_url) . '">' . "\n";
+    }
+}
+
+/**
+ * 画像最適化デバッグ情報
+ */
+function logic_nagoya_image_performance_debug() {
+    if (!defined('WP_DEBUG') || !WP_DEBUG) {
+        return;
+    }
+
+    echo '<!-- Logic Nagoya Image Optimization Debug -->' . "\n";
+    echo '<script>console.log("Logic Nagoya Image Optimization: Loaded");</script>' . "\n";
 }
 
 /**
