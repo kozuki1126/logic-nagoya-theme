@@ -1,0 +1,303 @@
+/*
+ * Styles for the System & Pricing page template.
+ * Provides layout, tab navigation, pricing tables and FAQ presentation.
+ */
+
+.page-header {
+  background: linear-gradient(135deg, rgba(230, 57, 70, 0.85), rgba(29, 53, 87, 0.85)), url('../assets/images/bg-dark.jpg') center/cover no-repeat;
+  padding: 120px 0 80px;
+  text-align: center;
+}
+
+.page-header-content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.page-title {
+  font-size: clamp(2.4rem, 4vw, 3.5rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.page-subtitle {
+  font-size: 1.05rem;
+  color: rgba(241, 250, 238, 0.9);
+  line-height: 1.8;
+}
+
+.main-content {
+  background-color: #0b0c10;
+  padding: 100px 0;
+}
+
+.content-container {
+  max-width: 1100px;
+}
+
+.intro-text {
+  font-size: 1.1rem;
+  color: rgba(241, 250, 238, 0.85);
+  margin-bottom: 60px;
+  line-height: 1.9;
+}
+
+.pricing-section {
+  margin-bottom: 80px;
+  background: rgba(17, 22, 32, 0.75);
+  border-radius: 24px;
+  padding: 48px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+}
+
+.pricing-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.pricing-tab {
+  padding: 18px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  border: 1px solid transparent;
+}
+
+.pricing-tab:hover,
+.pricing-tab:focus {
+  border-color: rgba(230, 57, 70, 0.6);
+  box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.15);
+}
+
+.pricing-tab.active {
+  background: var(--primary);
+  color: var(--light);
+  transform: translateY(-2px);
+}
+
+.pricing-content {
+  display: none;
+  animation: fadeIn 0.45s ease;
+}
+
+.pricing-content.active {
+  display: block;
+}
+
+.pricing-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(5, 7, 12, 0.7);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.pricing-table th,
+.pricing-table td {
+  padding: 18px 22px;
+  text-align: left;
+}
+
+.pricing-table thead {
+  background: rgba(255, 255, 255, 0.08);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.9rem;
+}
+
+.pricing-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.price-accent {
+  color: var(--primary);
+}
+
+.pricing-note {
+  margin-top: 18px;
+  font-size: 0.95rem;
+  color: rgba(241, 250, 238, 0.65);
+}
+
+.system-section {
+  margin-bottom: 80px;
+}
+
+.system-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.system-card {
+  background: rgba(17, 22, 32, 0.85);
+  border-radius: 20px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.system-card::after {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -40%;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle at center, rgba(230, 57, 70, 0.35), transparent 70%);
+  transition: opacity 0.35s ease;
+  opacity: 0;
+}
+
+.system-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.4);
+}
+
+.system-card:hover::after {
+  opacity: 1;
+}
+
+.system-icon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: rgba(230, 57, 70, 0.18);
+  color: var(--accent);
+  font-size: 1.4rem;
+  margin-bottom: 18px;
+}
+
+.system-title {
+  font-size: 1.35rem;
+  margin-bottom: 14px;
+}
+
+.system-text {
+  color: rgba(241, 250, 238, 0.75);
+  line-height: 1.8;
+}
+
+.faq-section {
+  margin-bottom: 80px;
+}
+
+.faq-list {
+  display: grid;
+  gap: 18px;
+}
+
+.faq-item {
+  background: rgba(17, 22, 32, 0.85);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.faq-question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 26px;
+  font-size: 1.05rem;
+  cursor: pointer;
+}
+
+.faq-question span:first-child {
+  flex: 1;
+  margin-right: 16px;
+}
+
+.faq-answer {
+  display: none;
+  background: rgba(10, 12, 18, 0.75);
+}
+
+.faq-answer-inner,
+.faq-answer p {
+  padding: 0 26px 24px;
+  color: rgba(241, 250, 238, 0.75);
+  line-height: 1.8;
+}
+
+.faq-item.active .faq-icon i {
+  transform: rotate(45deg);
+}
+
+.faq-icon i {
+  transition: transform 0.3s ease;
+}
+
+.contact-cta {
+  background: linear-gradient(120deg, rgba(29, 53, 87, 0.95), rgba(230, 57, 70, 0.75));
+  border-radius: 26px;
+  padding: 48px;
+  text-align: center;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+}
+
+.cta-title {
+  font-size: clamp(2rem, 3.2vw, 2.8rem);
+  letter-spacing: 0.16em;
+  margin-bottom: 16px;
+}
+
+.cta-text {
+  font-size: 1.05rem;
+  color: rgba(241, 250, 238, 0.8);
+  margin-bottom: 28px;
+  line-height: 1.9;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .pricing-section {
+    padding: 32px 20px;
+  }
+
+  .pricing-table th,
+  .pricing-table td {
+    padding: 14px 16px;
+  }
+
+  .contact-cta {
+    padding: 36px 24px;
+  }
+}

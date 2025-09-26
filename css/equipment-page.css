@@ -1,0 +1,245 @@
+/*
+ * Styles for the Equipment list page template.
+ */
+
+.page-header {
+  background: linear-gradient(140deg, rgba(230, 57, 70, 0.8), rgba(4, 8, 16, 0.95)), url('../assets/images/bg-dark.jpg') center/cover no-repeat;
+  padding: 120px 0 80px;
+  text-align: center;
+}
+
+.page-title {
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  margin-bottom: 18px;
+}
+
+.page-subtitle {
+  color: rgba(241, 250, 238, 0.85);
+}
+
+.main-content {
+  background: #05070d;
+  padding: 90px 0 120px;
+}
+
+.content-container {
+  max-width: 1180px;
+}
+
+.equipment-intro {
+  margin-bottom: 48px;
+  color: rgba(241, 250, 238, 0.75);
+  line-height: 1.8;
+}
+
+.equipment-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.equipment-tab {
+  padding: 16px;
+  border-radius: 14px;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: var(--transition);
+  border: 1px solid transparent;
+}
+
+.equipment-tab:hover,
+.equipment-tab:focus {
+  border-color: rgba(230, 57, 70, 0.6);
+  box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.12);
+}
+
+.equipment-tab.active {
+  background: var(--primary);
+  color: var(--light);
+}
+
+.equipment-content {
+  display: none;
+  animation: fadeIn 0.35s ease;
+}
+
+.equipment-content.active {
+  display: block;
+}
+
+.equipment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 26px;
+}
+
+.equipment-card {
+  background: rgba(10, 13, 20, 0.92);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.equipment-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+}
+
+.equipment-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.equipment-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(230, 57, 70, 0.15);
+  display: grid;
+  place-items: center;
+  font-size: 1.2rem;
+  color: var(--accent);
+}
+
+.equipment-title {
+  font-size: 1.2rem;
+  letter-spacing: 0.06em;
+}
+
+.equipment-list {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  color: rgba(241, 250, 238, 0.8);
+}
+
+.equipment-item {
+  position: relative;
+  padding-left: 18px;
+  line-height: 1.7;
+}
+
+.equipment-item::before {
+  content: '\2022';
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+}
+
+.equipment-note {
+  font-size: 0.92rem;
+  color: rgba(241, 250, 238, 0.6);
+}
+
+.equipment-tools {
+  margin: 32px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.equipment-search {
+  flex: 1;
+  min-width: 220px;
+  position: relative;
+}
+
+.equipment-search input {
+  width: 100%;
+  padding: 12px 16px 12px 42px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--accent);
+}
+
+.equipment-search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(241, 250, 238, 0.6);
+}
+
+.equipment-export {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--accent);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.equipment-export:hover {
+  background: var(--primary);
+  color: var(--light);
+}
+
+.equipment-export-status {
+  font-size: 0.9rem;
+  color: rgba(241, 250, 238, 0.65);
+  display: none;
+}
+
+.equipment-export-status.is-visible {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.equipment-highlight {
+  background: rgba(230, 57, 70, 0.12) !important;
+  border-color: rgba(230, 57, 70, 0.35) !important;
+}
+
+.no-results-message {
+  margin-top: 24px;
+  padding: 24px;
+  border-radius: 18px;
+  text-align: center;
+  background: rgba(12, 16, 24, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: rgba(241, 250, 238, 0.7);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .equipment-card {
+    padding: 22px;
+  }
+
+  .equipment-tools {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .equipment-export {
+    width: 100%;
+    justify-content: center;
+  }
+}
