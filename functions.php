@@ -845,7 +845,13 @@ function logic_nagoya_main_sitemap() {
     echo '<loc>' . home_url('/sitemap-pages.xml') . '</loc>' . "\n";
     echo '<lastmod>' . date('Y-m-d\TH:i:s+00:00') . '</lastmod>' . "\n";
     echo '</sitemap>' . "\n";
-    
+
+    // 投稿サイトマップ
+    echo '<sitemap>' . "\n";
+    echo '<loc>' . home_url('/sitemap-posts.xml') . '</loc>' . "\n";
+    echo '<lastmod>' . date('Y-m-d\TH:i:s+00:00') . '</lastmod>' . "\n";
+    echo '</sitemap>' . "\n";
+
     // イベントサイトマップ
     echo '<sitemap>' . "\n";
     echo '<loc>' . home_url('/sitemap-events.xml') . '</loc>' . "\n";
@@ -861,7 +867,7 @@ function logic_nagoya_main_sitemap() {
 function logic_nagoya_events_sitemap() {
     echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
     echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
-    
+
     // イベント一覧ページ
     echo '<url>' . "\n";
     echo '<loc>' . get_post_type_archive_link('event') . '</loc>' . "\n";
@@ -886,6 +892,46 @@ function logic_nagoya_events_sitemap() {
         echo '</url>' . "\n";
     }
     
+    echo '</urlset>' . "\n";
+}
+
+/**
+ * 投稿サイトマップ
+ */
+function logic_nagoya_posts_sitemap() {
+    echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+    echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+
+    // 投稿一覧ページ（ブログトップ）
+    $posts_page_id = (int) get_option('page_for_posts');
+
+    if ($posts_page_id) {
+        echo '<url>' . "\n";
+        echo '<loc>' . get_permalink($posts_page_id) . '</loc>' . "\n";
+        echo '<lastmod>' . get_the_modified_date('c', $posts_page_id) . '</lastmod>' . "\n";
+        echo '<changefreq>daily</changefreq>' . "\n";
+        echo '<priority>0.8</priority>' . "\n";
+        echo '</url>' . "\n";
+    }
+
+    // 公開済み投稿
+    $posts = get_posts([
+        'post_type'      => 'post',
+        'post_status'    => 'publish',
+        'posts_per_page' => -1,
+        'orderby'        => 'date',
+        'order'          => 'DESC',
+    ]);
+
+    foreach ($posts as $post) {
+        echo '<url>' . "\n";
+        echo '<loc>' . get_permalink($post->ID) . '</loc>' . "\n";
+        echo '<lastmod>' . get_post_modified_time('c', false, $post) . '</lastmod>' . "\n";
+        echo '<changefreq>weekly</changefreq>' . "\n";
+        echo '<priority>0.6</priority>' . "\n";
+        echo '</url>' . "\n";
+    }
+
     echo '</urlset>' . "\n";
 }
 
