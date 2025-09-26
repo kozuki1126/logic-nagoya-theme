@@ -158,9 +158,6 @@ function logic_nagoya_setup() {
 		)
 	);
 	
-	// Create assets directory structure for local libraries
-	logic_nagoya_create_assets_structure();
-	
 	// Initialize image optimization features - Task 017 COMPLETED
 	logic_nagoya_init_image_optimization();
 }
@@ -441,27 +438,6 @@ function logic_nagoya_needs_image_optimization() {
 	return false;
 }
 
-/**
- * Create assets directory structure for local libraries
- */
-function logic_nagoya_create_assets_structure() {
-	$upload_dir = wp_upload_dir();
-	$assets_dir = get_template_directory() . '/assets';
-	
-	// Create assets directories if they don't exist
-	$directories = array(
-		$assets_dir,
-		$assets_dir . '/css',
-		$assets_dir . '/fonts',
-		$assets_dir . '/js'
-	);
-	
-	foreach ( $directories as $dir ) {
-		if ( ! file_exists( $dir ) ) {
-			wp_mkdir_p( $dir );
-		}
-	}
-}
 add_action( 'after_setup_theme', 'logic_nagoya_setup' );
 
 /**
