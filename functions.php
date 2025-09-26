@@ -8,8 +8,30 @@
  */
 
 if ( ! defined( 'LOGIC_NAGOYA_VERSION' ) ) {
-	// Replace the version number of the theme on each release.
-	define( 'LOGIC_NAGOYA_VERSION', '1.0.0' );
+        // Replace the version number of the theme on each release.
+        define( 'LOGIC_NAGOYA_VERSION', '1.0.0' );
+}
+
+if ( ! function_exists( 'logic_nagoya_get_field' ) ) {
+        /**
+         * Safe wrapper for Advanced Custom Fields' get_field function.
+         *
+         * @param string     $selector     The field name or key.
+         * @param int|string $post_id      Optional. Post ID where the value is saved.
+         * @param bool       $format_value Optional. Whether to apply formatting.
+         * @param mixed      $default      Optional. Default value when ACF is unavailable.
+         *
+         * @return mixed|null
+         */
+        function logic_nagoya_get_field( $selector, $post_id = false, $format_value = true, $default = null ) {
+                if ( function_exists( 'get_field' ) ) {
+                        $value = get_field( $selector, $post_id, $format_value );
+
+                        return null !== $value ? $value : $default;
+                }
+
+                return $default;
+        }
 }
 
 // フルサイト編集（FSE）機能をサポート
@@ -234,7 +256,7 @@ function logic_nagoya_get_meta_description() {
         $description = 'Logic Nagoyaは名古屋栄のプレミアムライブハウス。最新音響・照明設備でライブ、トークイベント、配信まで対応。';
         
     } elseif (is_singular('event')) {
-        $event_date = get_field('event_date');
+        $event_date = logic_nagoya_get_field('event_date');
         $description = 'Logic Nagoyaで開催される「' . get_the_title() . '」';
         
         if ($event_date) {
@@ -349,8 +371,8 @@ function logic_nagoya_structured_data() {
  * 組織情報のスキーマ
  */
 function logic_nagoya_organization_schema() {
-    $contact_info = get_field('contact_info', 'option');
-    $social_media = get_field('social_media', 'option');
+    $contact_info = logic_nagoya_get_field('contact_info', 'option') ?: [];
+    $social_media = logic_nagoya_get_field('social_media', 'option') ?: [];
     
     return [
         '@context' => 'https://schema.org',
@@ -388,7 +410,7 @@ function logic_nagoya_organization_schema() {
  * ローカルビジネス情報のスキーマ
  */
 function logic_nagoya_local_business_schema() {
-    $contact_info = get_field('contact_info', 'option');
+    $contact_info = logic_nagoya_get_field('contact_info', 'option') ?: [];
     
     return [
         '@context' => 'https://schema.org',
@@ -444,15 +466,19 @@ function logic_nagoya_event_schema() {
         return null;
     }
     
-    $event_date = get_field('event_date');
-    $event_time_open = get_field('event_time_open');
-    $pricing = get_field('event_pricing');
-    $performers = get_field('event_performers');
-    $contact_info = get_field('contact_info', 'option');
-    
-    $start_date = $event_date;
-    if ($event_time_open) {
-        $start_date .= 'T' . $event_time_open . ':00';
+    $event_date = logic_nagoya_get_field('event_date');
+    $event_time_open = logic_nagoya_get_field('event_time_open');
+    $pricing = logic_nagoya_get_field('event_pricing') ?: [];
+    $performers = logic_nagoya_get_field('event_performers') ?: [];
+    $contact_info = logic_nagoya_get_field('contact_info', 'option') ?: [];
+
+    if ($event_date) {
+        $start_date = $event_date;
+        if ($event_time_open) {
+            $start_date .= 'T' . $event_time_open . ':00';
+        }
+    } else {
+        $start_date = get_post_time('c', true);
     }
     
     $schema = [
@@ -481,7 +507,7 @@ function logic_nagoya_event_schema() {
     ];
     
     // 出演者情報
-    if ($performers && is_array($performers)) {
+    if (!empty($performers) && is_array($performers)) {
         $schema['performer'] = [];
         foreach ($performers as $performer) {
             $schema['performer'][] = [
@@ -493,10 +519,10 @@ function logic_nagoya_event_schema() {
     }
     
     // チケット情報
-    if ($pricing && ($pricing['price_advance'] || $pricing['price_door'])) {
+    if (!empty($pricing) && (!empty($pricing['price_advance']) || !empty($pricing['price_door']))) {
         $offers = [];
-        
-        if ($pricing['price_advance']) {
+
+        if (!empty($pricing['price_advance'])) {
             $offers[] = [
                 '@type' => 'Offer',
                 'name' => '前売りチケット',
@@ -506,8 +532,8 @@ function logic_nagoya_event_schema() {
                 'validFrom' => date('Y-m-d')
             ];
         }
-        
-        if ($pricing['price_door']) {
+
+        if (!empty($pricing['price_door'])) {
             $offers[] = [
                 '@type' => 'Offer',
                 'name' => '当日券',
