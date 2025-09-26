@@ -40,43 +40,79 @@ function logic_nagoya_pingback_header() {
 add_action( 'wp_head', 'logic_nagoya_pingback_header' );
 
 /**
- * Custom template include function for page slug to template mapping
- * 
- * @param string $template The path to the template file
- * @return string The modified template path
+ * Resolve the proper template for a page while respecting editor selections.
+ *
+ * @param string $template The path to the template file selected by WordPress.
+ * @return string The modified template path.
  */
 function logic_nagoya_template_include( $template ) {
-	// Only apply to pages
-	if ( ! is_page() ) {
-		return $template;
-	}
+        if ( ! is_page() ) {
+                return $template;
+        }
 
-	global $post;
-	
-	// Get page slug
-	$page_slug = $post->post_name;
-	
-	// Template mapping based on page slug
-	$template_map = array(
-		'about'            => 'page-about.php',
-		'events'           => 'page-events.php',
-		'equipment-list'   => 'page-equipment-list.php',
-		'equipment'        => 'page-equipment.php',
-		'floor-map'        => 'page-floor-map.php',
-		'system-pricing'   => 'page-system-pricing.php',
-		'access'           => 'page-access.php',
-	);
-	
-	// Check if we have a custom template for this slug
-	if ( isset( $template_map[ $page_slug ] ) ) {
-		$custom_template = locate_template( $template_map[ $page_slug ] );
-		if ( $custom_template ) {
-			return $custom_template;
-		}
-	}
-	
-	// Return default template if no custom template found
-	return $template;
+        $page = get_queried_object();
+
+        if ( ! $page instanceof WP_Post ) {
+                return $template;
+        }
+
+        // Respect the page template chosen in the editor.
+        $assigned_template = get_page_template_slug( $page );
+        if ( $assigned_template && 'default' !== $assigned_template ) {
+                $located_template = locate_template( $assigned_template );
+                if ( $located_template ) {
+                        return $located_template;
+                }
+        }
+
+        $default_template_map = function_exists( 'logic_nagoya_get_page_template_map' )
+                ? logic_nagoya_get_page_template_map()
+                : array(
+                        'about'            => 'page-about.php',
+                        'events'           => 'page-events.php',
+                        'equipment-list'   => 'page-equipment-list.php',
+                        'equipment'        => 'page-equipment.php',
+                        'floor-map'        => 'page-floor-map.php',
+                        'system-pricing'   => 'page-system-pricing.php',
+                        'access'           => 'page-access.php',
+                );
+
+        // Allow editors to override via a custom field that stores a template file.
+        $custom_template_value = get_post_meta( $page->ID, 'logic_nagoya_custom_template', true );
+        if ( $custom_template_value ) {
+                $custom_template_value = sanitize_text_field( $custom_template_value );
+
+                $custom_template_map = apply_filters(
+                        'logic_nagoya_custom_template_map',
+                        $default_template_map,
+                        $page
+                );
+
+                $custom_template_file = isset( $custom_template_map[ $custom_template_value ] )
+                        ? $custom_template_map[ $custom_template_value ]
+                        : $custom_template_value;
+
+                $located_template = locate_template( $custom_template_file );
+                if ( $located_template ) {
+                        return $located_template;
+                }
+        }
+
+        // Legacy fallback: keep slug-based mapping for existing pages until templates are reassigned.
+        $legacy_template_map = apply_filters(
+                'logic_nagoya_legacy_template_map',
+                $default_template_map,
+                $page
+        );
+
+        if ( isset( $legacy_template_map[ $page->post_name ] ) ) {
+                $located_template = locate_template( $legacy_template_map[ $page->post_name ] );
+                if ( $located_template ) {
+                        return $located_template;
+                }
+        }
+
+        return $template;
 }
 add_filter( 'template_include', 'logic_nagoya_template_include' );
 

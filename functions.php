@@ -12,6 +12,33 @@ if ( ! defined( 'LOGIC_NAGOYA_VERSION' ) ) {
         define( 'LOGIC_NAGOYA_VERSION', '1.0.0' );
 }
 
+if ( ! function_exists( 'logic_nagoya_get_page_template_map' ) ) {
+        /**
+         * Provides the canonical mapping of template identifiers to template files.
+         *
+         * The map is used by logic_nagoya_template_include() to resolve templates based on
+         * either a custom field or the legacy slug-based routing. Developers can filter the
+         * map via the `logic_nagoya_page_template_map` hook.
+         *
+         * @since 1.0.0
+         *
+         * @return array<string, string> Associative array of identifiers to template files.
+         */
+        function logic_nagoya_get_page_template_map() {
+                $template_map = array(
+                        'about'            => 'page-about.php',
+                        'events'           => 'page-events.php',
+                        'equipment-list'   => 'page-equipment-list.php',
+                        'equipment'        => 'page-equipment.php',
+                        'floor-map'        => 'page-floor-map.php',
+                        'system-pricing'   => 'page-system-pricing.php',
+                        'access'           => 'page-access.php',
+                );
+
+                return apply_filters( 'logic_nagoya_page_template_map', $template_map );
+        }
+}
+
 if ( ! function_exists( 'logic_nagoya_get_field' ) ) {
         /**
          * Safe wrapper for Advanced Custom Fields' get_field function.
@@ -1436,38 +1463,6 @@ function logic_nagoya_save_page_meta($post_id) {
     }
 }
 add_action('save_post_page', 'logic_nagoya_save_page_meta');
-
-/**
- * Ensure the proper templates are used based on the page slug
- */
-function logic_nagoya_template_include($template) {
-    if (is_page()) {
-        $page = get_queried_object();
-        $slug = $page->post_name;
-        
-        // Map slugs to templates
-        $template_map = array(
-            'about' => 'page-about.php',
-            'equipment-list' => 'page-equipment-list.php',
-            'equipment' => 'page-equipment.php',
-            'events' => 'page-events.php',
-            'floor-map' => 'page-floor-map.php',
-            'system-pricing' => 'page-system-pricing.php'
-        );
-        
-        // Check if there's a matching template for this slug
-        if (array_key_exists($slug, $template_map)) {
-            $new_template = locate_template(array($template_map[$slug]));
-            if (!empty($new_template)) {
-                return $new_template;
-            }
-        }
-    }
-    
-    return $template;
-}
-add_filter('template_include', 'logic_nagoya_template_include');
-
 
 /**
  * Event post type
