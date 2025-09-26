@@ -9,11 +9,19 @@ jQuery(function ($) {
   initTimelineAccessibility();
   initSmoothAnchors();
 
+  $(window).on('load', function () {
+    window.setTimeout(function () {
+      $('.about-intro').addClass('is-visible');
+    }, 400);
+  });
+
   /**
    * Apply intersection observer to feature cards and timeline items.
    */
   function initScrollAnimations() {
-    const $animatedItems = $('.feature-card, .timeline-item');
+    const $featureCards = $('.feature-card');
+    const $timelineItems = $('.timeline-item');
+    const $animatedItems = $featureCards.add($timelineItems);
 
     if (!$animatedItems.length) {
       return;
@@ -23,13 +31,26 @@ jQuery(function ($) {
 
     if (prefersReducedMotion) {
       $animatedItems.addClass('is-visible');
+      $('.about-intro').addClass('is-visible');
       return;
     }
 
     const observer = new IntersectionObserver(function (entries, observerRef) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          $(entry.target).addClass('is-visible');
+          const $target = $(entry.target);
+          let delay = 0;
+
+          if ($target.hasClass('feature-card')) {
+            delay = $featureCards.index(entry.target) * 120;
+          } else if ($target.hasClass('timeline-item')) {
+            delay = $timelineItems.index(entry.target) * 160;
+          }
+
+          window.setTimeout(function () {
+            $target.addClass('is-visible');
+          }, delay);
+
           observerRef.unobserve(entry.target);
         }
       });
