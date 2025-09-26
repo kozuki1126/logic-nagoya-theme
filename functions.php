@@ -1263,6 +1263,53 @@ function logic_nagoya_add_page_image_metaboxes() {
 add_action('add_meta_boxes', 'logic_nagoya_add_page_image_metaboxes');
 
 /**
+ * Enqueue media library and admin scripts for page meta boxes.
+ */
+function logic_nagoya_enqueue_page_media_assets( $hook ) {
+    if ( 'post.php' !== $hook && 'post-new.php' !== $hook ) {
+        return;
+    }
+
+    $screen = get_current_screen();
+
+    if ( ! $screen || 'page' !== $screen->post_type ) {
+        return;
+    }
+
+    wp_enqueue_media();
+
+    wp_enqueue_script(
+        'logic-nagoya-page-media',
+        get_template_directory_uri() . '/js/admin-page-media.js',
+        array( 'jquery' ),
+        LOGIC_NAGOYA_VERSION,
+        true
+    );
+
+    wp_localize_script(
+        'logic-nagoya-page-media',
+        'logicNagoyaPageMedia',
+        array(
+            'floorPlan' => array(
+                'title'      => __( 'Select or Upload Floor Plan Image', 'logic-nagoya' ),
+                'buttonText' => __( 'Use this image', 'logic-nagoya' ),
+                'previewAlt' => __( 'Floor plan image preview', 'logic-nagoya' ),
+            ),
+            'concept'   => array(
+                'title'      => __( 'Select or Upload Concept Image', 'logic-nagoya' ),
+                'buttonText' => __( 'Use this image', 'logic-nagoya' ),
+                'previewAlt' => __( 'Concept image preview', 'logic-nagoya' ),
+            ),
+            'equipment' => array(
+                'title'      => __( 'Select or Upload Equipment PDF', 'logic-nagoya' ),
+                'buttonText' => __( 'Use this PDF', 'logic-nagoya' ),
+            ),
+        )
+    );
+}
+add_action( 'admin_enqueue_scripts', 'logic_nagoya_enqueue_page_media_assets' );
+
+/**
  * Floor plan image meta box callback
  */
 function logic_nagoya_floor_plan_image_callback($post) {
@@ -1281,44 +1328,6 @@ function logic_nagoya_floor_plan_image_callback($post) {
             <img src="<?php echo esc_url(wp_get_attachment_url($floor_plan_image)); ?>" style="max-width: 300px;" alt="<?php esc_attr_e('Floor plan image preview', 'logic-nagoya'); ?>">
         <?php endif; ?>
     </div>
-    <script>
-    jQuery(document).ready(function($) {
-        // Handle the media uploader for floor plan image
-        $('#floor-plan-image-select').click(function(e) {
-            e.preventDefault();
-            
-            var image_frame;
-            
-            if (image_frame) {
-                image_frame.open();
-                return;
-            }
-            
-            image_frame = wp.media({
-                title: '<?php _e('Select or Upload Floor Plan Image', 'logic-nagoya'); ?>',
-                button: {
-                    text: '<?php _e('Use this image', 'logic-nagoya'); ?>'
-                },
-                multiple: false
-            });
-            
-            image_frame.on('select', function() {
-                var attachment = image_frame.state().get('selection').first().toJSON();
-                $('#floor-plan-image').val(attachment.id);
-                $('#floor-plan-image-preview').html('<img src="' + attachment.url + '" style="max-width: 300px;" alt="Floor plan image preview">');
-            });
-            
-            image_frame.open();
-        });
-        
-        // Handle removing the floor plan image
-        $('#floor-plan-image-remove').click(function(e) {
-            e.preventDefault();
-            $('#floor-plan-image').val('');
-            $('#floor-plan-image-preview').html('');
-        });
-    });
-    </script>
     <?php
 }
 
@@ -1341,44 +1350,6 @@ function logic_nagoya_concept_image_callback($post) {
             <img src="<?php echo esc_url(wp_get_attachment_url($concept_image)); ?>" style="max-width: 300px;" alt="<?php esc_attr_e('Concept image preview', 'logic-nagoya'); ?>">
         <?php endif; ?>
     </div>
-    <script>
-    jQuery(document).ready(function($) {
-        // Handle the media uploader for concept image
-        $('#concept-image-select').click(function(e) {
-            e.preventDefault();
-            
-            var image_frame;
-            
-            if (image_frame) {
-                image_frame.open();
-                return;
-            }
-            
-            image_frame = wp.media({
-                title: '<?php _e('Select or Upload Concept Image', 'logic-nagoya'); ?>',
-                button: {
-                    text: '<?php _e('Use this image', 'logic-nagoya'); ?>'
-                },
-                multiple: false
-            });
-            
-            image_frame.on('select', function() {
-                var attachment = image_frame.state().get('selection').first().toJSON();
-                $('#concept-image').val(attachment.id);
-                $('#concept-image-preview').html('<img src="' + attachment.url + '" style="max-width: 300px;" alt="Concept image preview">');
-            });
-            
-            image_frame.open();
-        });
-        
-        // Handle removing the concept image
-        $('#concept-image-remove').click(function(e) {
-            e.preventDefault();
-            $('#concept-image').val('');
-            $('#concept-image-preview').html('');
-        });
-    });
-    </script>
     <?php
 }
 
@@ -1401,47 +1372,6 @@ function logic_nagoya_equipment_pdf_callback($post) {
             <p><?php echo esc_html(basename(get_attached_file($equipment_pdf))); ?></p>
         <?php endif; ?>
     </div>
-    <script>
-    jQuery(document).ready(function($) {
-        // Handle the media uploader for equipment PDF
-        $('#equipment-pdf-select').click(function(e) {
-            e.preventDefault();
-            
-            var pdf_frame;
-            
-            if (pdf_frame) {
-                pdf_frame.open();
-                return;
-            }
-            
-            pdf_frame = wp.media({
-                title: '<?php _e('Select or Upload Equipment PDF', 'logic-nagoya'); ?>',
-                button: {
-                    text: '<?php _e('Use this PDF', 'logic-nagoya'); ?>'
-                },
-                multiple: false,
-                library: {
-                    type: 'application/pdf'
-                }
-            });
-            
-            pdf_frame.on('select', function() {
-                var attachment = pdf_frame.state().get('selection').first().toJSON();
-                $('#equipment-pdf').val(attachment.id);
-                $('#equipment-pdf-preview').html('<p>' + attachment.filename + '</p>');
-            });
-            
-            pdf_frame.open();
-        });
-        
-        // Handle removing the equipment PDF
-        $('#equipment-pdf-remove').click(function(e) {
-            e.preventDefault();
-            $('#equipment-pdf').val('');
-            $('#equipment-pdf-preview').html('');
-        });
-    });
-    </script>
     <?php
 }
 
