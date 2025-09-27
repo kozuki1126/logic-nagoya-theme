@@ -13,6 +13,10 @@
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
+  <meta charset="<?php bloginfo( 'charset' ); ?>">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=yes">
+  <meta name="theme-color" content="#ca6666">
   <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
