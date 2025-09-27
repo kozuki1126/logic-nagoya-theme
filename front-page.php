@@ -122,7 +122,7 @@ get_header();
             'meta_query' => array(
                 array(
                     'key' => 'event_date',
-                    'value' => date('Y-m-d'),
+                    'value' => wp_date('Y-m-d'),
                     'compare' => '>=',
                     'type' => 'DATE'
                 )
@@ -137,7 +137,7 @@ get_header();
                 // Get event date
                 $event_date = get_post_meta(get_the_ID(), 'event_date', true);
                 if ($event_date) {
-                    $formatted_date = date_i18n(get_option('date_format'), strtotime($event_date));
+                    $formatted_date = wp_date(get_option('date_format'), strtotime($event_date));
                 } else {
                     $formatted_date = 'Coming Soon';
                 }
