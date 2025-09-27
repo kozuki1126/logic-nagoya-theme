@@ -219,8 +219,6 @@ function logic_nagoya_setup() {
  */
 function logic_nagoya_seo_init() {
     // テーマサポートの追加
-    add_theme_support('title-tag');
-    
     // カスタムメタタグの追加
     add_action('wp_head', 'logic_nagoya_meta_tags', 1);
     add_action('wp_head', 'logic_nagoya_structured_data', 5);
@@ -252,17 +250,7 @@ function logic_nagoya_meta_tags() {
     if ($keywords) {
         echo '<meta name="keywords" content="' . esc_attr($keywords) . '">' . "\n";
     }
-    
-    // viewport（レスポンシブ対応）
-    echo '<meta name="viewport" content="width=device-width, initial-scale=1.0">' . "\n";
-    
-    // 文字エンコーディング
-    echo '<meta charset="' . get_bloginfo('charset') . '">' . "\n";
-    
-    // その他のメタタグ
-    echo '<meta name="format-detection" content="telephone=yes">' . "\n";
-    echo '<meta name="theme-color" content="#ca6666">' . "\n";
-    
+
     // 検索エンジン向け指示
     if (is_search() || is_404()) {
         echo '<meta name="robots" content="noindex, nofollow">' . "\n";
