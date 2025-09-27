@@ -262,19 +262,19 @@ function logic_nagoya_fallback_menu() {
                     if ($social_media) :
                     ?>
                         <?php if ($social_media['twitter_url']) : ?>
-                        <a href="<?php echo esc_url($social_media['twitter_url']); ?>" class="footer-social-link" target="_blank">
+                        <a href="<?php echo esc_url($social_media['twitter_url']); ?>" class="footer-social-link" target="_blank" rel="noopener noreferrer">
                             <i class="fab fa-twitter"></i>
                         </a>
                         <?php endif; ?>
                         
                         <?php if ($social_media['facebook_url']) : ?>
-                        <a href="<?php echo esc_url($social_media['facebook_url']); ?>" class="footer-social-link" target="_blank">
+                        <a href="<?php echo esc_url($social_media['facebook_url']); ?>" class="footer-social-link" target="_blank" rel="noopener noreferrer">
                             <i class="fab fa-facebook-f"></i>
                         </a>
                         <?php endif; ?>
                         
                         <?php if ($social_media['instagram_url']) : ?>
-                        <a href="<?php echo esc_url($social_media['instagram_url']); ?>" class="footer-social-link" target="_blank">
+                        <a href="<?php echo esc_url($social_media['instagram_url']); ?>" class="footer-social-link" target="_blank" rel="noopener noreferrer">
                             <i class="fab fa-instagram"></i>
                         </a>
                         <?php endif; ?>

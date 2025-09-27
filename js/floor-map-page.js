@@ -23,7 +23,7 @@ jQuery(function ($) {
     const $toolbar = $('<div class="floormap-toolbar" role="group" aria-label="フロアマップ操作"></div>');
     const $zoomButton = $('<button type="button" class="floormap-toolbar-button" aria-pressed="false" aria-label="フロアマップを拡大"><i class="fas fa-search-plus"></i></button>');
     const $resetButton = $('<button type="button" class="floormap-toolbar-button" aria-label="拡大をリセット"><i class="fas fa-sync-alt"></i></button>');
-    const $downloadButton = $('<a class="floormap-toolbar-button" aria-label="フロアマップを新しいタブで開く" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i></a>');
+    const $downloadButton = $('<a class="floormap-toolbar-button" aria-label="フロアマップを新しいタブで開く" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i></a>');
 
     $downloadButton.attr('href', $image.attr('src'));
 

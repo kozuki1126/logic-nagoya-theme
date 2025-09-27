@@ -140,7 +140,7 @@ while (have_posts()) :
                   <h4 class="ticket-name"><?php echo $name; ?></h4>
                   <p class="ticket-price"><?php echo esc_html($price); ?></p>
                   <?php if ($is_first && $event_ticket_url) : ?>
-                    <a href="<?php echo esc_url($event_ticket_url); ?>" class="btn btn-sm btn-outline" target="_blank"><?php esc_html_e('予約する', 'logic-nagoya'); ?></a>
+                    <a href="<?php echo esc_url($event_ticket_url); ?>" class="btn btn-sm btn-outline" target="_blank" rel="noopener noreferrer"><?php esc_html_e('予約する', 'logic-nagoya'); ?></a>
                   <?php endif; ?>
                 </div>
               <?php endforeach; ?>
@@ -148,7 +148,7 @@ while (have_posts()) :
               <h4 class="ticket-name"><?php esc_html_e('チケット', 'logic-nagoya'); ?></h4>
               <p class="ticket-price"><?php echo esc_html($event_ticket_price); ?></p>
               <?php if ($event_ticket_url) : ?>
-                <a href="<?php echo esc_url($event_ticket_url); ?>" class="btn btn-sm btn-outline" target="_blank"><?php esc_html_e('予約する', 'logic-nagoya'); ?></a>
+                <a href="<?php echo esc_url($event_ticket_url); ?>" class="btn btn-sm btn-outline" target="_blank" rel="noopener noreferrer"><?php esc_html_e('予約する', 'logic-nagoya'); ?></a>
               <?php endif; ?>
             <?php endif; ?>
             </div>
@@ -159,19 +159,19 @@ while (have_posts()) :
         <div class="modal-footer">
           <div class="share-links">
             <span style="margin-right: 10px;"><?php esc_html_e('このイベントをシェア：', 'logic-nagoya'); ?></span>
-            <a href="https://twitter.com/intent/tweet?url=<?php echo urlencode(get_permalink()); ?>&text=<?php echo urlencode(get_the_title()); ?>" class="share-link" target="_blank">
+            <a href="https://twitter.com/intent/tweet?url=<?php echo urlencode(get_permalink()); ?>&text=<?php echo urlencode(get_the_title()); ?>" class="share-link" target="_blank" rel="noopener noreferrer">
               <i class="fab fa-twitter"></i>
             </a>
-            <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode(get_permalink()); ?>" class="share-link" target="_blank">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode(get_permalink()); ?>" class="share-link" target="_blank" rel="noopener noreferrer">
               <i class="fab fa-facebook-f"></i>
             </a>
-            <a href="https://line.me/R/msg/text/?<?php echo urlencode(get_the_title() . ' ' . get_permalink()); ?>" class="share-link" target="_blank">
+            <a href="https://line.me/R/msg/text/?<?php echo urlencode(get_the_title() . ' ' . get_permalink()); ?>" class="share-link" target="_blank" rel="noopener noreferrer">
               <i class="fab fa-line"></i>
             </a>
           </div>
           
           <?php if ($event_ticket_url) : ?>
-          <a href="<?php echo esc_url($event_ticket_url); ?>" class="btn btn-accent" target="_blank"><?php esc_html_e('チケットを予約する', 'logic-nagoya'); ?></a>
+          <a href="<?php echo esc_url($event_ticket_url); ?>" class="btn btn-accent" target="_blank" rel="noopener noreferrer"><?php esc_html_e('チケットを予約する', 'logic-nagoya'); ?></a>
           <?php endif; ?>
         </div>
         

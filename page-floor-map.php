@@ -233,7 +233,7 @@ get_header();
               $google_maps_url = 'https://goo.gl/maps/YourGoogleMapsURL';
             }
             ?>
-            <a href="<?php echo esc_url($google_maps_url); ?>" class="btn btn-outline" target="_blank"><?php esc_html_e('Google Mapsで見る', 'logic-nagoya'); ?></a>
+            <a href="<?php echo esc_url($google_maps_url); ?>" class="btn btn-outline" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Google Mapsで見る', 'logic-nagoya'); ?></a>
           </div>
         </div>
       </div>

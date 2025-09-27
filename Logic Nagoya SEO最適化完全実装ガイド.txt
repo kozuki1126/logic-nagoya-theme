@@ -922,7 +922,7 @@ function logic_nagoya_seo_admin_page() {
     echo '<tr>';
     echo '<th>XMLサイトマップ</th>';
     echo '<td>';
-    echo '<p><a href="' . home_url('/sitemap.xml') . '" target="_blank">メインサイトマップを表示</a></p>';
+    echo '<p><a href="' . home_url('/sitemap.xml') . '" target="_blank" rel="noopener noreferrer">メインサイトマップを表示</a></p>';
     echo '<input type="submit" name="regenerate_sitemap" value="サイトマップ再生成" class="button-secondary">';
     echo '</td>';
     echo '</tr>';
