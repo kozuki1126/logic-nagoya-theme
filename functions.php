@@ -641,41 +641,66 @@ function logic_nagoya_breadcrumb_schema() {
 function logic_nagoya_social_meta() {
     // Open Graph
     logic_nagoya_open_graph_tags();
-    
+
     // Twitter Cards
     logic_nagoya_twitter_card_tags();
+}
+
+/**
+ * Resolve the canonical URL used for social meta tags.
+ *
+ * @return string
+ */
+function logic_nagoya_get_social_meta_url() {
+    $canonical_url = wp_get_canonical_url();
+
+    if (! empty($canonical_url)) {
+        return $canonical_url;
+    }
+
+    if (is_singular()) {
+        $permalink = get_permalink();
+
+        if (! empty($permalink)) {
+            return $permalink;
+        }
+    }
+
+    return trailingslashit(home_url());
 }
 
 /**
  * Open Graph タグ
  */
 function logic_nagoya_open_graph_tags() {
+    $meta_url = logic_nagoya_get_social_meta_url();
+
     echo '<meta property="og:site_name" content="' . esc_attr(get_bloginfo('name')) . '">' . "\n";
     echo '<meta property="og:locale" content="ja_JP">' . "\n";
-    
+
     if (is_singular()) {
         echo '<meta property="og:type" content="article">' . "\n";
         echo '<meta property="og:title" content="' . esc_attr(get_the_title()) . '">' . "\n";
         echo '<meta property="og:description" content="' . esc_attr(logic_nagoya_get_meta_description()) . '">' . "\n";
-        echo '<meta property="og:url" content="' . esc_url(get_permalink()) . '">' . "\n";
-        
+        echo '<meta property="og:url" content="' . esc_url($meta_url) . '">' . "\n";
+
         if (has_post_thumbnail()) {
             $image = wp_get_attachment_image_src(get_post_thumbnail_id(), 'large');
             echo '<meta property="og:image" content="' . esc_url($image[0]) . '">' . "\n";
             echo '<meta property="og:image:width" content="' . esc_attr($image[1]) . '">' . "\n";
             echo '<meta property="og:image:height" content="' . esc_attr($image[2]) . '">' . "\n";
         }
-        
+
         // 記事固有の情報
         echo '<meta property="article:published_time" content="' . get_the_date('c') . '">' . "\n";
         echo '<meta property="article:modified_time" content="' . get_the_modified_date('c') . '">' . "\n";
-        
+
     } else {
         echo '<meta property="og:type" content="website">' . "\n";
         echo '<meta property="og:title" content="' . esc_attr(wp_get_document_title()) . '">' . "\n";
         echo '<meta property="og:description" content="' . esc_attr(logic_nagoya_get_meta_description()) . '">' . "\n";
-        echo '<meta property="og:url" content="' . esc_url(home_url(add_query_arg([], $_SERVER['REQUEST_URI']))) . '">' . "\n";
-        
+        echo '<meta property="og:url" content="' . esc_url($meta_url) . '">' . "\n";
+
         // デフォルト画像
         $default_image = get_template_directory_uri() . '/assets/images/og-default.jpg';
         echo '<meta property="og:image" content="' . esc_url($default_image) . '">' . "\n";
@@ -686,11 +711,14 @@ function logic_nagoya_open_graph_tags() {
  * Twitter Card タグ
  */
 function logic_nagoya_twitter_card_tags() {
+    $meta_url = logic_nagoya_get_social_meta_url();
+
     echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
     echo '<meta name="twitter:site" content="@logicnagoya">' . "\n";
     echo '<meta name="twitter:title" content="' . esc_attr(wp_get_document_title()) . '">' . "\n";
     echo '<meta name="twitter:description" content="' . esc_attr(logic_nagoya_get_meta_description()) . '">' . "\n";
-    
+    echo '<meta name="twitter:url" content="' . esc_url($meta_url) . '">' . "\n";
+
     if (is_singular() && has_post_thumbnail()) {
         $image = wp_get_attachment_image_src(get_post_thumbnail_id(), 'large');
         echo '<meta name="twitter:image" content="' . esc_url($image[0]) . '">' . "\n";
