@@ -812,8 +812,18 @@ function logic_nagoya_robots_txt($output) {
  */
 function logic_nagoya_sitemap_init() {
     // カスタムサイトマップの生成
+    add_filter('query_vars', 'logic_nagoya_register_sitemap_query_var');
     add_action('init', 'logic_nagoya_sitemap_rewrite_rules');
     add_action('template_redirect', 'logic_nagoya_sitemap_template');
+}
+
+/**
+ * サイトマップ用のクエリ変数登録
+ */
+function logic_nagoya_register_sitemap_query_var($vars) {
+    $vars[] = 'sitemap';
+
+    return $vars;
 }
 
 /**
@@ -823,6 +833,15 @@ function logic_nagoya_sitemap_rewrite_rules() {
     add_rewrite_rule('^sitemap\.xml$', 'index.php?sitemap=main', 'top');
     add_rewrite_rule('^sitemap-([^/]+)\.xml$', 'index.php?sitemap=$matches[1]', 'top');
 }
+
+/**
+ * テーマ有効化時のリライトルール更新
+ */
+function logic_nagoya_flush_rewrite_rules_on_switch() {
+    logic_nagoya_sitemap_rewrite_rules();
+    flush_rewrite_rules();
+}
+add_action('after_switch_theme', 'logic_nagoya_flush_rewrite_rules_on_switch');
 
 /**
  * サイトマップのテンプレート処理
