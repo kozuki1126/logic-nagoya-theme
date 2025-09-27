@@ -831,6 +831,16 @@ function logic_nagoya_sitemap_init() {
     add_filter('query_vars', 'logic_nagoya_register_sitemap_query_var');
     add_action('init', 'logic_nagoya_sitemap_rewrite_rules');
     add_action('template_redirect', 'logic_nagoya_sitemap_template');
+    add_filter('query_vars', 'logic_nagoya_register_sitemap_query_var');
+}
+
+/**
+ * サイトマップクエリ変数の登録
+ */
+function logic_nagoya_register_sitemap_query_var($vars) {
+    $vars[] = 'sitemap';
+
+    return $vars;
 }
 
 /**
@@ -1695,6 +1705,14 @@ function logic_nagoya_setup_default_menu() {
     }
 }
 add_action('after_switch_theme', 'logic_nagoya_setup_default_menu');
+
+/**
+ * テーマ有効化時にリライトルールを更新
+ */
+function logic_nagoya_flush_rewrite_rules_on_switch() {
+    flush_rewrite_rules();
+}
+add_action('after_switch_theme', 'logic_nagoya_flush_rewrite_rules_on_switch');
 
 /**
  * Create a default menu as a fallback
