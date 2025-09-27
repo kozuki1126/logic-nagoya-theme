@@ -238,22 +238,22 @@ get_header();
                   </p>
                   <div class="team-social">
                     <?php if (!empty($member['twitter'])) : ?>
-                      <a href="<?php echo esc_url($member['twitter']); ?>" class="team-social-link" target="_blank">
+                      <a href="<?php echo esc_url($member['twitter']); ?>" class="team-social-link" target="_blank" rel="noopener noreferrer">
                         <i class="fab fa-twitter"></i>
                       </a>
                     <?php endif; ?>
                     <?php if (!empty($member['facebook'])) : ?>
-                      <a href="<?php echo esc_url($member['facebook']); ?>" class="team-social-link" target="_blank">
+                      <a href="<?php echo esc_url($member['facebook']); ?>" class="team-social-link" target="_blank" rel="noopener noreferrer">
                         <i class="fab fa-facebook-f"></i>
                       </a>
                     <?php endif; ?>
                     <?php if (!empty($member['instagram'])) : ?>
-                      <a href="<?php echo esc_url($member['instagram']); ?>" class="team-social-link" target="_blank">
+                      <a href="<?php echo esc_url($member['instagram']); ?>" class="team-social-link" target="_blank" rel="noopener noreferrer">
                         <i class="fab fa-instagram"></i>
                       </a>
                     <?php endif; ?>
                     <?php if (!empty($member['linkedin'])) : ?>
-                      <a href="<?php echo esc_url($member['linkedin']); ?>" class="team-social-link" target="_blank">
+                      <a href="<?php echo esc_url($member['linkedin']); ?>" class="team-social-link" target="_blank" rel="noopener noreferrer">
                         <i class="fab fa-linkedin-in"></i>
                       </a>
                     <?php endif; ?>

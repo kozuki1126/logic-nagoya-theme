@@ -64,25 +64,25 @@
           <p class="footer-social-description"><?php esc_html_e( '最新情報はSNSでもチェックできます。フォローして最新のイベント情報をゲット！', 'logic-nagoya' ); ?></p>
           <div class="footer-social-links">
             <?php if ( get_theme_mod( 'logic_nagoya_twitter' ) ) : ?>
-            <a href="<?php echo esc_url( get_theme_mod( 'logic_nagoya_twitter' ) ); ?>" class="footer-social-link" target="_blank">
+            <a href="<?php echo esc_url( get_theme_mod( 'logic_nagoya_twitter' ) ); ?>" class="footer-social-link" target="_blank" rel="noopener noreferrer">
               <i class="fab fa-twitter"></i>
             </a>
             <?php endif; ?>
-            
+
             <?php if ( get_theme_mod( 'logic_nagoya_facebook' ) ) : ?>
-            <a href="<?php echo esc_url( get_theme_mod( 'logic_nagoya_facebook' ) ); ?>" class="footer-social-link" target="_blank">
+            <a href="<?php echo esc_url( get_theme_mod( 'logic_nagoya_facebook' ) ); ?>" class="footer-social-link" target="_blank" rel="noopener noreferrer">
               <i class="fab fa-facebook-f"></i>
             </a>
             <?php endif; ?>
-            
+
             <?php if ( get_theme_mod( 'logic_nagoya_instagram' ) ) : ?>
-            <a href="<?php echo esc_url( get_theme_mod( 'logic_nagoya_instagram' ) ); ?>" class="footer-social-link" target="_blank">
+            <a href="<?php echo esc_url( get_theme_mod( 'logic_nagoya_instagram' ) ); ?>" class="footer-social-link" target="_blank" rel="noopener noreferrer">
               <i class="fab fa-instagram"></i>
             </a>
             <?php endif; ?>
-            
+
             <?php if ( get_theme_mod( 'logic_nagoya_youtube' ) ) : ?>
-            <a href="<?php echo esc_url( get_theme_mod( 'logic_nagoya_youtube' ) ); ?>" class="footer-social-link" target="_blank">
+            <a href="<?php echo esc_url( get_theme_mod( 'logic_nagoya_youtube' ) ); ?>" class="footer-social-link" target="_blank" rel="noopener noreferrer">
               <i class="fab fa-youtube"></i>
             </a>
             <?php endif; ?>

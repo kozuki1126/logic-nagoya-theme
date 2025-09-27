@@ -402,37 +402,37 @@ get_header();
           
           <div class="social-links">
             <?php if (get_theme_mod('logic_nagoya_twitter')) : ?>
-            <a href="<?php echo esc_url(get_theme_mod('logic_nagoya_twitter')); ?>" class="social-link" target="_blank">
+            <a href="<?php echo esc_url(get_theme_mod('logic_nagoya_twitter')); ?>" class="social-link" target="_blank" rel="noopener noreferrer">
               <i class="fab fa-twitter"></i>
             </a>
-            <?php endif; ?>
-            
-            <?php if (get_theme_mod('logic_nagoya_facebook')) : ?>
-            <a href="<?php echo esc_url(get_theme_mod('logic_nagoya_facebook')); ?>" class="social-link" target="_blank">
+          <?php endif; ?>
+
+          <?php if (get_theme_mod('logic_nagoya_facebook')) : ?>
+            <a href="<?php echo esc_url(get_theme_mod('logic_nagoya_facebook')); ?>" class="social-link" target="_blank" rel="noopener noreferrer">
               <i class="fab fa-facebook-f"></i>
             </a>
-            <?php endif; ?>
-            
-            <?php if (get_theme_mod('logic_nagoya_instagram')) : ?>
-            <a href="<?php echo esc_url(get_theme_mod('logic_nagoya_instagram')); ?>" class="social-link" target="_blank">
+          <?php endif; ?>
+
+          <?php if (get_theme_mod('logic_nagoya_instagram')) : ?>
+            <a href="<?php echo esc_url(get_theme_mod('logic_nagoya_instagram')); ?>" class="social-link" target="_blank" rel="noopener noreferrer">
               <i class="fab fa-instagram"></i>
             </a>
-            <?php endif; ?>
-            
-            <?php if (get_theme_mod('logic_nagoya_youtube')) : ?>
-            <a href="<?php echo esc_url(get_theme_mod('logic_nagoya_youtube')); ?>" class="social-link" target="_blank">
+          <?php endif; ?>
+
+          <?php if (get_theme_mod('logic_nagoya_youtube')) : ?>
+            <a href="<?php echo esc_url(get_theme_mod('logic_nagoya_youtube')); ?>" class="social-link" target="_blank" rel="noopener noreferrer">
               <i class="fab fa-youtube"></i>
             </a>
-            <?php endif; ?>
-            
-            <?php if (get_theme_mod('logic_nagoya_tiktok')) : ?>
-            <a href="<?php echo esc_url(get_theme_mod('logic_nagoya_tiktok')); ?>" class="social-link" target="_blank">
+          <?php endif; ?>
+
+          <?php if (get_theme_mod('logic_nagoya_tiktok')) : ?>
+            <a href="<?php echo esc_url(get_theme_mod('logic_nagoya_tiktok')); ?>" class="social-link" target="_blank" rel="noopener noreferrer">
               <i class="fab fa-tiktok"></i>
             </a>
-            <?php endif; ?>
-            
-            <?php if (get_theme_mod('logic_nagoya_line')) : ?>
-            <a href="<?php echo esc_url(get_theme_mod('logic_nagoya_line')); ?>" class="social-link" target="_blank">
+          <?php endif; ?>
+
+          <?php if (get_theme_mod('logic_nagoya_line')) : ?>
+            <a href="<?php echo esc_url(get_theme_mod('logic_nagoya_line')); ?>" class="social-link" target="_blank" rel="noopener noreferrer">
               <i class="fab fa-line"></i>
             </a>
             <?php endif; ?>
