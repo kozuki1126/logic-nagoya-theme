@@ -1690,9 +1690,17 @@ function logic_nagoya_default_menu() {
  * 高度な画像最適化機能の初期化
  */
 function logic_nagoya_advanced_image_optimization_init() {
+    static $initialized = false;
+
+    if ( $initialized ) {
+        return;
+    }
+
+    $initialized = true;
+
     // WebP対応（改良版）
     add_filter('wp_generate_attachment_metadata', 'logic_nagoya_generate_webp_images_enhanced');
-    
+
     // 遅延読み込み対応（改良版）
     add_filter('wp_get_attachment_image_attributes', 'logic_nagoya_add_advanced_lazy_loading_attributes', 10, 3);
     add_filter('the_content', 'logic_nagoya_add_lazy_loading_to_content');
@@ -2272,12 +2280,45 @@ function logic_nagoya_get_responsive_image($attachment_id, $size = 'large', $att
     
     // HTMLタグの生成
     $attr_strings = array();
-    foreach ($attr as $key => $value) {
-        if (empty($value) && $value !== '0') {
+    foreach ( $attr as $key => $value ) {
+        if ( empty( $value ) && $value !== '0' ) {
             continue;
         }
-        $attr_strings[] = sprintf('%s="%s"', esc_attr($key), esc_attr($value));
+        $attr_strings[] = sprintf( '%s="%s"', esc_attr( $key ), esc_attr( $value ) );
     }
-    
-    return sprintf('<img %s>', implode(' ', $attr_strings));
+
+    return sprintf( '<img %s>', implode( ' ', $attr_strings ) );
+}
+
+/**
+ * 画像最適化関連の後方互換ヘルパー
+ */
+if ( ! function_exists( 'logic_nagoya_load_image_optimization_assets' ) ) {
+    function logic_nagoya_load_image_optimization_assets() {
+        logic_nagoya_enqueue_advanced_image_assets();
+    }
+}
+
+if ( ! function_exists( 'logic_nagoya_generate_webp_on_upload' ) ) {
+    function logic_nagoya_generate_webp_on_upload( $metadata ) {
+        return logic_nagoya_generate_webp_images_enhanced( $metadata );
+    }
+}
+
+if ( ! function_exists( 'logic_nagoya_convert_image_to_webp' ) ) {
+    function logic_nagoya_convert_image_to_webp( $source_path, $webp_path ) {
+        return logic_nagoya_convert_to_webp_enhanced( $source_path, $webp_path );
+    }
+}
+
+if ( ! function_exists( 'logic_nagoya_get_optimized_webp_url' ) ) {
+    function logic_nagoya_get_optimized_webp_url( $image_url ) {
+        return logic_nagoya_get_webp_image_url( $image_url );
+    }
+}
+
+if ( ! function_exists( 'logic_nagoya_task017_complete_init' ) ) {
+    function logic_nagoya_task017_complete_init() {
+        logic_nagoya_advanced_image_optimization_init();
+    }
 }

@@ -717,4 +717,8 @@ add_action( 'init', 'logic_nagoya_register_gallery_post_type' );
 /**
  * Task 017 Image Optimization Enhancement
  */
-require get_template_directory() . '/image-optimization-enhancement.php';
+$logic_nagoya_image_optimization_file = get_template_directory() . '/image-optimization-enhancement.php';
+
+if ( file_exists( $logic_nagoya_image_optimization_file ) ) {
+        require $logic_nagoya_image_optimization_file;
+}
