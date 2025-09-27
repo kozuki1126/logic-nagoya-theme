@@ -91,7 +91,7 @@
       </div>
       
       <div class="footer-bottom">
-        <p>&copy; <?php echo esc_html( date( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?>. <?php esc_html_e( 'All rights reserved.', 'logic-nagoya' ); ?></p>
+        <p>&copy; <?php echo esc_html( wp_date( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?>. <?php esc_html_e( 'All rights reserved.', 'logic-nagoya' ); ?></p>
       </div>
     </div>
   </footer>

@@ -133,7 +133,7 @@ get_header();
         <div class="event-grid">
           <?php
           // Query upcoming events
-          $today = date('Y-m-d');
+          $today = wp_date('Y-m-d');
           $args = array(
             'post_type' => 'event',
             'posts_per_page' => 6,
@@ -161,7 +161,7 @@ get_header();
               $event_price = get_post_meta(get_the_ID(), 'event_ticket_price', true);
               
               // Format date
-              $formatted_date = $event_date ? date_i18n('Y.m.d', strtotime($event_date)) : '';
+              $formatted_date = $event_date ? wp_date('Y.m.d', strtotime($event_date)) : '';
               
               // Get event categories
               $categories = get_the_terms(get_the_ID(), 'event_category');

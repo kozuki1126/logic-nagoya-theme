@@ -285,7 +285,7 @@ function logic_nagoya_get_meta_description() {
         $description = 'Logic Nagoyaで開催される「' . get_the_title() . '」';
         
         if ($event_date) {
-            $description .= '（' . date('Y年m月d日', strtotime($event_date)) . '開催）';
+            $description .= '（' . wp_date('Y年m月d日', strtotime($event_date)) . '開催）';
         }
         
         $excerpt = get_the_excerpt();
@@ -554,7 +554,7 @@ function logic_nagoya_event_schema() {
                 'price' => $pricing['price_advance'],
                 'priceCurrency' => 'JPY',
                 'availability' => 'https://schema.org/InStock',
-                'validFrom' => date('Y-m-d')
+                'validFrom' => wp_date('Y-m-d')
             ];
         }
 
@@ -864,25 +864,27 @@ function logic_nagoya_sitemap_template() {
 function logic_nagoya_main_sitemap() {
     echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
     echo '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
-    
+
+    $current_datetime_utc = current_datetime('UTC')->format(DATE_W3C);
+
     // ページサイトマップ
     echo '<sitemap>' . "\n";
     echo '<loc>' . home_url('/sitemap-pages.xml') . '</loc>' . "\n";
-    echo '<lastmod>' . date('Y-m-d\TH:i:s+00:00') . '</lastmod>' . "\n";
+    echo '<lastmod>' . $current_datetime_utc . '</lastmod>' . "\n";
     echo '</sitemap>' . "\n";
 
     // 投稿サイトマップ
     echo '<sitemap>' . "\n";
     echo '<loc>' . home_url('/sitemap-posts.xml') . '</loc>' . "\n";
-    echo '<lastmod>' . date('Y-m-d\TH:i:s+00:00') . '</lastmod>' . "\n";
+    echo '<lastmod>' . $current_datetime_utc . '</lastmod>' . "\n";
     echo '</sitemap>' . "\n";
 
     // イベントサイトマップ
     echo '<sitemap>' . "\n";
     echo '<loc>' . home_url('/sitemap-events.xml') . '</loc>' . "\n";
-    echo '<lastmod>' . date('Y-m-d\TH:i:s+00:00') . '</lastmod>' . "\n";
+    echo '<lastmod>' . $current_datetime_utc . '</lastmod>' . "\n";
     echo '</sitemap>' . "\n";
-    
+
     echo '</sitemapindex>' . "\n";
 }
 
@@ -893,10 +895,12 @@ function logic_nagoya_events_sitemap() {
     echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
     echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
 
+    $current_datetime_utc = current_datetime('UTC')->format(DATE_W3C);
+
     // イベント一覧ページ
     echo '<url>' . "\n";
     echo '<loc>' . get_post_type_archive_link('event') . '</loc>' . "\n";
-    echo '<lastmod>' . date('Y-m-d\TH:i:s+00:00') . '</lastmod>' . "\n";
+    echo '<lastmod>' . $current_datetime_utc . '</lastmod>' . "\n";
     echo '<changefreq>daily</changefreq>' . "\n";
     echo '<priority>0.8</priority>' . "\n";
     echo '</url>' . "\n";
@@ -911,7 +915,7 @@ function logic_nagoya_events_sitemap() {
     foreach ($events as $event) {
         echo '<url>' . "\n";
         echo '<loc>' . get_permalink($event->ID) . '</loc>' . "\n";
-        echo '<lastmod>' . get_the_modified_date('Y-m-d\TH:i:s+00:00', $event->ID) . '</lastmod>' . "\n";
+        echo '<lastmod>' . get_the_modified_date(DATE_W3C, $event->ID) . '</lastmod>' . "\n";
         echo '<changefreq>weekly</changefreq>' . "\n";
         echo '<priority>0.6</priority>' . "\n";
         echo '</url>' . "\n";
@@ -933,7 +937,7 @@ function logic_nagoya_posts_sitemap() {
     if ($posts_page_id) {
         echo '<url>' . "\n";
         echo '<loc>' . get_permalink($posts_page_id) . '</loc>' . "\n";
-        echo '<lastmod>' . get_the_modified_date('c', $posts_page_id) . '</lastmod>' . "\n";
+        echo '<lastmod>' . get_the_modified_date(DATE_W3C, $posts_page_id) . '</lastmod>' . "\n";
         echo '<changefreq>daily</changefreq>' . "\n";
         echo '<priority>0.8</priority>' . "\n";
         echo '</url>' . "\n";
@@ -951,7 +955,7 @@ function logic_nagoya_posts_sitemap() {
     foreach ($posts as $post) {
         echo '<url>' . "\n";
         echo '<loc>' . get_permalink($post->ID) . '</loc>' . "\n";
-        echo '<lastmod>' . get_post_modified_time('c', false, $post) . '</lastmod>' . "\n";
+        echo '<lastmod>' . get_post_modified_time(DATE_W3C, false, $post) . '</lastmod>' . "\n";
         echo '<changefreq>weekly</changefreq>' . "\n";
         echo '<priority>0.6</priority>' . "\n";
         echo '</url>' . "\n";
@@ -966,11 +970,13 @@ function logic_nagoya_posts_sitemap() {
 function logic_nagoya_pages_sitemap() {
     echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
     echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
-    
+
+    $current_datetime_utc = current_datetime('UTC')->format(DATE_W3C);
+
     // トップページ
     echo '<url>' . "\n";
     echo '<loc>' . home_url('/') . '</loc>' . "\n";
-    echo '<lastmod>' . date('Y-m-d\TH:i:s+00:00') . '</lastmod>' . "\n";
+    echo '<lastmod>' . $current_datetime_utc . '</lastmod>' . "\n";
     echo '<changefreq>daily</changefreq>' . "\n";
     echo '<priority>1.0</priority>' . "\n";
     echo '</url>' . "\n";
@@ -993,7 +999,7 @@ function logic_nagoya_pages_sitemap() {
         
         echo '<url>' . "\n";
         echo '<loc>' . get_permalink($page->ID) . '</loc>' . "\n";
-        echo '<lastmod>' . get_the_modified_date('Y-m-d\TH:i:s+00:00', $page->ID) . '</lastmod>' . "\n";
+        echo '<lastmod>' . get_the_modified_date(DATE_W3C, $page->ID) . '</lastmod>' . "\n";
         echo '<changefreq>' . $changefreq . '</changefreq>' . "\n";
         echo '<priority>' . $priority . '</priority>' . "\n";
         echo '</url>' . "\n";
