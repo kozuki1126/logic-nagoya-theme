@@ -1718,13 +1718,70 @@ add_action('after_switch_theme', 'logic_nagoya_flush_rewrite_rules_on_switch');
  * Create a default menu as a fallback
  */
 function logic_nagoya_default_menu() {
-    echo '<ul class="nav-links">';
-    echo '<li><a href="' . esc_url(home_url('/')) . '">HOME</a></li>';
-    echo '<li><a href="' . esc_url(site_url('/about/')) . '">ABOUT</a></li>';
-    echo '<li><a href="' . esc_url(site_url('/events/')) . '">EVENTS</a></li>';
-    echo '<li><a href="' . esc_url(site_url('/system-pricing/')) . '">システム・料金</a></li>';
-    echo '<li><a href="' . esc_url(site_url('/equipment-list/')) . '">設備</a></li>';
-    echo '<li><a href="' . esc_url(site_url('/floor-map/')) . '">アクセス</a></li>';
+    $get_page_url = static function( $path, $fallback ) {
+        $page = get_page_by_path( $path );
+
+        if ( $page instanceof WP_Post ) {
+            $permalink = get_permalink( $page );
+
+            if ( $permalink ) {
+                return $permalink;
+            }
+        }
+
+        return $fallback;
+    };
+
+    $menu_items = array(
+        array(
+            'label'      => esc_html__( 'HOME', 'logic-nagoya' ),
+            'url'        => home_url( '/' ),
+            'is_current' => is_front_page(),
+        ),
+        array(
+            'label'      => esc_html__( 'ABOUT', 'logic-nagoya' ),
+            'url'        => $get_page_url( 'about', home_url( '/about/' ) ),
+            'is_current' => is_page( 'about' ),
+        ),
+        array(
+            'label'      => esc_html__( 'EVENTS', 'logic-nagoya' ),
+            'url'        => $get_page_url( 'events', home_url( '/events/' ) ),
+            'is_current' => is_page( 'events' ),
+        ),
+        array(
+            'label'      => esc_html__( 'システム・料金', 'logic-nagoya' ),
+            'url'        => $get_page_url( 'system-pricing', home_url( '/system-pricing/' ) ),
+            'is_current' => is_page( 'system-pricing' ),
+        ),
+        array(
+            'label'      => esc_html__( '設備', 'logic-nagoya' ),
+            'url'        => $get_page_url( 'equipment-list', home_url( '/equipment-list/' ) ),
+            'is_current' => is_page( 'equipment-list' ),
+        ),
+        array(
+            'label'      => esc_html__( 'アクセス', 'logic-nagoya' ),
+            'url'        => $get_page_url( 'floor-map', home_url( '/floor-map/' ) ),
+            'is_current' => is_page( 'floor-map' ),
+        ),
+    );
+
+    printf( '<ul class="%s">', esc_attr( 'nav-links' ) );
+
+    foreach ( $menu_items as $menu_item ) {
+        $aria_current = '';
+
+        if ( ! empty( $menu_item['is_current'] ) ) {
+            $aria_current = sprintf( ' aria-current="%s"', esc_attr( 'page' ) );
+        }
+
+        printf(
+            '<li><a href="%1$s"%2$s>%3$s</a></li>',
+            esc_url( $menu_item['url'] ),
+            $aria_current,
+            $menu_item['label']
+        );
+    }
+
     echo '</ul>';
 }
 
